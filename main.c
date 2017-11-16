@@ -7,8 +7,6 @@ int max_speed;         /* Motor maximal speed (will be detected) */
 #define MOTOR_LEFT     OUTC
 #define MOTOR_RIGHT    OUTB
 #define MOTOR_BOTH     ( MOTOR_LEFT | MOTOR_RIGHT )
-#define IR_CHANNEL     0
-POOL_T ir;             /* IR sensor port (will be detected) */
 enum {
     STOP,
     FORTH,
@@ -24,81 +22,28 @@ int init( void )
         max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
         tacho_reset( MOTOR_BOTH );
     } else {
-        printf( "Please, plug LEFT motor in C port,\n"
-                        "RIGHT motor in B port and try again.\n"
+        printf( "Please, plug LEFT motor in B port,\n"
+                        "RIGHT motor in C port and try again.\n"
         );
         /* Inoperative without motors */
         return ( 0 );
     }
-    ir = sensor_search( LEGO_EV3_IR );
-    if ( ir ) {
-        ir_set_mode_ir_remote( ir );
-        printf( "IR remote control:\n"
-                        "RED UP   & BLUE UP   - forward\n"
-                        "RED DOWN & BLUE DOWN - backward\n"
-                        "RED UP   | BLUE DOWN - left\n"
-                        "RED DOWN | BLUE UP   - right\n"
-        );
-    } else {
-        printf( "IR sensor is NOT found.\n"
-                        "q : quitter\n"
-                        "a : avancer\n"
-                        "r : reculer\n"
-                        "g : gauche\n"
-                        "d : droite\n"
-                        "s : stop\n"
-        );
-    }
-    printf( "Press BACK on the EV3 brick for EXIT...\n" );
+
+    printf( "IR sensor is NOT found.\n"
+                    "q : quitter\n"
+                    "a : avancer\n"
+                    "r : reculer\n"
+                    "g : gauche\n"
+                    "d : droite\n"
+                    "s : stop\n"
+    );
+
     return ( 1 );
 }
-CORO_CONTEXT( handle_ir_control );
 CORO_CONTEXT( handle_brick_control );
 CORO_CONTEXT( drive );
-/* Coroutine of IR remote control handling */
-CORO_DEFINE( handle_ir_control )
-        {
-                CORO_LOCAL int btns, pressed = IR_REMOTE__NONE_;
-        CORO_BEGIN();
-        if ( ir == SOCKET__NONE_ ) CORO_QUIT();
-        for ( ; ; ) {
-            /* Waiting any IR RC button is pressed or released */
-            CORO_WAIT(( btns = sensor_get_value( IR_CHANNEL, ir, IR_REMOTE__NONE_ )) != pressed );
-            pressed = btns;
-            switch ( pressed ) {
-                /* Forward */
-                case RED_UP_BLUE_UP:
-                    command = FORTH;
-                    break;
-                    /* Backward */
-                case RED_DOWN_BLUE_DOWN:
-                    command = BACK;
-                    break;
-                    /* Left */
-                case RED_UP:
-                case RED_UP_BLUE_DOWN:
-                case BLUE_DOWN:
-                    command = LEFT;
-                    break;
-                    /* Right */
-                case BLUE_UP:
-                case RED_DOWN_BLUE_UP:
-                case RED_DOWN:
-                    command = RIGHT;
-                    break;
-                    /* Stop */
-                case IR_REMOTE__NONE_:
-                case RED_UP_RED_DOWN:
-                case BLUE_UP_BLUE_DOWN:
-                case BEACON_MODE_ON:
-                    command = STOP;
-                    break;
-            }
-            CORO_YIELD();
-        }
-        CORO_END();
-        }
-/* Coroutine of the EV3 brick keys handling */
+
+/* Coroutine of the console key handling */
 CORO_DEFINE( handle_brick_control )
         {
         CORO_LOCAL char pressed;
@@ -137,6 +82,7 @@ CORO_DEFINE( handle_brick_control )
         }
         CORO_END();
         }
+
 /* Coroutine of control the motors */
 CORO_DEFINE( drive )
         {
@@ -184,7 +130,6 @@ int main( void )
     printf( "*** ( EV3 ) Hello! ***\n" );
     alive = init();
     while ( alive ) {
-        CORO_CALL( handle_ir_control );
         CORO_CALL( handle_brick_control );
         CORO_CALL( drive );
         sleep_ms( 10 );
