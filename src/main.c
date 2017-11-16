@@ -2,7 +2,7 @@
 #include "coroutine.h"
 #include "brick.h"
 #define SPEED_LINEAR    75  /* Motor speed for linear motion, in percents */
-#define SPEED_CIRCULAR  50  /* ... for circular motion */
+#define SPEED_CIRCULAR  10  /* ... for circular motion */
 int max_speed;         /* Motor maximal speed (will be detected) */
 #define MOTOR_LEFT     OUTC
 #define MOTOR_RIGHT    OUTB
