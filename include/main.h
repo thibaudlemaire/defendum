@@ -13,6 +13,7 @@
 #define DISTANCE_PERIOD 50  // Distance measure period in ms
 #define MOTORS_PERIOD   50  // Motors update period in ms
 #define ROTATION_PERIOD 50  // Rotation measure period in ms
+#define COMPASS_PERIOD  50  // Compass measure period in ms
 
 // Enum
 enum {

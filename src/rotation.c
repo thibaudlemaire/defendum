@@ -32,11 +32,11 @@ void *rotation_main(void *arg)
         /* Waiting rotation change */
         if (( angle = sensor_get_value(ROTATION_ANGLE, rotation_sensor, 0)) != old_angle ) {
             old_angle = angle;
-            printf("Angle : %u° \n", angle);
+            printf("Angle : %d° \n", angle);
         }
         if ((rspeed = sensor_get_value(ROTATION_SPEED, rotation_sensor, 0)) != old_rspeed ) {
             old_rspeed = rspeed;
-            printf("Rotational speed : %u°/s \n", rspeed);
+            printf("Rotational speed : %d°/s \n", rspeed);
         }
         sleep_ms(ROTATION_PERIOD);
 
