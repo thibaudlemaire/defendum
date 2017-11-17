@@ -5,12 +5,13 @@
 #ifndef OS_ROBOT_MAIN_H
 #define OS_ROBOT_MAIN_H
 
-// Defines
+// Parameters
 #define SPEED_LINEAR    75  /* Motor speed for linear motion, in percents */
 #define SPEED_CIRCULAR  15  /* ... for circular motion */
-#define MOTOR_LEFT     OUTC
-#define MOTOR_RIGHT    OUTB
-#define MOTOR_BOTH     ( MOTOR_LEFT | MOTOR_RIGHT )
+
+#define COLOR_PERIOD    50  // Color measure period in ms
+#define DISTANCE_PERIOD 50  // Distance measure period in ms
+#define MOTORS_PERIOD   50  // Motors update period in ms
 
 // Enum
 enum {
@@ -22,9 +23,9 @@ enum {
 };
 
 // Globals
-extern int command;    /* Command for `drive` coroutine */
-extern int alive;             /* Program is alive */
-extern int max_speed;         /* Motor maximal speed (will be detected) */
+extern int command;             /* Command for `drive` coroutine */
+extern int alive;               /* Program is alive */
+extern int max_speed;           /* Motor maximal speed (will be detected) */
 
 // Proto
 int init( void );

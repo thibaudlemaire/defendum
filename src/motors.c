@@ -35,7 +35,7 @@ void *motors_main(void *arg)
         {
             /* Waiting new command */
             if ( state == command ) {
-                sleep_ms( 50 );
+                sleep_ms( MOTORS_PERIOD );
                 continue;
             }
             switch ( command ) {
