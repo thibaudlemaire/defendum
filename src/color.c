@@ -25,7 +25,7 @@ int init_color( void )
 /* Thread of color sensor */
 void *color_main(void *arg)
     {
-        int old_red, red, old_green, green, old_blue, blue;
+        int old_red, red, old_green, green, old_blue, blue; // Values [0 ; 1020]
         if ( color_sensor == SOCKET__NONE_ ) pthread_exit(NULL);
         while (alive)
         {

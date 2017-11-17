@@ -25,7 +25,7 @@ int init_distance( void )
 /* Thread of distance sensor */
 void *distance_main(void *arg)
 {
-    int old_measure, measure;
+    int old_measure, measure; // Measure [0 ; 2 550] cm
     if ( distance_sensor == SOCKET__NONE_ ) pthread_exit(NULL);
     while (alive)
     {

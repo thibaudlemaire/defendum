@@ -10,6 +10,7 @@
 #include "console.h"
 #include "color.h"
 #include "distance.h"
+#include "rotation.h"
 
 // Globals
 int command = STOP;    /* Command for `drive` thread */
@@ -23,6 +24,7 @@ int init( void )
         init_color() &
         init_motors() &
         init_distance() &
+        init_rotation() &
         init_console()
 
     );
@@ -34,6 +36,7 @@ int main( void )
     pthread_t motors_thread;
     pthread_t color_thread;
     pthread_t distance_thread;
+    pthread_t rotation_thread;
 
     if ( !brick_init()) return ( 1 );
     printf( "*** ( Denfendum ) Hello! ***\n" );
@@ -44,11 +47,13 @@ int main( void )
     pthread_create(&color_thread, NULL, color_main, NULL);
     pthread_create(&console_thread, NULL, console_main, NULL);
     pthread_create(&distance_thread, NULL, distance_main, NULL);
+    pthread_create(&rotation_thread, NULL, rotation_main, NULL);
 
     pthread_join(console_thread, NULL);
     pthread_join(motors_thread, NULL);
     pthread_join(color_thread, NULL);
     pthread_join(distance_thread, NULL);
+    pthread_join(rotation_thread, NULL);
 
     printf( "*** ( Defendum ) Bye! ***\n" );
     return ( 0 );
