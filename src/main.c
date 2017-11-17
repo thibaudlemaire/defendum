@@ -16,7 +16,6 @@
 // Globals
 int command = STOP;    /* Command for `drive` thread */
 int alive;             /* Program is alive */
-int max_speed;         /* Motor maximal speed (will be detected) */
 
 int init( void )
 {

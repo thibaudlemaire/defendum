@@ -9,6 +9,8 @@
 #include "brick.h"
 #include "main.h"
 
+int max_speed;     /* Motor maximal speed (will be detected) */
+
 int init_motors( void )
 {
     if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  /* any type of motor */

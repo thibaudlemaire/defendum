@@ -27,7 +27,6 @@ enum {
 // Globals
 extern int command;             /* Command for `drive` coroutine */
 extern int alive;               /* Program is alive */
-extern int max_speed;           /* Motor maximal speed (will be detected) */
 
 // Proto
 int init( void );
