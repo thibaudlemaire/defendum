@@ -3,8 +3,9 @@
 //
 
 #include <stdio.h>
+#include <unistd.h>
+#include <pthread.h>
 #include "motors.h"
-#include "coroutine.h"
 #include "brick.h"
 #include "main.h"
 
@@ -23,22 +24,25 @@ int init_motors( void )
     return ( 1 );
 }
 
-/* Coroutine of control the motors */
-CORO_DEFINE( drive )
+/* Thread managing motors */
+void *motors_main(void *arg)
     {
-        CORO_LOCAL int speed_linear, speed_circular;
-        CORO_LOCAL int state = STOP;
-        CORO_BEGIN();
+        int speed_linear, speed_circular;
+        int state = STOP;
         speed_linear = max_speed * SPEED_LINEAR / 100;
         speed_circular = max_speed * SPEED_CIRCULAR / 100;
-        for ( ; ; ) {
+        while (alive)
+        {
             /* Waiting new command */
-            CORO_WAIT( state != command );
+            if ( state == command ) {
+                sleep_ms( 50 );
+                continue;
+            }
             switch ( command ) {
                 case STOP:
                     tacho_stop( MOTOR_BOTH );
                     /* Waiting the vehicle is stopped */
-                    CORO_WAIT( !tacho_is_running( MOTOR_BOTH ));
+                    while(tacho_is_running( MOTOR_BOTH ));
                     break;
                 case FORTH:
                     tacho_set_speed_sp( MOTOR_BOTH, speed_linear );
@@ -61,5 +65,6 @@ CORO_DEFINE( drive )
             }
             state = command;
         }
-        CORO_END();
+        printf("Exit motors\n");
+        pthread_exit(NULL);
     }

@@ -5,11 +5,7 @@
 #ifndef OS_ROBOT_MOTORS_H
 #define OS_ROBOT_MOTORS_H
 
-#include "coroutine.h"
-
-CORO_CONTEXT( drive );
-CORO_DEFINE( drive );
-
 int init_motors( void );
+void *motors_main(void *arg);
 
 #endif //OS_ROBOT_MOTORS_H

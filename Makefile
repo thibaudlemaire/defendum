@@ -8,7 +8,7 @@ BINDIR=bin
 
 
 # Compiler options
-CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c
+CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c -pthread
 
 # Exec name
 BIN=main

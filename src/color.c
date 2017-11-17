@@ -3,8 +3,8 @@
 //
 
 #include <stdio.h>
+#include <pthread.h>
 #include "color.h"
-#include "coroutine.h"
 #include "brick.h"
 #include "main.h"
 
@@ -23,17 +23,20 @@ int init_color( void )
 }
 
 /* Coroutine of color sensor */
-CORO_DEFINE( color )
+void *color_main(void *arg)
     {
-        CORO_LOCAL int old_red, red;
-        CORO_BEGIN();
-        if ( color_sensor == SOCKET__NONE_ ) CORO_QUIT();
-        for ( ; ; ) {
+        int old_red, red;
+        if ( color_sensor == SOCKET__NONE_ ) pthread_exit(NULL);
+        while (alive)
+        {
             /* Waiting any IR RC button is pressed or released */
-            CORO_WAIT(( red = sensor_get_value(COLOR_RED, color_sensor, 0)) != old_red );
+            if (( red = sensor_get_value(COLOR_RED, color_sensor, 0)) == old_red ) {
+                sleep_ms( 50 );
+                continue;
+            }
             old_red = red;
             printf("Red value : %u \n", red);
-            CORO_YIELD();
         }
-        CORO_END();
+        printf("Exit color\n");
+        pthread_exit(NULL);
     }

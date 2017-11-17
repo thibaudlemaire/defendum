@@ -5,17 +5,13 @@
 #ifndef OS_ROBOT_COLOR_H
 #define OS_ROBOT_COLOR_H
 
-#include "coroutine.h"
-
 enum {
     COLOR_RED,
     COLOR_GREEN,
     COLOR_BLUE,
 };
 
-CORO_CONTEXT( color );
-CORO_DEFINE( color );
-
 int init_color( void );
+void *color_main(void *arg);
 
 #endif //OS_ROBOT_COLOR_H

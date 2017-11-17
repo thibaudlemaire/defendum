@@ -3,11 +3,8 @@
 //
 
 #include <stdio.h>
-#include <unistd.h>
-#include <poll.h>
+#include <pthread.h>
 #include "console.h"
-#include "coroutine.h"
-#include "brick.h"
 #include "main.h"
 
 int init_console( void )
@@ -23,57 +20,41 @@ int init_console( void )
     return ( 1 );
 }
 
-/* Coroutine of the console key handling */
-CORO_DEFINE( handle_brick_control )
+/* Console handling thread */
+void *console_main(void *arg)
     {
-        CORO_LOCAL char pressed;
-        CORO_LOCAL struct pollfd pollEvent;
-        CORO_LOCAL int result = -1;
-        CORO_BEGIN();
-        for ( ; ; ) {
-            // Poll event init on stdin
-            pollEvent.fd = STDIN_FILENO;
-            pollEvent.events = POLLIN;
-
-            // Polling : is there char in stdin ?
-            result = poll(&pollEvent, 1, TIMEOUT);
-
-            // Processing
-            if(result < 0) {
-                printf("Erreur poll() !");
-            } else if(result == 0) { // Timeout
-                CORO_YIELD();
-            } else {
-                (void) read(pollEvent.fd, &pressed, 1); // Clearing pollEvent and move data into 'pressed'
-                switch (pressed) {
-                    /* Quit */
-                    case 'q':
-                        command = STOP;
-                        alive = 0;
-                        break;
+        char pressed;
+        while (alive)
+        {
+            scanf("%c", &pressed);
+            switch (pressed) {
+                /* Quit */
+                case 'q':
+                    command = STOP;
+                    alive = 0;
+                    break;
                     /* Stop */
-                    case 's':
-                        command = STOP;
-                        break;
+                case 's':
+                    command = STOP;
+                    break;
                     /* Forward */
-                    case 'a':
-                        command = FORTH;
-                        break;
+                case 'a':
+                    command = FORTH;
+                    break;
                     /* Backward */
-                    case 'r':
-                        command = BACK;
-                        break;
+                case 'r':
+                    command = BACK;
+                    break;
                     /* Left */
-                    case 'g':
-                        command = LEFT;
-                        break;
+                case 'g':
+                    command = LEFT;
+                    break;
                     /* Right */
-                    case 'd':
-                        command = RIGHT;
-                        break;
-                }
-                CORO_YIELD();
+                case 'd':
+                    command = RIGHT;
+                    break;
             }
         }
-        CORO_END();
+        printf("Exit console\n");
+        pthread_exit(NULL);
     }
