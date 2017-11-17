@@ -1,3 +1,7 @@
+//
+// Created by Thibaud Lemaire on 16/11/2017.
+//
+
 #include <stdio.h>
 #include "coroutine.h"
 #include "brick.h"
@@ -12,27 +16,10 @@ int max_speed;         /* Motor maximal speed (will be detected) */
 
 int init( void )
 {
-    if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  /* any type of motor */
-        max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
-        tacho_reset( MOTOR_BOTH );
-    } else {
-        printf( "Please, plug LEFT motor in B port,\n"
-                        "RIGHT motor in C port and try again.\n"
-        );
-        /* Inoperative without motors */
-        return ( 0 );
-    }
-
-    printf( "IR sensor is NOT found.\n"
-                    "q : quitter\n"
-                    "a : avancer\n"
-                    "r : reculer\n"
-                    "g : gauche\n"
-                    "d : droite\n"
-                    "s : stop\n"
+    return (
+        init_console() &
+        init_motors()
     );
-
-    return ( 1 );
 }
 
 int main( void )

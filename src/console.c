@@ -8,6 +8,19 @@
 #include "brick.h"
 #include "main.h"
 
+int init_console( void )
+{
+    printf( "IR sensor is NOT found.\n"
+                    "q : quitter\n"
+                    "a : avancer\n"
+                    "r : reculer\n"
+                    "g : gauche\n"
+                    "d : droite\n"
+                    "s : stop\n"
+    );
+    return ( 1 );
+}
+
 /* Coroutine of the console key handling */
 CORO_DEFINE( handle_brick_control )
     {

@@ -2,10 +2,26 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
+#include <stdio.h>
 #include "motors.h"
 #include "coroutine.h"
 #include "brick.h"
 #include "main.h"
+
+int init_motors( void )
+{
+    if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  /* any type of motor */
+        max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
+        tacho_reset( MOTOR_BOTH );
+    } else {
+        printf( "Please, plug LEFT motor in B port,\n"
+                        "RIGHT motor in C port and try again.\n"
+        );
+        /* Inoperative without motors */
+        return ( 0 );
+    }
+    return ( 1 );
+}
 
 /* Coroutine of control the motors */
 CORO_DEFINE( drive )

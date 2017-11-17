@@ -10,4 +10,6 @@
 CORO_CONTEXT( drive );
 CORO_DEFINE( drive );
 
+int init_motors( void );
+
 #endif //OS_ROBOT_MOTORS_H

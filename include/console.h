@@ -10,4 +10,6 @@
 CORO_CONTEXT( handle_brick_control );
 CORO_DEFINE( handle_brick_control );
 
+int init_console( void );
+
 #endif //OS_ROBOT_CONSOLE_H
