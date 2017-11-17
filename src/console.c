@@ -3,6 +3,8 @@
 //
 
 #include <stdio.h>
+#include <unistd.h>
+#include <poll.h>
 #include "console.h"
 #include "coroutine.h"
 #include "brick.h"
@@ -10,13 +12,13 @@
 
 int init_console( void )
 {
-    printf( "IR sensor is NOT found.\n"
-                    "q : quitter\n"
-                    "a : avancer\n"
-                    "r : reculer\n"
-                    "g : gauche\n"
-                    "d : droite\n"
-                    "s : stop\n"
+    printf( "Available commands :\n"
+            "q : quitter\n"
+            "a : avancer\n"
+            "r : reculer\n"
+            "g : gauche\n"
+            "d : droite\n"
+            "s : stop\n"
     );
     return ( 1 );
 }
@@ -25,38 +27,53 @@ int init_console( void )
 CORO_DEFINE( handle_brick_control )
     {
         CORO_LOCAL char pressed;
+        CORO_LOCAL struct pollfd pollEvent;
+        CORO_LOCAL int result = -1;
         CORO_BEGIN();
         for ( ; ; ) {
-            /* Waiting any brick's key is pressed or released */
-            CORO_WAIT(scanf("%c", &pressed));
-            switch ( pressed ) {
-                /* Quit */
-                case 'q':
-                    command = STOP;
-                    alive = 0;
-                    break;
+            // Poll event init on stdin
+            pollEvent.fd = STDIN_FILENO;
+            pollEvent.events = POLLIN;
+
+            // Polling : is there char in stdin ?
+            result = poll(&pollEvent, 1, TIMEOUT);
+
+            // Processing
+            if(result < 0) {
+                printf("Erreur poll() !");
+            } else if(result == 0) { // Timeout
+                CORO_YIELD();
+            } else {
+                (void) read(pollEvent.fd, &pressed, 1); // Clearing pollEvent and move data into 'pressed'
+                switch (pressed) {
+                    /* Quit */
+                    case 'q':
+                        command = STOP;
+                        alive = 0;
+                        break;
                     /* Stop */
-                case 's':
-                    command = STOP;
-                    break;
+                    case 's':
+                        command = STOP;
+                        break;
                     /* Forward */
-                case 'a':
-                    command = FORTH;
-                    break;
+                    case 'a':
+                        command = FORTH;
+                        break;
                     /* Backward */
-                case 'r':
-                    command = BACK;
-                    break;
+                    case 'r':
+                        command = BACK;
+                        break;
                     /* Left */
-                case 'g':
-                    command = LEFT;
-                    break;
+                    case 'g':
+                        command = LEFT;
+                        break;
                     /* Right */
-                case 'd':
-                    command = RIGHT;
-                    break;
+                    case 'd':
+                        command = RIGHT;
+                        break;
+                }
+                CORO_YIELD();
             }
-            CORO_YIELD();
         }
         CORO_END();
     }

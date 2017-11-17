@@ -7,6 +7,8 @@
 
 #include "coroutine.h"
 
+#define TIMEOUT 10
+
 CORO_CONTEXT( handle_brick_control );
 CORO_DEFINE( handle_brick_control );
 

@@ -8,6 +8,7 @@
 #include "main.h"
 #include "motors.h"
 #include "console.h"
+#include "color.h"
 
 // Globals
 int command = STOP;    /* Command for `drive` coroutine */
@@ -17,8 +18,9 @@ int max_speed;         /* Motor maximal speed (will be detected) */
 int init( void )
 {
     return (
-        init_console() &
-        init_motors()
+        init_color() &
+        init_motors() &
+        init_console()
     );
 }
 
@@ -26,14 +28,15 @@ int main( void )
 {
     printf( "Waiting the EV3 brick online...\n" );
     if ( !brick_init()) return ( 1 );
-    printf( "*** ( EV3 ) Hello! ***\n" );
+    printf( "*** ( Denfendum ) Hello! ***\n" );
     alive = init();
     while ( alive ) {
         CORO_CALL( handle_brick_control );
         CORO_CALL( drive );
+        CORO_CALL( color );
         sleep_ms( 10 );
     }
     brick_uninit();
-    printf( "*** ( EV3 ) Bye! ***\n" );
+    printf( "*** ( Defendum ) Bye! ***\n" );
     return ( 0 );
 }
