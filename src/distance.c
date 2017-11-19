@@ -2,11 +2,11 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <stdio.h>
 #include <pthread.h>
 #include "distance.h"
 #include "brick.h"
 #include "main.h"
+#include "display.h"
 
 POOL_T distance_sensor;             /* Distance sensor port (will be detected) */
 
@@ -15,10 +15,10 @@ int init_distance( void )
     distance_sensor = sensor_search( LEGO_EV3_US );
     if ( distance_sensor ) {
         us_set_mode_us_dc_cm( distance_sensor );
-        printf("Distance sensor found and configured as Raw RGB\n");
+        print_console("Distance sensor found and configured as Raw RGB");
         return ( 1 );
     }
-    printf( "Distance sensor not found, exit\n" );
+    print_console( "Distance sensor not found, exit" );
     return ( 0 );
 }
 
@@ -26,7 +26,6 @@ int init_distance( void )
 void *distance_main(void *arg)
 {
     int old_measure, measure; // Measure [0 ; 2 550] cm
-    if ( distance_sensor == SOCKET__NONE_ ) pthread_exit(NULL);
     while (alive)
     {
         /* Waiting for measured distance change */
@@ -35,8 +34,7 @@ void *distance_main(void *arg)
             continue;
         }
         old_measure = measure;
-        printf("Distance : %u cm \n", measure);
+        distance_value = measure;
     }
-    printf("Exit distance\n");
     pthread_exit(NULL);
 }

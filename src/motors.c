@@ -2,12 +2,12 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <stdio.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <pthread.h>
 #include "motors.h"
 #include "brick.h"
 #include "main.h"
+#include "display.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
 
@@ -17,9 +17,8 @@ int init_motors( void )
         max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
         tacho_reset( MOTOR_BOTH );
     } else {
-        printf( "Please, plug LEFT motor in B port,\n"
-                        "RIGHT motor in C port and try again.\n"
-        );
+        print_console( "Please, plug LEFT motor in B port,");
+        print_console( "RIGHT motor in C port and try again.");
         /* Inoperative without motors */
         return ( 0 );
     }
@@ -67,6 +66,5 @@ void *motors_main(void *arg)
             }
             state = command;
         }
-        printf("Exit motors\n");
         pthread_exit(NULL);
     }

@@ -8,7 +8,7 @@ BINDIR=bin
 
 
 # Compiler options
-CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c -pthread
+CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c -pthread -lncurses
 
 # Exec name
 BIN=main
@@ -30,4 +30,4 @@ clean:
 	rm $(LIBDIR)/*.o
 
 Clean: clean
-	rm $(BINDIR)/*
+	rm $(BINDIR)/$(BIN)

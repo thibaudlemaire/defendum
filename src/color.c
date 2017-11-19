@@ -2,11 +2,11 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <stdio.h>
 #include <pthread.h>
 #include "color.h"
 #include "brick.h"
 #include "main.h"
+#include "display.h"
 
 POOL_T color_sensor;             /* Color sensor port (will be detected) */
 
@@ -15,10 +15,10 @@ int init_color( void )
     color_sensor = sensor_search( LEGO_EV3_COLOR );
     if ( color_sensor ) {
         color_set_mode_rgb_raw( color_sensor );
-        printf("Color sensor found and configured as Raw RGB\n");
+        print_console("Color sensor found and configured as Raw RGB");
         return ( 1 );
     }
-    printf( "Color sensor not found, exit\n" );
+    print_console( "Color sensor not found, exit" );
     return ( 0 );
 }
 
@@ -32,19 +32,18 @@ void *color_main(void *arg)
             /* Waiting color change */
             if (( red = sensor_get_value(COLOR_RED, color_sensor, 0)) != old_red ) {
                 old_red = red;
-                printf("Red value : %u \n", red);
+                color_red = red;
             }
             if (( green = sensor_get_value(COLOR_GREEN, color_sensor, 0)) != old_green ) {
                 old_green = green;
-                printf("Green value : %u \n", green);
+                color_green = green;
             }
             if (( blue = sensor_get_value(COLOR_BLUE, color_sensor, 0)) != old_blue ) {
                 old_blue = blue;
-                printf("Blue value : %u \n", blue);
+                color_blue = blue;
             }
             sleep_ms(COLOR_PERIOD);
 
         }
-        printf("Exit color\n");
         pthread_exit(NULL);
     }

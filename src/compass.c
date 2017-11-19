@@ -2,11 +2,11 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <stdio.h>
 #include <pthread.h>
 #include "compass.h"
 #include "brick.h"
 #include "main.h"
+#include "display.h"
 
 POOL_T compass_sensor;             /* Compass sensor port (will be detected) */
 
@@ -15,17 +15,17 @@ int init_compass( void )
     compass_sensor = sensor_search( HT_NXT_COMPASS );
     if ( compass_sensor ) {
         sensor_set_mode( compass_sensor, HT_NXT_COMPASS_COMPASS );
-        printf("Compass sensor found and configured\n");
+        print_console("Compass sensor found and configured");
         return ( 1 );
     }
-    printf( "Compass sensor not found, exit\n" );
+    print_console( "Compass sensor not found, exit" );
     return ( 0 );
 }
 
 /* Thread of compass sensor */
 void *compass_main(void *arg)
 {
-    int old_measure, measure; // Measure [0 ; 2 550] cm
+    int old_measure, measure; // Measure [0 ; 359] deg
     if ( compass_sensor == SOCKET__NONE_ ) pthread_exit(NULL);
     while (alive)
     {
@@ -35,8 +35,7 @@ void *compass_main(void *arg)
             continue;
         }
         old_measure = measure;
-        printf("Compass : %u° \n", measure);
+        compass_heading = measure;
     }
-    printf("Exit compass\n");
     pthread_exit(NULL);
 }

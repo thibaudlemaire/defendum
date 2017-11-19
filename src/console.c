@@ -2,21 +2,21 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <stdio.h>
 #include <pthread.h>
+#include <ncurses.h>
 #include "console.h"
 #include "main.h"
+#include "display.h"
 
 int init_console( void )
 {
-    printf( "Available commands :\n"
-            "q : quitter\n"
-            "a : avancer\n"
-            "r : reculer\n"
-            "g : gauche\n"
-            "d : droite\n"
-            "s : stop\n"
-    );
+    print_console( "Available commands :");
+    print_console( "q : quitter");
+    print_console( "a : avancer");
+    print_console( "r : reculer");
+    print_console( "g : gauche");
+    print_console( "d : droite");
+    print_console( "s : stop");
     return ( 1 );
 }
 
@@ -26,7 +26,8 @@ void *console_main(void *arg)
         char pressed;
         while (alive)
         {
-            scanf("%c", &pressed);
+            pressed = getch();
+            move(LINES - 1, COLS - 1);
             switch (pressed) {
                 /* Quit */
                 case 'q':
@@ -55,6 +56,5 @@ void *console_main(void *arg)
                     break;
             }
         }
-        printf("Exit console\n");
         pthread_exit(NULL);
     }

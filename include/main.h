@@ -6,9 +6,10 @@
 #define OS_ROBOT_MAIN_H
 
 // Parameters
-#define SPEED_LINEAR    75  /* Motor speed for linear motion, in percents */
-#define SPEED_CIRCULAR  15  /* ... for circular motion */
+#define SPEED_LINEAR    50  /* Motor speed for linear motion, in percents */
+#define SPEED_CIRCULAR  50  /* ... for circular motion */
 
+#define DISPLAY_PERIOD  100 // Display refresh period
 #define COLOR_PERIOD    50  // Color measure period in ms
 #define DISTANCE_PERIOD 50  // Distance measure period in ms
 #define MOTORS_PERIOD   50  // Motors update period in ms
@@ -27,6 +28,13 @@ enum {
 // Globals
 extern int command;             /* Command for `drive` coroutine */
 extern int alive;               /* Program is alive */
+extern int color_red,
+        color_green,
+        color_blue,
+        compass_heading,
+        distance_value,
+        rotation_angle,
+        rotation_rspeed;
 
 // Proto
 int init( void );
