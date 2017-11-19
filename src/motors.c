@@ -2,7 +2,6 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-//#include <unistd.h>
 #include <pthread.h>
 #include "motors.h"
 #include "brick.h"

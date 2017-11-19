@@ -6,8 +6,8 @@
 #define OS_ROBOT_MAIN_H
 
 // Parameters
-#define SPEED_LINEAR    50  /* Motor speed for linear motion, in percents */
-#define SPEED_CIRCULAR  50  /* ... for circular motion */
+#define SPEED_LINEAR    75  /* Motor speed for linear motion, in percents */
+#define SPEED_CIRCULAR  10  /* ... for circular motion */
 
 #define DISPLAY_PERIOD  100 // Display refresh period
 #define COLOR_PERIOD    50  // Color measure period in ms

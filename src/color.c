@@ -10,7 +10,7 @@
 
 POOL_T color_sensor;             /* Color sensor port (will be detected) */
 
-int init_color( void )
+int init_color_sensor( void )
 {
     color_sensor = sensor_search( LEGO_EV3_COLOR );
     if ( color_sensor ) {
@@ -30,15 +30,15 @@ void *color_main(void *arg)
         while (alive)
         {
             /* Waiting color change */
-            if (( red = sensor_get_value(COLOR_RED, color_sensor, 0)) != old_red ) {
+            if (( red = sensor_get_value(RED_COLOR, color_sensor, 0)) != old_red ) {
                 old_red = red;
                 color_red = red;
             }
-            if (( green = sensor_get_value(COLOR_GREEN, color_sensor, 0)) != old_green ) {
+            if (( green = sensor_get_value(GREEN_COLOR, color_sensor, 0)) != old_green ) {
                 old_green = green;
                 color_green = green;
             }
-            if (( blue = sensor_get_value(COLOR_BLUE, color_sensor, 0)) != old_blue ) {
+            if (( blue = sensor_get_value(BLUE_COLOR, color_sensor, 0)) != old_blue ) {
                 old_blue = blue;
                 color_blue = blue;
             }

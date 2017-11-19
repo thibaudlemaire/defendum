@@ -14,7 +14,6 @@ WINDOW *top_window, *bottom_window;
 int init_display( void )
 {
     initscr();
-    clear();
 
     top_window = subwin(stdscr, 6, COLS, 0, 0);
     bottom_window = subwin(stdscr, LINES - 7, COLS, 6, 0);
@@ -31,7 +30,9 @@ int init_display( void )
     mvwprintw(top_window, 2, COLS / 2, "Rot speed : ");
     mvwprintw(top_window, 3, COLS / 2, "Distance : ");
 
-    mvwprintw(bottom_window, 1, 1, "Console :");
+    wattron(bottom_window, A_REVERSE);
+    mvwprintw(bottom_window, 1, 2, "Console :");
+    wattroff(bottom_window, A_REVERSE);
 
     wrefresh(top_window);
     wrefresh(bottom_window);
@@ -51,8 +52,9 @@ void uninit_display( void )
  */
 void print_console(char * message)
 {
-    mvwprintw(bottom_window, getcury(bottom_window)+1, 1, message);
+    mvwprintw(bottom_window, getcury(bottom_window)+1, 2, message);
     wrefresh(bottom_window);
+    wrefresh(top_window);
 }
 
 /*
@@ -60,6 +62,7 @@ void print_console(char * message)
  */
 void *display_main(void *arg)
 {
+    sleep_ms(500);  // Waiting for screen to be ready
     while (alive)
     {
         mvwprintw(top_window, 1, 16, "%u    ", color_red);
@@ -72,6 +75,7 @@ void *display_main(void *arg)
         mvwprintw(top_window, 3, COLS / 2 + 13, "%u mm    ", distance_value);
 
         wrefresh(top_window);
+        wrefresh(bottom_window);
 
         sleep_ms(DISPLAY_PERIOD);
     }

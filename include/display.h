@@ -5,6 +5,10 @@
 #ifndef OS_ROBOT_DISPLAY_H
 #define OS_ROBOT_DISPLAY_H
 
+#include <ncurses.h>
+
+extern WINDOW *top_window, *bottom_window;
+
 int init_display( void );
 void uninit_display( void );
 void print_console(char * message);
