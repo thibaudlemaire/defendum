@@ -7,6 +7,8 @@
 
 #include <ncurses.h>
 
+#define DISPLAY_PERIOD  100 // Display refresh period
+
 extern WINDOW *top_window, *bottom_window;
 
 int init_display( void );

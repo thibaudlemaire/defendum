@@ -5,7 +5,9 @@
 #ifndef OS_ROBOT_DISTANCE_H
 #define OS_ROBOT_DISTANCE_H
 
-#define DISTANCE_CM_MODE 0
+#define DISTANCE_CM_MODE 0 // Don't change this
+
+#define DISTANCE_PERIOD 50  // Distance measure period in ms
 
 int init_distance( void );
 void *distance_main(void *arg);

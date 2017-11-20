@@ -5,6 +5,8 @@
 #ifndef OS_ROBOT_BLUETOOTH_H
 #define OS_ROBOT_BLUETOOTH_H
 
+// Server communications
+#define TEAM_ID         1   // Team ID for bluetooth communication with server
 #define SERV_ADDR   "dc:53:60:ad:61:90"     /* Whatever the address of the server is */
 #define MESSAGE_MAX_LENGHT 58
 

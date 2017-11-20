@@ -5,7 +5,9 @@
 #ifndef OS_ROBOT_COMPASS_H
 #define OS_ROBOT_COMPASS_H
 
-#define COMPASS_DIRECTION 0
+#define COMPASS_DIRECTION_MODE 0 // Don't change this
+
+#define COMPASS_PERIOD  50  // Compass measure period in ms
 
 int init_compass( void );
 void *compass_main(void *arg);

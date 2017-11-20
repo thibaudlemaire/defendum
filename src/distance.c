@@ -15,7 +15,7 @@ int init_distance( void )
     distance_sensor = sensor_search( LEGO_EV3_US );
     if ( distance_sensor ) {
         us_set_mode_us_dc_cm( distance_sensor );
-        print_console("Distance sensor found and configured as Raw RGB");
+        print_console("Distance sensor found and configured");
         return ( 1 );
     }
     print_error( "Distance sensor not found, exit" );

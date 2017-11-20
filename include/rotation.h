@@ -5,6 +5,8 @@
 #ifndef OS_ROBOT_ROTATION_H
 #define OS_ROBOT_ROTATION_H
 
+#define ROTATION_PERIOD 50  // Rotation measure period in ms
+
 enum {
     ROTATION_ANGLE,
     ROTATION_SPEED,

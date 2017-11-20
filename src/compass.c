@@ -30,7 +30,7 @@ void *compass_main(void *arg)
     while (alive)
     {
         /* Waiting for measured compass change */
-        if (( measure = sensor_get_value(COMPASS_DIRECTION, compass_sensor, 0)) == old_measure ) {
+        if (( measure = sensor_get_value(COMPASS_DIRECTION_MODE, compass_sensor, 0)) == old_measure ) {
             sleep_ms( COMPASS_PERIOD );
             continue;
         }
