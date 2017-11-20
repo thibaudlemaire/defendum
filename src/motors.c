@@ -15,9 +15,10 @@ int init_motors( void )
     if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  /* any type of motor */
         max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
         tacho_reset( MOTOR_BOTH );
+        print_console("Motors found and configured");
     } else {
-        print_console( "Please, plug LEFT motor in B port,");
-        print_console( "RIGHT motor in C port and try again.");
+        print_error( "Please, plug LEFT motor in B port,");
+        print_error( "RIGHT motor in C port and try again.");
         /* Inoperative without motors */
         return ( 0 );
     }

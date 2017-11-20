@@ -34,6 +34,9 @@ int init_display( void )
     mvwprintw(bottom_window, 1, 2, "Console :");
     wattroff(bottom_window, A_REVERSE);
 
+    start_color();
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+
     wrefresh(top_window);
     wrefresh(bottom_window);
 
@@ -44,6 +47,7 @@ int init_display( void )
 
 void uninit_display( void )
 {
+    getch();
     endwin();
 }
 
@@ -58,11 +62,23 @@ void print_console(char * message)
 }
 
 /*
+ * Function to write in the bottom window
+ */
+void print_error(char * message)
+{
+    wattron(bottom_window, COLOR_PAIR(1));
+    mvwprintw(bottom_window, getcury(bottom_window)+1, 2, message);
+    wrefresh(bottom_window);
+    wrefresh(top_window);
+    wattroff(bottom_window, COLOR_PAIR(1));
+}
+
+/*
  * Display handling thread
  */
 void *display_main(void *arg)
 {
-    sleep_ms(500);  // Waiting for screen to be ready
+    sleep_ms(1000);  // Waiting for screen to be ready
     while (alive)
     {
         mvwprintw(top_window, 1, 16, "%u    ", color_red);

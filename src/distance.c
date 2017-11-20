@@ -18,7 +18,7 @@ int init_distance( void )
         print_console("Distance sensor found and configured as Raw RGB");
         return ( 1 );
     }
-    print_console( "Distance sensor not found, exit" );
+    print_error( "Distance sensor not found, exit" );
     return ( 0 );
 }
 

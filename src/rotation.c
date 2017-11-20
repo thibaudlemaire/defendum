@@ -18,7 +18,7 @@ int init_rotation( void )
         print_console("Rotation sensor found and configured");
         return ( 1 );
     }
-    print_console( "Rotation sensor not found, exit" );
+    print_error( "Rotation sensor not found, exit" );
     return ( 0 );
 }
 

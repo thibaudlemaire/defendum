@@ -18,7 +18,7 @@ int init_color_sensor( void )
         print_console("Color sensor found and configured as Raw RGB");
         return ( 1 );
     }
-    print_console( "Color sensor not found, exit" );
+    print_error( "Color sensor not found, exit" );
     return ( 0 );
 }
 

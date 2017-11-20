@@ -3,7 +3,6 @@
 //
 
 #include <pthread.h>
-#include <ncurses.h>
 #include "brick.h"
 #include "main.h"
 #include "motors.h"
@@ -13,6 +12,7 @@
 #include "rotation.h"
 #include "compass.h"
 #include "display.h"
+#include "bluetooth.h"
 
 // Globals
 int command = STOP;    /* Command for `drive` thread */
@@ -35,6 +35,7 @@ int init( void )
         init_distance() &
         init_rotation() &
         init_compass() &
+        init_bluetooth() &
         init_console()
 
     );
@@ -49,6 +50,7 @@ int main( void )
     pthread_t distance_thread;
     pthread_t rotation_thread;
     pthread_t compass_thread;
+    pthread_t bluetooth_thread;
 
     if ( !brick_init()) return ( 1 );
 
@@ -64,6 +66,7 @@ int main( void )
     pthread_create(&rotation_thread, NULL, rotation_main, NULL);
     pthread_create(&compass_thread, NULL, compass_main, NULL);
     pthread_create(&display_thread, NULL, display_main, NULL);
+    pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
 
     pthread_join(console_thread, NULL);
     pthread_join(motors_thread, NULL);
@@ -71,7 +74,10 @@ int main( void )
     pthread_join(distance_thread, NULL);
     pthread_join(rotation_thread, NULL);
     pthread_join(compass_thread, NULL);
+    pthread_join(bluetooth_thread, NULL);
     pthread_join(display_thread, NULL);
+
+    print_console("Quitting... press a key to exit");
 
     uninit_display();
 

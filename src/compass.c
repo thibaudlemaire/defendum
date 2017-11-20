@@ -18,7 +18,7 @@ int init_compass( void )
         print_console("Compass sensor found and configured");
         return ( 1 );
     }
-    print_console( "Compass sensor not found, exit" );
+    print_error( "Compass sensor not found, exit" );
     return ( 0 );
 }
 
