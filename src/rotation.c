@@ -10,6 +10,10 @@
 
 POOL_T rotation_sensor;             /* Rotation sensor port (will be detected) */
 
+/**
+ * Function used to init rotation module
+ * @return 1 if ok, 0 otherwise
+ */
 int init_rotation( void )
 {
     rotation_sensor = sensor_search( LEGO_EV3_GYRO );
@@ -22,7 +26,11 @@ int init_rotation( void )
     return ( 0 );
 }
 
-/* Thread of rotation sensor */
+/**
+ * Main function of rotation thread
+ * @param arg
+ * @return
+ */
 void *rotation_main(void *arg)
 {
     int old_angle, angle, old_rspeed, rspeed;  // Angle [-32 768 ; 32 767] deg; RSpeed [-440 ; 440] deg/s

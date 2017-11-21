@@ -10,9 +10,13 @@
 
 int max_speed;     /* Motor maximal speed (will be detected) */
 
+/**
+ * Function used to init motors module
+ * @return
+ */
 int init_motors( void )
 {
-    if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  /* any type of motor */
+    if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  // any type of motor
         max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
         tacho_reset( MOTOR_BOTH );
         tacho_set_stop_action_brake( MOTOR_BOTH );
@@ -20,13 +24,17 @@ int init_motors( void )
     } else {
         print_error( "Please, plug LEFT motor in B port,");
         print_error( "RIGHT motor in C port and try again.");
-        /* Inoperative without motors */
+        // Inoperative without motors
         return ( 0 );
     }
     return ( 1 );
 }
 
-/* Thread managing motors */
+/**
+ * Main function of motor thread
+ * @param arg
+ * @return a generic pointer used by pthread
+ */
 void *motors_main(void *arg)
     {
         int speed_linear, speed_circular;

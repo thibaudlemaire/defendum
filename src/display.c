@@ -9,16 +9,23 @@
 #include "display.h"
 #include "main.h"
 
-WINDOW *top_window, *bottom_window;
+WINDOW *top_window, *bottom_window; // ncurses windows
 
+/**
+ * Function called to init display module
+ * Init screen and draw it
+ * @return
+ */
 int init_display( void )
 {
     initscr();
 
+    keypad(stdscr, TRUE);   // Activate keypad to listen for directional commands
+
     top_window = subwin(stdscr, 6, COLS, 0, 0);
     bottom_window = subwin(stdscr, LINES - 7, COLS, 6, 0);
 
-    box(top_window, ACS_VLINE, ACS_HLINE);
+    box(top_window, ACS_VLINE, ACS_HLINE);          // Draw boxes
     box(bottom_window, ACS_VLINE, ACS_HLINE);
 
     mvwprintw(top_window, 1, 2, "Color red : ");
@@ -34,51 +41,63 @@ int init_display( void )
     mvwprintw(bottom_window, 1, 2, "Console :");
     wattroff(bottom_window, A_REVERSE);
 
-    start_color();
-    init_pair(1, COLOR_RED, COLOR_BLACK);
+    start_color();                                  // Activate colors
+    init_pair(1, COLOR_RED, COLOR_BLACK);           // Define an attribute for errors
 
     wrefresh(top_window);
     wrefresh(bottom_window);
 
-    move(LINES - 1, COLS - 1);
+    move(LINES - 1, COLS - 1);                      // Put the cursor on the right-bottom corner
 
     return ( 1 );
 }
 
+/**
+ * Function called to release screen
+ */
 void uninit_display( void )
 {
+    print_console("Quitting... press a key to exit");
     getch();
     endwin();
 }
 
-/*
+/**
  * Function to write in the bottom window
  */
 void print_console(char * message)
 {
-    mvwprintw(bottom_window, getcury(bottom_window)+1, 2, message);
+    int current_y = getcury(bottom_window) + 1;
+    if (current_y >= LINES - 8)
+        current_y = 2;
+    mvwprintw(bottom_window, current_y, 2, message);
     wrefresh(bottom_window);
     wrefresh(top_window);
 }
 
-/*
- * Function to write in the bottom window
+/**
+ * Function to write errors in red in the bottom window
  */
 void print_error(char * message)
 {
+    int current_y = getcury(bottom_window) + 1;
+    if (current_y >= LINES - 8)
+        current_y = 2;
     wattron(bottom_window, COLOR_PAIR(1));
-    mvwprintw(bottom_window, getcury(bottom_window)+1, 2, message);
+    mvwprintw(bottom_window, current_y, 2, message);
     wrefresh(bottom_window);
     wrefresh(top_window);
     wattroff(bottom_window, COLOR_PAIR(1));
 }
 
-/*
- * Display handling thread
+/**
+ * Main function of the thread
+ * @param arg
+ * @return a generic pointer used by pthread
  */
 void *display_main(void *arg)
 {
-    sleep_ms(1000);  // Waiting for screen to be ready
+    sleep_ms(1000);  // Waiting for screen to be ready !!
     while (alive)
     {
         mvwprintw(top_window, 1, 16, "%u    ", color_red);

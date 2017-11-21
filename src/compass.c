@@ -8,8 +8,12 @@
 #include "main.h"
 #include "display.h"
 
-POOL_T compass_sensor;             /* Compass sensor port (will be detected) */
+POOL_T compass_sensor;             // Compass sensor port
 
+/**
+ * Function used to init hte compass sensor module
+ * @return 1 if ok, 0 otherwise
+ */
 int init_compass( void )
 {
     compass_sensor = sensor_search( HT_NXT_COMPASS );
@@ -22,7 +26,11 @@ int init_compass( void )
     return ( 0 );
 }
 
-/* Thread of compass sensor */
+/**
+ * Main function of the compass thread
+ * @param arg
+ * @return a generic pointer used by pthread
+ */
 void *compass_main(void *arg)
 {
     int old_measure, measure; // Measure [0 ; 359] deg

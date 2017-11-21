@@ -10,6 +10,10 @@
 
 POOL_T distance_sensor;             /* Distance sensor port (will be detected) */
 
+/**
+ * Function used to init distance module
+ * @return 1 is ok, 0 otherwise
+ */
 int init_distance( void )
 {
     distance_sensor = sensor_search( LEGO_EV3_US );
@@ -22,7 +26,11 @@ int init_distance( void )
     return ( 0 );
 }
 
-/* Thread of distance sensor */
+/**
+ * Main function of distance thread
+ * @param arg
+ * @return a generic pointer used by pthread
+ */
 void *distance_main(void *arg)
 {
     int old_measure, measure; // Measure [0 ; 2 550] cm

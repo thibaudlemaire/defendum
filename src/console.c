@@ -4,26 +4,30 @@
 
 #include <pthread.h>
 #include <ncurses.h>
+#include <curses.h>
 #include "console.h"
+#include "brick.h"
 #include "main.h"
 #include "display.h"
 
+/**
+ * Function used to init the console module
+ * @return
+ */
 int init_console( void )
 {
-    print_console( "Available commands :");
-    print_console( "q : quitter");
-    print_console( "a : avancer");
-    print_console( "r : reculer");
-    print_console( "g : gauche");
-    print_console( "d : droite");
-    print_console( "s : stop");
+    print_console( "Use directional keys to move, space to stop or q to quit");
     return ( 1 );
 }
 
-/* Console handling thread */
+/**
+ * Main function of the console thread, decode what the user is typing
+ * @param arg
+ * @return
+ */
 void *console_main(void *arg)
     {
-        char pressed;
+        int pressed;
         while (alive)
         {
             pressed = getch();
@@ -32,26 +36,27 @@ void *console_main(void *arg)
                 /* Quit */
                 case 'q':
                     command = STOP;
+                    sleep_ms(100);
                     alive = 0;
                     break;
                     /* Stop */
-                case 's':
+                case ' ':
                     command = STOP;
                     break;
                     /* Forward */
-                case 'a':
+                case KEY_UP:
                     command = FORTH;
                     break;
                     /* Backward */
-                case 'r':
+                case KEY_DOWN:
                     command = BACK;
                     break;
                     /* Left */
-                case 'g':
+                case KEY_LEFT:
                     command = LEFT;
                     break;
                     /* Right */
-                case 'd':
+                case KEY_RIGHT:
                     command = RIGHT;
                     break;
             }
