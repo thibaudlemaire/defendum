@@ -5,6 +5,8 @@
 #ifndef OS_ROBOT_MAIN_H
 #define OS_ROBOT_MAIN_H
 
+#include <pthread.h>
+
 // Enum
 enum commandState {
     STOP,
@@ -46,6 +48,7 @@ extern int color_red,
         distance_value,
         rotation_angle,
         rotation_rspeed;
+extern pthread_mutex_t stdout_mutex;
 
 // Proto
 int init( void );

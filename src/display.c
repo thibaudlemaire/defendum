@@ -18,6 +18,8 @@ WINDOW *top_window, *bottom_window; // ncurses windows
  */
 int init_display( void )
 {
+    pthread_mutex_lock(&stdout_mutex); // Lock shared resources
+
     initscr();
 
     keypad(stdscr, TRUE);   // Activate keypad to listen for directional commands
@@ -49,6 +51,8 @@ int init_display( void )
 
     move(LINES - 1, COLS - 1);                      // Put the cursor on the right-bottom corner
 
+    pthread_mutex_unlock(&stdout_mutex); // Unlock shared resources
+
     return ( 1 );
 }
 
@@ -57,9 +61,11 @@ int init_display( void )
  */
 void uninit_display( void )
 {
+    pthread_mutex_lock(&stdout_mutex); // Lock shared resources
     print_console("Quitting... press a key to exit");
     getch();
     endwin();
+    pthread_mutex_unlock(&stdout_mutex); // Unlock shared resources
 }
 
 /**
@@ -67,12 +73,14 @@ void uninit_display( void )
  */
 void print_console(char * message)
 {
+    pthread_mutex_lock(&stdout_mutex); // Lock shared resources
     int current_y = getcury(bottom_window) + 1;
     if (current_y >= LINES - 8)
         current_y = 2;
     mvwprintw(bottom_window, current_y, 2, message);
     wrefresh(bottom_window);
     wrefresh(top_window);
+    pthread_mutex_unlock(&stdout_mutex); // Unlock shared resources
 }
 
 /**
@@ -80,6 +88,7 @@ void print_console(char * message)
  */
 void print_error(char * message)
 {
+    pthread_mutex_lock(&stdout_mutex); // Lock shared resources
     int current_y = getcury(bottom_window) + 1;
     if (current_y >= LINES - 8)
         current_y = 2;
@@ -88,6 +97,7 @@ void print_error(char * message)
     wrefresh(bottom_window);
     wrefresh(top_window);
     wattroff(bottom_window, COLOR_PAIR(1));
+    pthread_mutex_unlock(&stdout_mutex); // Unlock shared resources
 }
 
 /**
@@ -100,6 +110,7 @@ void *display_main(void *arg)
     sleep_ms(1000);  // Waiting for screen to be ready !!
     while (alive)
     {
+        pthread_mutex_lock(&stdout_mutex); // Lock shared resources
         mvwprintw(top_window, 1, 16, "%u    ", color_red);
         mvwprintw(top_window, 2, 16, "%u    ", color_green);
         mvwprintw(top_window, 3, 16, "%u    ", color_blue);
@@ -111,6 +122,7 @@ void *display_main(void *arg)
 
         wrefresh(top_window);
         wrefresh(bottom_window);
+        pthread_mutex_unlock(&stdout_mutex); // Unlock shared resources
 
         sleep_ms(DISPLAY_PERIOD);
     }

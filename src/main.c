@@ -25,6 +25,7 @@ int color_red = 0,
     distance_value = 0,
     rotation_angle = 0,
     rotation_rspeed = 0;
+pthread_mutex_t stdout_mutex;           // Mutex used to lock stdout
 
 /**
  * Function used to init the robot
@@ -34,6 +35,7 @@ int color_red = 0,
 int init( void )
 {
     alive = 1;
+    pthread_mutex_init(&stdout_mutex, NULL);
     return (
         init_display() &
         init_color_sensor() &
@@ -91,6 +93,9 @@ int main( void )
     pthread_join(compass_thread, NULL);
     pthread_join(bluetooth_thread, NULL);
     pthread_join(display_thread, NULL);
+
+    pthread_mutex_destroy(&stdout_mutex);
+
 
     // Release display
     uninit_display();
