@@ -13,6 +13,7 @@
 #include "compass.h"
 #include "display.h"
 #include "bluetooth.h"
+#include "position.h"
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
@@ -44,7 +45,8 @@ int init( void )
         init_rotation() &
         init_compass() &
         init_bluetooth() &
-        init_console()
+        init_console() &
+        init_position()
 
     );
 }
@@ -64,6 +66,7 @@ int main( void )
     pthread_t rotation_thread;
     pthread_t compass_thread;
     pthread_t bluetooth_thread;
+    pthread_t position_thread;
 
     // Init brick library, to interface lego sensors and motors
     if ( !brick_init()) return ( 1 );
@@ -83,6 +86,7 @@ int main( void )
     pthread_create(&compass_thread, NULL, compass_main, NULL);
     pthread_create(&display_thread, NULL, display_main, NULL);
     pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
+    pthread_create(&position_thread, NULL, position_main, NULL);
 
     // Wait for every thread to end
     pthread_join(console_thread, NULL);
@@ -93,6 +97,7 @@ int main( void )
     pthread_join(compass_thread, NULL);
     pthread_join(bluetooth_thread, NULL);
     pthread_join(display_thread, NULL);
+    pthread_join(position_thread, NULL);
 
     pthread_mutex_destroy(&stdout_mutex);
 
