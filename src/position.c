@@ -9,7 +9,7 @@
 #include "main.h"
 #include "display.h"
 #include "position.h"
-#include "motor.h"
+#include "motors.h"
 
 
 // Current position, global, it is initialized only when globalState -> WAITING_FOR_START called by bluetooth?
