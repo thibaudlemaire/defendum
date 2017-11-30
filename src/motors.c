@@ -54,13 +54,13 @@ void *motors_main(void *arg)
                     tacho_stop( MOTOR_BOTH );
                     /* Waiting the vehicle is stopped */
                     while(tacho_is_running( MOTOR_BOTH ));
-                    update_postion();
+                    update_postion(state);
                     break;
                 case FORTH:
                     tacho_stop( MOTOR_BOTH );
                     /* Waiting the vehicle is stopped */
                     while(tacho_is_running( MOTOR_BOTH ));
-                    update_postion();
+                    update_postion(state);
                     tacho_set_speed_sp( MOTOR_BOTH, speed_linear );
                     tacho_run_forever( MOTOR_BOTH );
                     break;
@@ -68,7 +68,7 @@ void *motors_main(void *arg)
                     tacho_stop( MOTOR_BOTH );
                     /* Waiting the vehicle is stopped */
                     while(tacho_is_running( MOTOR_BOTH ));
-                    update_postion();
+                    update_postion(state);
                     tacho_set_speed_sp( MOTOR_BOTH, -speed_linear );
                     tacho_run_forever( MOTOR_BOTH );
                     break;

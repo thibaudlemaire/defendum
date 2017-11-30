@@ -37,7 +37,7 @@ void *pthread_main(void *arg)
         while (alive)
         {
                 if (robot_state == CROSSING_ARENA) {
-                    update_postion();
+                    update_postion(command);
 
                 }
                 sleep_ms(POSITION_PERIOD);
@@ -50,7 +50,7 @@ void *pthread_main(void *arg)
  * @param arg
  * @return 1 if the position have been update, 0 if it failed
  */
-int update_postion( void )
+int update_postion( int state )
 {
         int32_t temp_tacho;
         int temp_direction;
