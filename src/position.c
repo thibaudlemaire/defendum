@@ -54,7 +54,7 @@ void *pthread_main(void *arg)
 int update_postion( int state )
 {
         int32_t temp_tacho;
-        int temp_direction;
+        double temp_direction;
         switch (state) {
         case STOP | LEFT | RIGHT:
                 // We are leaving a not moving state so we save the date to calcul further positions
@@ -63,7 +63,7 @@ int update_postion( int state )
         case FORTH | BACK:
                 // TODO : calcul new position with last value, compass and delta of time_t
                 temp_tacho = tacho_get_position(MOTOR_RIGHT,0) - current_tacho;
-                temp_direction = ((compass_heading - compass_offset + 360) % 360)*M_PI/180;
+                temp_direction = (double) ((compass_heading - compass_offset + 360) % 360)*M_PI/180;
                 current_position.x = current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*((int) cos(temp_direction));
                 current_position.y = current_position.y + (temp_tacho*M_PI*WHEEL_RADIUS/180)*((int) sin(temp_direction));
                 current_tacho = tacho_get_position(MOTOR_RIGHT,0);
