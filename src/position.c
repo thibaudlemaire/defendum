@@ -33,7 +33,7 @@ int init_position( void )
  * @param arg
  * @return a generic pointer used by pthread
  */
-void *pthread_main(void *arg)
+void *position_main(void *arg)
 {
         while (alive)
         {
