@@ -54,6 +54,7 @@ void *motors_main(void *arg)
                     tacho_stop( MOTOR_BOTH );
                     /* Waiting the vehicle is stopped */
                     while(tacho_is_running( MOTOR_BOTH ));
+                    update_postion();
                     break;
                 case FORTH:
                     tacho_stop( MOTOR_BOTH );
