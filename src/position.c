@@ -5,10 +5,10 @@
 #include <pthread.h>
 #include <time.h>
 #include <math.h>
-#include "position.h"
 #include "brick.h"
 #include "main.h"
 #include "display.h"
+#include "position.h"
 
 
 // Current position, global, it is initialized only when globalState -> WAITING_FOR_START called by bluetooth?
