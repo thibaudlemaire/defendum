@@ -9,6 +9,7 @@
 #include "main.h"
 #include "display.h"
 #include "position.h"
+#include "motor.h"
 
 
 // Current position, global, it is initialized only when globalState -> WAITING_FOR_START called by bluetooth?
@@ -57,7 +58,7 @@ int update_postion( int state )
         switch (state) {
         case STOP | LEFT | RIGHT:
                 // We are leaving a not moving state so we save the date to calcul further positions
-                current_tacho = tacho_get_position;
+                current_tacho = tacho_get_position(MOTOR_RIGHT,0);
                 break;
         case FORTH | BACK:
                 // TODO : calcul new position with last value, compass and delta of time_t

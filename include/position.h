@@ -10,7 +10,7 @@
 
 int init_position( void );
 void *position_main(void *arg);
-int update_postion( void );
+int update_postion( int state );
 void initialize_position( void );
 
 extern position_t current_position;
