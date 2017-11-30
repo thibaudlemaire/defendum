@@ -8,7 +8,7 @@ BINDIR=bin
 
 
 # Compiler options
-CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c -pthread -lncurses -lbluetooth
+CFLAGS= -I$(HEADDIR) -Wall -lev3dev-c -pthread -lncurses -lbluetooth -lm
 
 # Exec name
 BIN=main
