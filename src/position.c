@@ -37,6 +37,7 @@ void *position_main(void *arg)
 {
         while (alive)
         {
+                print_console("position alive")
                 if (robot_state == CROSSING_ARENA) {
                     update_postion(command);
 
@@ -55,6 +56,7 @@ int update_postion( int state )
 {
         int32_t temp_tacho;
         double temp_direction;
+        print_console("update")
         switch (state) {
         case STOP | LEFT | RIGHT:
                 // We are leaving a not moving state so we save the date to calcul further positions
@@ -62,6 +64,7 @@ int update_postion( int state )
                 break;
         case FORTH | BACK:
                 // TODO : calcul new position with last value, compass and delta of time_t
+                print_console('change position')
                 temp_tacho = tacho_get_position(MOTOR_RIGHT,0) - current_tacho;
                 temp_direction = (double) ((compass_heading - compass_offset + 360) % 360)*M_PI/180;
                 current_position.x = current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*((int) cos(temp_direction));
