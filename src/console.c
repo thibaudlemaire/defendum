@@ -16,8 +16,8 @@
  */
 int init_console( void )
 {
-    print_console( "Use directional keys to move, space to stop or q to quit");
-    return ( 1 );
+        print_console( "Use directional keys to move, space to stop or q to quit");
+        return ( 1 );
 }
 
 /**
@@ -26,40 +26,40 @@ int init_console( void )
  * @return
  */
 void *console_main(void *arg)
-    {
+{
         int pressed;
         while (alive)
         {
-            pressed = getch();
-            move(LINES - 1, COLS - 1);
-            switch (pressed) {
+                pressed = getch();
+                move(LINES - 1, COLS - 1);
+                switch (pressed) {
                 /* Quit */
                 case 'q':
-                    command = STOP;
-                    sleep_ms(100);
-                    alive = 0;
-                    break;
-                    /* Stop */
+                        command = STOP;
+                        sleep_ms(100);
+                        alive = 0;
+                        break;
+                /* Stop */
                 case ' ':
-                    command = STOP;
-                    break;
-                    /* Forward */
+                        command = STOP;
+                        break;
+                /* Forward */
                 case KEY_UP:
-                    command = FORTH;
-                    break;
-                    /* Backward */
+                        command = FORTH;
+                        break;
+                /* Backward */
                 case KEY_DOWN:
-                    command = BACK;
-                    break;
-                    /* Left */
+                        command = BACK;
+                        break;
+                /* Left */
                 case KEY_LEFT:
-                    command = LEFT;
-                    break;
-                    /* Right */
+                        command = LEFT;
+                        break;
+                /* Right */
                 case KEY_RIGHT:
-                    command = RIGHT;
-                    break;
-            }
+                        command = RIGHT;
+                        break;
+                }
         }
         pthread_exit(NULL);
-    }
+}

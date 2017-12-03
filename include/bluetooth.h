@@ -15,29 +15,29 @@
 
 // State
 enum BtState {
-    DISCONNECTED,
-    CONNECTED,
+        DISCONNECTED,
+        CONNECTED,
 };
 
 // Protocol header positions
 enum {
-    MSG_ID_LSB,
-    MSG_ID_MSB,
-    MSG_SRC,
-    MSG_DST,
-    MSG_TYPE,
+        MSG_ID_LSB,
+        MSG_ID_MSB,
+        MSG_SRC,
+        MSG_DST,
+        MSG_TYPE,
 };
 
 // Message types
 enum {
-    MSG_TYPE_ACK,
-    MSG_TYPE_START,
-    MSG_TYPE_STOP,
-    MSG_TYPE_KICK,
-    MSG_TYPE_POSITION,
-    MSG_TYPE_MAPDATA,
-    MSG_TYPE_MAPDONE,
-    MSG_TYPE_OBSTACLE,
+        MSG_TYPE_ACK,
+        MSG_TYPE_START,
+        MSG_TYPE_STOP,
+        MSG_TYPE_KICK,
+        MSG_TYPE_POSITION,
+        MSG_TYPE_MAPDATA,
+        MSG_TYPE_MAPDONE,
+        MSG_TYPE_OBSTACLE,
 };
 
 // Prototypes

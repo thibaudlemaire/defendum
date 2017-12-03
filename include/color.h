@@ -8,9 +8,9 @@
 #define COLOR_PERIOD    50  // Color measure period in ms
 
 enum {
-    RED_COLOR,
-    GREEN_COLOR,
-    BLUE_COLOR,
+        RED_COLOR,
+        GREEN_COLOR,
+        BLUE_COLOR,
 };
 
 int init_color_sensor( void );
