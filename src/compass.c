@@ -19,6 +19,7 @@ int init_compass( void )
     compass_sensor = sensor_search( HT_NXT_COMPASS );
     if ( compass_sensor ) {
         sensor_set_mode( compass_sensor, HT_NXT_COMPASS_COMPASS );
+        compass_heading = sensor_get_value(COMPASS_DIRECTION_MODE, compass_sensor, 0);
         print_console("Compass sensor found and configured");
         return ( 1 );
     }

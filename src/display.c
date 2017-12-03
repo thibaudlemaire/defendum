@@ -8,6 +8,7 @@
 #include "brick.h"
 #include "display.h"
 #include "main.h"
+#include "position.h"
 
 WINDOW *top_window, *bottom_window; // ncurses windows
 
@@ -38,6 +39,7 @@ int init_display( void )
     mvwprintw(top_window, 1, COLS / 2, "Angle : ");
     mvwprintw(top_window, 2, COLS / 2, "Rot speed : ");
     mvwprintw(top_window, 3, COLS / 2, "Distance : ");
+    mvwprintw(top_window, 4, COLS / 2, "Position : ");
 
     wattron(bottom_window, A_REVERSE);
     mvwprintw(bottom_window, 1, 2, "Console :");
@@ -119,6 +121,7 @@ void *display_main(void *arg)
         mvwprintw(top_window, 1, COLS / 2 + 13, "%d deg     ", rotation_angle );
         mvwprintw(top_window, 2, COLS / 2 + 13, "%d deg/s    ", rotation_rspeed);
         mvwprintw(top_window, 3, COLS / 2 + 13, "%u mm    ", distance_value);
+        mvwprintw(top_window, 4, COLS / 2 + 13, "%d,%d       ", current_position.x, current_position.y);
 
         wrefresh(top_window);
         wrefresh(bottom_window);
