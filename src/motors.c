@@ -73,11 +73,19 @@ void *motors_main(void *arg)
                     tacho_run_forever( MOTOR_BOTH );
                     break;
                 case LEFT:
+                    tacho_stop( MOTOR_BOTH );
+                    /* Waiting the vehicle is stopped */
+                    while(tacho_is_running( MOTOR_BOTH ));
+                    update_postion(state);
                     tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
                     tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
                     tacho_run_forever( MOTOR_BOTH );
                     break;
                 case RIGHT:
+                    tacho_stop( MOTOR_BOTH );
+                    /* Waiting the vehicle is stopped */
+                    while(tacho_is_running( MOTOR_BOTH ));
+                    update_postion(state);
                     tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
                     tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
                     tacho_run_forever( MOTOR_BOTH );

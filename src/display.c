@@ -121,7 +121,7 @@ void *display_main(void *arg)
         mvwprintw(top_window, 1, COLS / 2 + 13, "%d deg     ", rotation_angle );
         mvwprintw(top_window, 2, COLS / 2 + 13, "%d deg/s    ", rotation_rspeed);
         mvwprintw(top_window, 3, COLS / 2 + 13, "%u mm    ", distance_value);
-        mvwprintw(top_window, 4, COLS / 2 + 13, "%d;%d    ", current_position.x,current_position.y);
+        mvwprintw(top_window, 4, COLS / 2 + 13, "%d,%d       ", current_position.x, current_position.y);
 
         wrefresh(top_window);
         wrefresh(bottom_window);
