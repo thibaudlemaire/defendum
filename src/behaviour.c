@@ -3,3 +3,13 @@
 //
 
 #include "behaviour.h"
+#include "motors.h"
+
+void behaviour_main(void)
+{
+      while(alive)
+      {
+        rotate_right(90);
+        forward(THREE);
+      }
+}
