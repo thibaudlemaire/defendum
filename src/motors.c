@@ -18,7 +18,6 @@ int max_speed;     /* Motor maximal speed (will be detected) */
 int init_motors( void )
 {
         if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) { // any type of motor
-                max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
                 tacho_reset( MOTOR_BOTH );
                 tacho_set_stop_action_brake( MOTOR_BOTH );
                 print_console("Motors found and configured");
@@ -40,8 +39,6 @@ void *motors_main(void *arg)
 {
         int speed_linear, speed_circular;
         int state = STOP;
-        speed_linear = max_speed * SPEED_LINEAR / 100;
-        speed_circular = max_speed * SPEED_CIRCULAR / 100;
         while (alive)
         {
                 /* Waiting new command */
@@ -94,4 +91,31 @@ void *motors_main(void *arg)
                 state = command;
         }
         pthread_exit(NULL);
+}
+
+void rotate_left(int angle)
+{
+      command = LEFT;
+      sleep_ms(angle / 360 * 1000);
+      command = STOP;
+}
+void rotate_right(int angle)
+{
+      command = RIGHT;
+      sleep_ms(angle / 360 * 1000);
+      command = STOP;
+}
+void forward(enum linearSpeed speed)
+{
+      command = FORTH;
+      speed_linear = speed;
+}
+void backward(enum linearSpeed)
+{
+      command = BACK;
+      speed_linear = speed;
+}
+void stop(void);
+{
+      command = STOP;
 }
