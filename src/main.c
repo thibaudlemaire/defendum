@@ -15,6 +15,7 @@
 #include "bluetooth.h"
 #include "position.h"
 #include "behaviour.h"
+#include "touch.h"
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
@@ -47,7 +48,8 @@ int init( void )
                        init_compass() &
                        init_bluetooth() &
                        init_console() &
-                       init_position()
+                       init_position() &
+                       init_touch()
 
                        );
 }

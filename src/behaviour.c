@@ -7,17 +7,36 @@
 #include "main.h"
 #include "brick.h"
 #include "display.h"
+#include "touch.h"
 
 void behaviour_main(void)
 {
       print_console("Behaviour initialized");
 
-      rotate_right(90);
-      forward(THREE);
+      /*
+      motors_rotate_right(90);
+      motors_forward(THREE);
       sleep_ms(3000);
-      rotate_left(180);
-      backward(TWO);
-      sleep(2000);
-      stop();
+      motors_stop();*/
+
+      while(alive)
+      {
+          sleep_ms(TOUCH_PERIOD);
+
+          if (touch_is_touched)
+          {
+              motors_rotate_left(15);
+              motors_forward(THREE);
+              sleep_ms(1000);
+          }
+          else
+          {
+              motors_rotate_right(15);
+              motors_forward(THREE);
+              sleep_ms(1000);
+
+          }
+
+      }
 
 }

@@ -94,31 +94,31 @@ void *motors_main(void *arg)
         pthread_exit(NULL);
 }
 
-void rotate_left(int angle)
+void motors_rotate_left(int angle)
 {
       command = LEFT;
-      int sleep_time = angle * 1000 / 360;
+      int sleep_time = angle * 3500 / 360;
       sleep_ms(sleep_time);
       command = STOP;
 }
-void rotate_right(int angle)
+void motors_rotate_right(int angle)
 {
       command = RIGHT;
-      int sleep_time = angle * 1000 / 360;
+      int sleep_time = angle * 3500 / 360;
       sleep_ms(sleep_time);
       command = STOP;
 }
-void forward(enum linearSpeed speed)
+void motors_forward(enum linearSpeed speed)
 {
       command = FORTH;
       speed_linear = speed;
 }
-void backward(enum linearSpeed speed)
+void motors_backward(enum linearSpeed speed)
 {
       command = BACK;
       speed_linear = speed;
 }
-void stop(void)
+void motors_stop(void)
 {
       command = STOP;
 }
