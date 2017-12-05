@@ -23,17 +23,17 @@ void behaviour_main(void)
       {
           sleep_ms(TOUCH_PERIOD);
 
-          if (touch_is_touched)
+          if (touch_is_touched())
           {
-              motors_rotate_left(15);
+              motors_rotate_left(5);
               motors_forward(THREE);
               sleep_ms(1000);
           }
           else
           {
-              motors_rotate_right(15);
+              motors_rotate_right(3);
               motors_forward(THREE);
-              sleep_ms(1000);
+              sleep_ms(1500);
 
           }
 

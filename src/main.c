@@ -45,7 +45,7 @@ int init( void )
                        init_motors() &
                        init_distance() &
                        init_rotation() &
-                       init_compass() &
+                       /*init_compass() &*/
                        init_bluetooth() &
                        init_console() &
                        init_position() &

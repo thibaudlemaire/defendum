@@ -25,7 +25,7 @@ int init_touch( void )
         return ( 0 );
 }
 
-bool touch_is_touched(void)
+int touch_is_touched(void)
 {
   return sensor_get_value(TOUCH_CHANNEL, touch_sensor, 0);
 }

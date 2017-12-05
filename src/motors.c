@@ -91,6 +91,7 @@ void *motors_main(void *arg)
                 }
                 state = command;
         }
+        tacho_stop( MOTOR_BOTH );
         pthread_exit(NULL);
 }
 
