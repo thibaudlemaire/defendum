@@ -11,5 +11,6 @@ void behaviour_main(void)
       {
         rotate_right(90);
         forward(THREE);
+        sleep_ms(5000);
       }
 }

@@ -14,6 +14,7 @@
 #include "display.h"
 #include "bluetooth.h"
 #include "position.h"
+#include "behaviour.h"
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
@@ -87,6 +88,7 @@ int main( void )
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
+        behaviour_main();
 
         // Wait for every thread to end
         pthread_join(console_thread, NULL);

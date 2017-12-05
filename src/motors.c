@@ -10,6 +10,7 @@
 #include "position.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
+enum linearSpeed speed_linear;
 
 /**
  * Function used to init motors module
@@ -37,7 +38,6 @@ int init_motors( void )
  */
 void *motors_main(void *arg)
 {
-        int speed_linear, speed_circular;
         int state = STOP;
         while (alive)
         {
@@ -110,7 +110,7 @@ void forward(enum linearSpeed speed)
       command = FORTH;
       speed_linear = speed;
 }
-void backward(enum linearSpeed)
+void backward(enum linearSpeed speed)
 {
       command = BACK;
       speed_linear = speed;

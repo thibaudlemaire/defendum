@@ -15,7 +15,7 @@ enum linearSpeed {
 };
 
 // Speed
-#define SPEED_CIRCULAR  20  /* ... for circular motion */
+#define SPEED_CIRCULAR 210  /* 210 = maxspeed*20/100 */
 
 // Motors config
 #define MOTOR_LEFT     OUTC
@@ -32,9 +32,5 @@ void rotate_right(int angle);
 void forward(enum linearSpeed);
 void backward(enum linearSpeed);
 void stop(void);
-
-//globals
-extern enum linearSpeed speed_linear;
-extern speed_circular = 1050 * SPEED_CIRCULAR / 100;
 
 #endif //OS_ROBOT_MOTORS_H
