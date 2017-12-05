@@ -7,15 +7,15 @@
 
 //Enum
 enum linearSpeed {
-      ONE = 20/100 * 1050,
-      TWO = 40/100 * 1050,
-      THREE = 60/100 * 1050,
-      FOR = 80/100 * 1050,
+      ONE = 210, /* 20/100 * 1050  ---> 20% of maximum speed */
+      TWO = 420,
+      THREE = 630,
+      FOR = 840,
       FIVE = 1050,
 };
 
 // Speed
-#define SPEED_CIRCULAR 210  /* 210 = maxspeed*20/100 */
+#define SPEED_CIRCULAR 210 
 
 // Motors config
 #define MOTOR_LEFT     OUTC

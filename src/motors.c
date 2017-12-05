@@ -11,6 +11,7 @@
 
 int max_speed;     /* Motor maximal speed (will be detected) */
 enum linearSpeed speed_linear;
+int speed_circular = SPEED_CIRCULAR;
 
 /**
  * Function used to init motors module
@@ -96,13 +97,15 @@ void *motors_main(void *arg)
 void rotate_left(int angle)
 {
       command = LEFT;
-      sleep_ms(angle / 360 * 1000);
+      int sleep_time = angle * 1000 / 360;
+      sleep_ms(sleep_time);
       command = STOP;
 }
 void rotate_right(int angle)
 {
       command = RIGHT;
-      sleep_ms(angle / 360 * 1000);
+      int sleep_time = angle * 1000 / 360;
+      sleep_ms(sleep_time);
       command = STOP;
 }
 void forward(enum linearSpeed speed)
@@ -115,7 +118,7 @@ void backward(enum linearSpeed speed)
       command = BACK;
       speed_linear = speed;
 }
-void stop(void);
+void stop(void)
 {
       command = STOP;
 }
