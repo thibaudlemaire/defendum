@@ -16,12 +16,17 @@ typedef struct {
 
 } map;
 
+typedef struct {
+    position_t set[MAX_PERIMETER];
+    int len ;
+}point_cluster;
 
 
-void init_map(map map);
+void init_map_small_arena(map map);
 char get_Object(map map,position_t point);
-void set_object(map map,position_t point, char objectType);
-
+void set_Object(map map,position_t point, char objectType);
+void init_map_random(map map);
+point_cluster get_points_of_a_type(map map, char objectType);
 
 
 #endif //OS_ROBOT_MAP_H
