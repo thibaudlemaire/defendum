@@ -95,21 +95,20 @@ void send_map(map map)
             switch (map.tab[i][j])
             {
                 case 'U':                           //Unknown
-                    send_map_point(i,j,"white");
+                    send_map_point(i,j,(char) 255,(char) 255,(char) 255);
                 case 'E':                           //Empty
-                    send_map_point(i,j,"green");
+                    send_map_point(i,j,,(char) 240,(char) 255,(char) 240);
                 case 'W':                           //Wall
-                    send_map_point(i,j,"black");
+                    send_map_point(i,j,,(char) 0,(char) 0,(char) 0);
                 case 'M':                           //Movable
-                    send_map_point(i,j,"blue");
+                    send_map_point(i,j,,(char) 70,(char) 130,(char) 180);
                 case 'N':                           //Non movable
-                    send_map_point(i,j,"red");
+                    send_map_point(i,j,(char) 250,(char) 128,(char) 114);
             }
         }
 
     }
 }
-
 
 
 
