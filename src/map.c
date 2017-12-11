@@ -2,29 +2,19 @@
 // Created by Thibaud Lemaire on 23/11/2017.
 //
 
-#include <tkDecls.h>
+
 #include "map.h"
 #include "main.h"
 #include "display.h"
-#include "../include/main.h"
+#include "bluetooth.h"
 
 #define max(x,y) ((x) >= (y)) ? (x) : (y)
 #define min(x,y) ((x) <= (y)) ? (x) : (y)
 
 
-// WE CONSIDER THE MAP AS A MATRIX WITH ORIGIN IN THE TOP LEFT CORNER
 
-typedef struct {
-    char tab[MAX_WIDTH][MAX_HEIGHT];
-    int width;
-    int height;
 
-} map;
 
-typedef struct {
-    position_t set[MAX_PERIMETER];
-    int len ;
-}point_cluster;
 
 
 void init_map_random(map map)
@@ -32,7 +22,7 @@ void init_map_random(map map)
     for (int i = 0; i < map.width; ++i) {
         for (int j = 0; j < map.height ; ++j) {
 
-            map.tab[i][j]= 'E';
+            map.tab[i][j]= 'U';
         }
     }
 }
@@ -41,6 +31,14 @@ void init_map_small_arena(map map)
 {
     map.height = 40;
     map.width = 24;
+
+    for (int i = 1; i < map.width-1; ++i) {
+        for (int j = 1; j < map.height-1 ; ++j) {
+
+            map.tab[i][j]= 'U';
+        }
+    }
+
     for (int i = 0; i < map.height ; ++i)
     {
         map.tab[0][i] = 'W';
@@ -86,6 +84,30 @@ point_cluster get_points_of_a_type(map map, char objectType)
 
     }
     return list_of_point;
+}
+
+void send_map(map map)
+{
+    for (int i = 0; i < map.width ; ++i)
+    {
+        for (int j = 0; j < map.height ; ++j)
+        {
+            switch (map.tab[i][j])
+            {
+                case 'U':                           //Unknown
+                    send_map_point(i,j,"white");
+                case 'E':                           //Empty
+                    send_map_point(i,j,"green");
+                case 'W':                           //Wall
+                    send_map_point(i,j,"black");
+                case 'M':                           //Movable
+                    send_map_point(i,j,"blue");
+                case 'N':                           //Non movable
+                    send_map_point(i,j,"red");
+            }
+        }
+
+    }
 }
 
 
