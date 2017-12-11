@@ -5,12 +5,12 @@
 #ifndef OS_ROBOT_MOTORS_H
 #define OS_ROBOT_MOTORS_H
 
-//Enum
+// Enum
 enum linearSpeed {
       ONE = 210, /* 20/100 * 1050  ---> 20% of maximum speed */
       TWO = 420,
       THREE = 630,
-      FOR = 840,
+      FOUR = 840,
       FIVE = 1050,
 };
 

@@ -15,6 +15,7 @@ enum commandState {
         LEFT,
         RIGHT,
 };
+
 enum globalState {
         INITIALIZING,
         WAITING_FOR_START,
