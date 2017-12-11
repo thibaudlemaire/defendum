@@ -10,6 +10,8 @@
 #include "position.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
+enum linearSpeed speed_linear;
+int speed_circular = SPEED_CIRCULAR;
 
 /**
  * Function used to init motors module
@@ -18,7 +20,6 @@ int max_speed;     /* Motor maximal speed (will be detected) */
 int init_motors( void )
 {
         if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) { // any type of motor
-                max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
                 tacho_reset( MOTOR_BOTH );
                 tacho_set_stop_action_brake( MOTOR_BOTH );
                 print_console("Motors found and configured");
@@ -38,10 +39,7 @@ int init_motors( void )
  */
 void *motors_main(void *arg)
 {
-        int speed_linear, speed_circular;
         int state = STOP;
-        speed_linear = max_speed * SPEED_LINEAR / 100;
-        speed_circular = max_speed * SPEED_CIRCULAR / 100;
         while (alive)
         {
                 /* Waiting new command */
@@ -93,5 +91,35 @@ void *motors_main(void *arg)
                 }
                 state = command;
         }
+        tacho_stop( MOTOR_BOTH );
         pthread_exit(NULL);
+}
+
+void motors_rotate_left(int angle)
+{
+      command = LEFT;
+      int sleep_time = angle * 3500 / 360;
+      sleep_ms(sleep_time);
+      command = STOP;
+}
+void motors_rotate_right(int angle)
+{
+      command = RIGHT;
+      int sleep_time = angle * 3500 / 360;
+      sleep_ms(sleep_time);
+      command = STOP;
+}
+void motors_forward(enum linearSpeed speed)
+{
+      command = FORTH;
+      speed_linear = speed;
+}
+void motors_backward(enum linearSpeed speed)
+{
+      command = BACK;
+      speed_linear = speed;
+}
+void motors_stop(void)
+{
+      command = STOP;
 }
