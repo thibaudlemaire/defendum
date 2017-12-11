@@ -179,3 +179,22 @@ void pick_up_obstacle( position_t position ) {
 
         write(s, send_message, 9);
 }
+
+void send_map_point( position_t position, char color)
+{
+        char send_message[10];
+        msg_id++;
+        send_message[MSG_ID_LSB] = *(((char *) &(msg_id))+1);
+        send_message[MSG_ID_MSB] = *((char *) &(msg_id));
+        send_message[MSG_SRC] = TEAM_ID;
+        send_message[MSG_DST] = SERVER_TEAM_ID;
+        send_message[MSG_TYPE] = MSG_TYPE_MAPDATA;
+        send_message[5] = color;                            // Type of point
+        send_message[6] = *(((char *) &(position.x))+1); // x LSB
+        send_message[7] = *((char *) &(position.x));    // MSB
+        send_message[8] = *(((char *) &(position.y))+1); // y LSB
+        send_message[9] = *((char *) &(position.y));    // MSB
+
+        write(s, send_message, 9);
+
+}

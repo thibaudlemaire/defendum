@@ -46,5 +46,6 @@ void *bluetooth_main( void *arg );
 void send_position( position_t position );
 void drop_obstacle( position_t position );
 void pick_up_obstacle( position_t position );
+void send_map_point(position_t position, char color);
 
 #endif //OS_ROBOT_BLUETOOTH_H
