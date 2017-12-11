@@ -23,7 +23,7 @@ int init_head( void )
                 return 0;
         }
         color_sensor = sensor_search( LEGO_EV3_COLOR );
-        if ( color_sensor ) {
+        if ( !color_sensor ) {
                 print_error( "Color sensor not found, exit" );
                 return 0;
         }
