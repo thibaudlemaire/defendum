@@ -2,12 +2,16 @@
 // Created by Thibaud Lemaire on 23/11/2017.
 //
 
+#include "main.h"
+#include <unistd.h>
 
 #ifndef OS_ROBOT_MAP_H
 #define OS_ROBOT_MAP_H
 
-#define MAP_WIDTH 24;
-#define MAP_HEIGHT 40;
+const int MAP_WIDTH = 24;
+const int MAP_HEIGHT = 40;
+
+
 
 typedef struct {
     char tab[MAX_WIDTH][MAX_HEIGHT];
@@ -17,7 +21,7 @@ typedef struct {
 } map;
 
 typedef struct {
-    position_t set[MAX_PERIMETER];
+    position_t set[MAX_WIDTH*MAX_HEIGHT];
     int len ;
 }point_cluster;
 
