@@ -15,29 +15,29 @@
 
 // State
 enum BtState {
-    DISCONNECTED,
-    CONNECTED,
+        DISCONNECTED,
+        CONNECTED,
 };
 
 // Protocol header positions
 enum {
-    MSG_ID_LSB,
-    MSG_ID_MSB,
-    MSG_SRC,
-    MSG_DST,
-    MSG_TYPE,
+        MSG_ID_LSB,
+        MSG_ID_MSB,
+        MSG_SRC,
+        MSG_DST,
+        MSG_TYPE,
 };
 
 // Message types
 enum {
-    MSG_TYPE_ACK,
-    MSG_TYPE_START,
-    MSG_TYPE_STOP,
-    MSG_TYPE_KICK,
-    MSG_TYPE_POSITION,
-    MSG_TYPE_MAPDATA,
-    MSG_TYPE_MAPDONE,
-    MSG_TYPE_OBSTACLE,
+        MSG_TYPE_ACK,
+        MSG_TYPE_START,
+        MSG_TYPE_STOP,
+        MSG_TYPE_KICK,
+        MSG_TYPE_POSITION,
+        MSG_TYPE_MAPDATA,
+        MSG_TYPE_MAPDONE,
+        MSG_TYPE_OBSTACLE,
 };
 
 // Prototypes
@@ -46,5 +46,6 @@ void *bluetooth_main( void *arg );
 void send_position( position_t position );
 void drop_obstacle( position_t position );
 void pick_up_obstacle( position_t position );
+void send_map_point( position_t position, char R,char G, char B);
 
 #endif //OS_ROBOT_BLUETOOTH_H
