@@ -7,8 +7,8 @@
 
 POOL_T distance_sensor;
 POOL_T color_sensor;
-int rotate_max_left;
-int rotate_max_right;
+int rotate_max_left=100000;
+int rotate_max_right=100000;
 
 
 /**
@@ -42,14 +42,14 @@ int init_head( void )
         print_console("Color sensor found and configured as Raw RGB");
         color_update();
 
-        tacho_set_speed_sp(MOTOR_ROTATE,FIVE);
+        tacho_set_speed_sp(MOTOR_ROTATE,1050);
         while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 rotate_max_left = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
 
-        tacho_set_speed_sp(MOTOR_ROTATE,-FIVE);
+        tacho_set_speed_sp(MOTOR_ROTATE,-1050);
         while(rotate_max_right != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 rotate_max_right = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
