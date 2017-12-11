@@ -4,8 +4,6 @@
 #define COLOR_PERIOD    50  // Color measure period in ms
 #define DISTANCE_CM_MODE 0 // Don't change this
 #define DISTANCE_PERIOD 50  // Distance measure period in ms
-#define MOTOR_ROTATE    OUTA
-#define MOTOR_NODE      OUTD
 
 enum {
         RED_COLOR,

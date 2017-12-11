@@ -43,6 +43,7 @@ int init_head( void )
         color_update();
 
         tacho_set_speed_sp(MOTOR_ROTATE,1050);
+        tacho_run_forever( MOTOR_ROTATE );
         while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 rotate_max_left = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
@@ -50,6 +51,7 @@ int init_head( void )
         tacho_stop(MOTOR_ROTATE);
 
         tacho_set_speed_sp(MOTOR_ROTATE,-1050);
+        tacho_run_forever( MOTOR_ROTATE );
         while(rotate_max_right != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 rotate_max_right = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
