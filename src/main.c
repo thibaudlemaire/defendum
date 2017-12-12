@@ -18,7 +18,7 @@
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
-enum globalState robot_state = CROSSING_ARENA;           // Robot state
+
 int alive;                              // Program is alive
 int color_red = 0,
     color_green = 0,
