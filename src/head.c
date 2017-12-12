@@ -9,6 +9,9 @@ POOL_T distance_sensor;
 POOL_T color_sensor;
 int rotate_max_left=100000;
 int rotate_max_right=100000;
+int node_max_up=100000;
+int node_max_down=100000;
+
 
 
 /**
@@ -52,8 +55,6 @@ int init_head( void )
                 rotate_max_left = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
-        tacho_stop(MOTOR_ROTATE);
-
         tacho_set_speed_sp(MOTOR_ROTATE,-1050);
         tacho_run_forever( MOTOR_ROTATE );
         while(rotate_max_right != (int) tacho_get_position(MOTOR_ROTATE,0)) {
@@ -61,6 +62,19 @@ int init_head( void )
                 sleep_ms(MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
+        tacho_set_speed_sp(MOTOR_NODE,1050);
+        tacho_run_forever(MOTOR_NODE);
+        while(node_max_up != (int) tacho_get_position(MOTOR_NODE,0)) {
+                node_max_up = (int) tacho_get_position(MOTOR_NODE,0);
+                sleep_ms(MOTORS_PERIOD);
+        }
+        tacho_set_speed_sp(MOTOR_NODE,-1050);
+        tacho_run_forever(MOTOR_NODE);
+        while(node_max_down != (int) tacho_get_position(MOTOR_NODE,0)) {
+                node_max_down = (int) tacho_get_position(MOTOR_NODE,0);
+                sleep_ms(MOTORS_PERIOD);
+        }
+        tacho_stop(MOTOR_NODE);
 
         return 1;
 }
