@@ -15,12 +15,12 @@
 
 
 
-int i;
-int j;
-
 
 void init_map_random(map map)
 {
+    int i;
+    int j;
+
     for ( i = 0; i < map.width; ++i) {
         for ( j = 0; j < map.height ; ++j) {
 
@@ -31,6 +31,9 @@ void init_map_random(map map)
 
 void init_map_small_arena(map map)
 {
+    int i;
+    int j;
+
     map.height = 40;
     map.width = 24;
 
@@ -67,6 +70,9 @@ char get_Object(map map,position_t point)
 
 point_cluster get_points_of_a_type(map map, char objectType)
 {
+    int i;
+    int j;
+
     point_cluster list_of_point;
     list_of_point.len = 0;
     for ( i = 0; i < map.width ; ++i)
@@ -90,22 +96,30 @@ point_cluster get_points_of_a_type(map map, char objectType)
 
 void send_map(map map)
 {
+    position_t p;
+    int i;
+    int j;
+
+
     for ( i = 0; i < map.width ; ++i)
     {
         for ( j = 0; j < map.height ; ++j)
         {
+            p.x = i;
+            p.y = j;
+
             switch (map.tab[i][j])
             {
                 case 'U':                           //Unknown
-                    send_map_point(i,j,(char) 255,(char) 255,(char) 255);
+                    send_map_point(p,(char) 255,(char) 255,(char) 255);
                 case 'E':                           //Empty
-                    send_map_point(i,j,(char) 240,(char) 255,(char) 240);
+                    send_map_point(p,(char) 240,(char) 255,(char) 240);
                 case 'W':                           //Wall
-                    send_map_point(i,j,(char) 0,(char) 0,(char) 0);
+                    send_map_point(p,(char) 0,(char) 0,(char) 0);
                 case 'M':                           //Movable
-                    send_map_point(i,j,(char) 70,(char) 130,(char) 180);
+                    send_map_point(p,(char) 70,(char) 130,(char) 180);
                 case 'N':                           //Non movable
-                    send_map_point(i,j,(char) 250,(char) 128,(char) 114);
+                    send_map_point(p,(char) 250,(char) 128,(char) 114);
             }
         }
 
