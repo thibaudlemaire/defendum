@@ -14,7 +14,6 @@ int node_max_down=100000;
 int rotate_front;
 int rotation_speed = 200;
 int up = 0;
-enum obstacle = NOTHING;
 
 
 
@@ -88,22 +87,22 @@ void examine(void)
 {
         do {
                 look_left();
-        } while (obstacle && alive && !up)
+        } while (obstacle() && alive && !up)
         if(!alive || up)
-                return
+                return;
         do {
                 look_front();
-        } while (obstacle && alive && !up)
+        } while (obstacle() && alive && !up)
         if(!alive || up)
-                return
+                return;
         do {
                 look_right();
-        } while (obstacle && alive && !up)
+        } while (obstacle() && alive && !up)
         if(!alive || up)
-                return
+                return;
         do {
                 look_front();
-        } while (obstacle && alive && !up)
+        } while (obstacle() && alive && !up)
         return;
 }
 
