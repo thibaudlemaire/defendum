@@ -16,5 +16,10 @@ int init_head( void );
 void *head_main(void *arg);
 void color_update(void);
 void distance_update(void);
+void rotate_head(void);
+void look_left(void);
+void look_right(void);
+void head_up(void);
+void head_down(void);
 
 #endif //OS_ROBOT_HEAD_H
