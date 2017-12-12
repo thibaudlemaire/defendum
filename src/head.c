@@ -98,6 +98,7 @@ void *head_main(void *arg)
                 look_left();
                 //print_console("Looking right");
                 look_right();
+                look_front();
                 head_up();
 		sleep_ms(2000);
                 head_down();
