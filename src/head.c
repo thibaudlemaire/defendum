@@ -79,9 +79,8 @@ int init_head( void )
                 sleep_ms(MOTORS_PERIOD);
         }*/
         tacho_stop(MOTOR_NODE);
-        while(tacho_is_running(MOTOR_ROTATE));
-        rotate_front = ( rotate_max_left + rotate_max_right ) / 2;
         tacho_stop(MOTOR_ROTATE);
+        rotate_front = ( rotate_max_left + rotate_max_right ) / 2;
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_speed_sp(MOTOR_ROTATE,210);
 
