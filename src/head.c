@@ -77,8 +77,11 @@ void *head_main(void *arg)
 {
         while(alive)
         {
+                if(up){
+                        sleep_ms(1000);
+                        continue;
+                }
                 examine();
-                sleep_ms(1000);
         }
         pthread_exit(NULL);
 }
