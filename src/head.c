@@ -103,16 +103,21 @@ void rotate_head(void)
 
 void look_left(void)
 {
+        print_console("Looking left");
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_left);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
-        while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0))
+        while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0)){
+                print_console("Left : reaching to position")
                 sleep_ms(MOTORS_PERIOD);
+        }
+
         tacho_stop(MOTOR_ROTATE);
 }
 
 void look_right(void)
 {
+        print_console("Looking right");
         tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_right);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
