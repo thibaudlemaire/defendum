@@ -150,7 +150,7 @@ void head_down(void)
         int temp2, temp2;
         tacho_set_speed_sp(MOTOR_NODE,210);
         tacho_run_forever( MOTOR_NODE );
-        while(temp != (int) tacho_get_position(MOTOR_NODE,0)) {
+        while(temp2 != (int) tacho_get_position(MOTOR_NODE,0)) {
                 temp2 = temp;
                 temp = (int) tacho_get_position(MOTOR_NODE,0);
                 sleep_ms(MOTORS_PERIOD);
