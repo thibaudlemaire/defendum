@@ -106,9 +106,9 @@ void look_left(void)
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_left);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
-        //set_tacho_command(MOTOR_ROTATE,TACHO_RUN_TO_ABS_POS);
         while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0))
                 sleep_ms(MOTORS_PERIOD);
+        tacho_stop(MOTOR_ROTATE);
 }
 
 void look_right(void)
@@ -116,9 +116,9 @@ void look_right(void)
         tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_right);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
-        //set_tacho_command(MOTOR_ROTATE,TACHO_RUN_TO_ABS_POS);
         while(rotate_max_right != (int) tacho_get_position(MOTOR_ROTATE,0))
                 sleep_ms(MOTORS_PERIOD);
+        tacho_stop(MOTOR_ROTATE);
 }
 
 void head_up(void)
@@ -126,9 +126,9 @@ void head_up(void)
         tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_NODE,node_max_up);
         tacho_run_to_abs_pos(MOTOR_NODE);
-        //set_tacho_command(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
         while(node_max_up != (int) tacho_get_position(MOTOR_NODE,0))
                 sleep_ms(MOTORS_PERIOD);
+        tacho_stop(MOTOR_NODE);
 }
 
 void head_down(void)
@@ -136,9 +136,9 @@ void head_down(void)
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_NODE,node_max_down);
         tacho_run_to_abs_pos(MOTOR_NODE);
-        //set_tacho_command(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
         while(node_max_down != (int) tacho_get_position(MOTOR_NODE,0))
                 sleep_ms(MOTORS_PERIOD);
+        tacho_stop(MOTOR_NODE);
 }
 
 void color_update(void)
