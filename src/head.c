@@ -11,6 +11,7 @@ int rotate_max_left=100000;
 int rotate_max_right=100000;
 int node_max_up=100000;
 int node_max_down=100000;
+int rotate_front;
 
 
 
@@ -48,7 +49,7 @@ int init_head( void )
         tacho_set_stop_action_brake( MOTOR_ROTATE );
         tacho_reset( MOTOR_NODE );
         tacho_set_stop_action_brake( MOTOR_NODE );
-        /*
+
         tacho_set_speed_sp(MOTOR_ROTATE,500);
         tacho_run_forever( MOTOR_ROTATE );
         while(rotate_max_left != (int) tacho_get_position(MOTOR_ROTATE,0)) {
@@ -61,7 +62,10 @@ int init_head( void )
                 rotate_max_right = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
+
+        /*
         tacho_stop(MOTOR_ROTATE);
+
         tacho_set_speed_sp(MOTOR_NODE,-210);
         tacho_run_forever(MOTOR_NODE);
         while(node_max_up != (int) tacho_get_position(MOTOR_NODE,0)) {
@@ -75,6 +79,8 @@ int init_head( void )
                 sleep_ms(MOTORS_PERIOD);
         }*/
         tacho_stop(MOTOR_NODE);
+        while(tacho_is_running(MOTOR_ROTATE));
+        rotate_front = ( rotate_max_left + rotate_max_right ) / 2;
         tacho_stop(MOTOR_ROTATE);
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_speed_sp(MOTOR_ROTATE,210);
@@ -96,6 +102,8 @@ void *head_main(void *arg)
                 head_up();
 		sleep_ms(2000);
                 head_down();
+                look_front();
+                sleep_ms(1000);
         }
         pthread_exit(NULL);
 }
@@ -118,6 +126,14 @@ void look_left(void)
         }
         tacho_stop(MOTOR_ROTATE);
 	while(tacho_is_running( MOTOR_ROTATE )) ;
+}
+
+void look_front(void)
+{
+        tacho_set_speed_sp(MOTOR_ROTATE,100);
+        tacho_set_position_sp(MOTOR_ROTATE,rotate_front);
+        tacho_run_to_abs_pos(MOTOR_ROTATE);
+        while(tacho_is_running(MOTOR_ROTATE));
 }
 
 void look_right(void)
