@@ -85,6 +85,10 @@ void *head_main(void *arg)
         {
                 color_update();
                 distance_update();
+                look_left();
+                look_right();
+                head_up();
+                head_down();
                 sleep_ms(DISTANCE_PERIOD);
         }
         pthread_exit(NULL);
@@ -93,6 +97,34 @@ void *head_main(void *arg)
 void rotate_head(void)
 {
 
+}
+
+void look_left(void)
+{
+        tacho_set_speed_sp(MOTOR_ROTATE,TWO);
+        set_tacho_position_sp(MOTOR_ROTATE,rotate_max_left);
+        set_tacho_command_inx(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
+}
+
+void look_right(void)
+{
+        tacho_set_speed_sp(MOTOR_ROTATE,-TWO);
+        set_tacho_position_sp(MOTOR_ROTATE,rotate_max_right);
+        set_tacho_command_inx(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
+}
+
+void head_up(void)
+{
+        tacho_set_speed_sp(MOTOR_NODE,TWO);
+        set_tacho_position_sp(MOTOR_NODE,node_max_up);
+        set_tacho_command_inx(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
+}
+
+void head_down(void)
+{
+        tacho_set_speed_sp(MOTOR_NODE,-TWO);
+        set_tacho_position_sp(MOTOR_NODE,node_max_down);
+        set_tacho_command_inx(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
 }
 
 void color_update(void)
