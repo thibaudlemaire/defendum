@@ -87,22 +87,22 @@ void examine(void)
 {
         do {
                 look_left();
-        } while (obstacle() && alive && !up)
+        } while (obstacle() && alive && !up);
         if(!alive || up)
                 return;
         do {
                 look_front();
-        } while (obstacle() && alive && !up)
+        } while (obstacle() && alive && !up);
         if(!alive || up)
                 return;
         do {
                 look_right();
-        } while (obstacle() && alive && !up)
+        } while (obstacle() && alive && !up);
         if(!alive || up)
                 return;
         do {
                 look_front();
-        } while (obstacle() && alive && !up)
+        } while (obstacle() && alive && !up);
         return;
 }
 
@@ -198,7 +198,7 @@ void distance_update(void)
         distance_value = sensor_get_value(DISTANCE_CM_MODE, distance_sensor, 0);
 }
 
-bool obtacle(void)
+int obtacle(void)
 {
         color_update();
         distance_update();
