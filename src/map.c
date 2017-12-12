@@ -65,7 +65,7 @@ void set_Object(map map,position_t point, char objectType)
 
 char get_Object(map map,position_t point)
 {
-    return map.tab[point.x][point.y];
+    return (char) map.tab[point.x][point.y];
 }
 
 point_cluster get_points_of_a_type(map map, char objectType)
@@ -84,7 +84,7 @@ point_cluster get_points_of_a_type(map map, char objectType)
                 position_t p;
                 p.x = i;
                 p.y = j;
-                list_of_point[list_of_point.len] = p;
+                list_of_point.set[list_of_point.len] = p;
                 list_of_point.len ++;
             }
 

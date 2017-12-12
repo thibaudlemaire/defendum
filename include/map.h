@@ -2,14 +2,12 @@
 // Created by Thibaud Lemaire on 23/11/2017.
 //
 
-#include "main.h"
-#include <unistd.h>
 
 #ifndef OS_ROBOT_MAP_H
 #define OS_ROBOT_MAP_H
 
 #define MAP_MAX_WIDTH 24
-#define MAP_MAP_HEIGHT 40
+#define MAP_MAX_HEIGHT 40
 
 
 
