@@ -24,6 +24,6 @@ void look_right(void);
 void head_up(void);
 void head_down(void);
 void examine(void);
-int obtacle(void);
+int obstacle(void);
 
 #endif //OS_ROBOT_HEAD_H
