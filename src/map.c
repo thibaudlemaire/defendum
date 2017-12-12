@@ -72,6 +72,7 @@ point_cluster get_points_of_a_type(map map, char objectType)
 {
     int i;
     int j;
+    position_t p;
 
     point_cluster list_of_point;
     list_of_point.len = 0;
@@ -79,9 +80,9 @@ point_cluster get_points_of_a_type(map map, char objectType)
     {
         for ( j = 0; j < map.height ; ++j)
         {
-            if (map.tab[i][j] = objectType)
+            if (map.tab[i][j] == objectType)
             {
-                position_t p;
+
                 p.x = i;
                 p.y = j;
                 list_of_point.set[list_of_point.len] = p;
