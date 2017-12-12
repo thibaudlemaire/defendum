@@ -86,8 +86,8 @@ int main( void )
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
+        pthread_create(&behaviour_thread, NULL, position_main, NULL);
 
-        //behaviour_main();
 
         // Wait for every thread to end
         pthread_join(console_thread, NULL);
@@ -98,6 +98,7 @@ int main( void )
         pthread_join(bluetooth_thread, NULL);
         pthread_join(display_thread, NULL);
         pthread_join(position_thread, NULL);
+        pthread_join(behaviour_thread, NULL);
 
         pthread_mutex_destroy(&stdout_mutex);
 
