@@ -94,8 +94,8 @@ void *head_main(void *arg)
                 //print_console("Looking right");
                 look_right();
                 head_up();
+		sleep_ms(2000);
                 head_down();
-                sleep_ms(DISTANCE_PERIOD);
         }
         pthread_exit(NULL);
 }
@@ -109,33 +109,49 @@ void rotate_head(void)
 void look_left(void)
 {
         int temp,temp2;
-        tacho_set_speed_sp(MOTOR_ROTATE,210);
+        tacho_set_speed_sp(MOTOR_ROTATE,100);
         tacho_run_forever( MOTOR_ROTATE );
         while(temp2 != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 temp2 = temp;
                 temp = (int) tacho_get_position(MOTOR_ROTATE,0);
-                sleep_ms(MOTORS_PERIOD);
+                sleep_ms(2*MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
+	while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void look_right(void)
 {
         int temp,temp2;
-        tacho_set_speed_sp(MOTOR_ROTATE,-210);
+        tacho_set_speed_sp(MOTOR_ROTATE,-100);
         tacho_run_forever( MOTOR_ROTATE );
         while(temp2 != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 temp2 = temp;
                 temp = (int) tacho_get_position(MOTOR_ROTATE,0);
-                sleep_ms(MOTORS_PERIOD);
+                sleep_ms(2*MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
+	while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void head_up(void)
 {
         int temp,temp2;
-        tacho_set_speed_sp(MOTOR_NODE,-210);
+        tacho_set_speed_sp(MOTOR_NODE,-300);
+        tacho_run_forever( MOTOR_NODE );
+        while(temp2 != (int) tacho_get_position(MOTOR_NODE,0)) {
+                temp2 = temp;
+                temp = (int) tacho_get_position(MOTOR_NODE,0);
+                sleep_ms(2*MOTORS_PERIOD);
+        }
+        //tacho_stop(MOTOR_NODE);
+	//while(tacho_is_running( MOTOR_NODE )) ;
+}
+
+void head_down(void)
+{
+        int temp, temp2;
+        tacho_set_speed_sp(MOTOR_NODE,210);
         tacho_run_forever( MOTOR_NODE );
         while(temp2 != (int) tacho_get_position(MOTOR_NODE,0)) {
                 temp2 = temp;
@@ -143,19 +159,7 @@ void head_up(void)
                 sleep_ms(2*MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_NODE);
-}
-
-void head_down(void)
-{
-        int temp2, temp2;
-        tacho_set_speed_sp(MOTOR_NODE,210);
-        tacho_run_forever( MOTOR_NODE );
-        while(temp2 != (int) tacho_get_position(MOTOR_NODE,0)) {
-                temp2 = temp;
-                temp = (int) tacho_get_position(MOTOR_NODE,0);
-                sleep_ms(MOTORS_PERIOD);
-        }
-        tacho_stop(MOTOR_NODE);
+	while(tacho_is_running( MOTOR_NODE )) ;
 }
 
 void color_update(void)
