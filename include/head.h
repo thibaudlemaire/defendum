@@ -11,6 +11,11 @@ enum {
         GREEN_COLOR,
         BLUE_COLOR,
 };
+enum {
+        NOTHING,
+        RIGHT,
+        LEFT,
+};
 
 int init_head( void );
 void *head_main(void *arg);
@@ -22,5 +27,8 @@ void look_front(void);
 void look_right(void);
 void head_up(void);
 void head_down(void);
+void examine(void);
+void examine_left(void);
+bool obtacle(void);
 
 #endif //OS_ROBOT_HEAD_H
