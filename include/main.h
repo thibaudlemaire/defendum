@@ -27,8 +27,8 @@ enum globalState {
 
 // Types
 typedef struct {
-    int16_t x;
-    int16_t y;
+    int x;
+    int y;
 } position_t;
 
 typedef struct {
