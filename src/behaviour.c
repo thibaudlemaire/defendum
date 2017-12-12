@@ -12,8 +12,11 @@
 
 void *behaviour_main(void *arg)
 {
-      //print_console("Behaviour initialized");
+      print_console("Behaviour initialized");
+
       explore_arena();
+
+      pthread_exit(NULL);
 
 }
 

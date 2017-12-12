@@ -67,6 +67,7 @@ int main( void )
         pthread_t compass_thread;
         pthread_t bluetooth_thread;
         pthread_t position_thread;
+        pthread_t behaviour_thread;
 
         // Init brick library, to interface lego sensors and motors
         if ( !brick_init()) return ( 1 );
@@ -86,7 +87,7 @@ int main( void )
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
-        pthread_create(&behaviour_thread, NULL, position_main, NULL);
+        pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
 
 
         // Wait for every thread to end
