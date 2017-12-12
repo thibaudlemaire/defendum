@@ -103,6 +103,7 @@ void rotate_head(void)
 
 void look_left(void)
 {
+        tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_left);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
         //set_tacho_command(MOTOR_ROTATE,TACHO_RUN_TO_ABS_POS);
@@ -112,6 +113,7 @@ void look_left(void)
 
 void look_right(void)
 {
+        tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_right);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
         //set_tacho_command(MOTOR_ROTATE,TACHO_RUN_TO_ABS_POS);
@@ -121,6 +123,7 @@ void look_right(void)
 
 void head_up(void)
 {
+        tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_NODE,node_max_up);
         tacho_run_to_abs_pos(MOTOR_NODE);
         //set_tacho_command(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
@@ -130,6 +133,7 @@ void head_up(void)
 
 void head_down(void)
 {
+        tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_NODE,node_max_down);
         tacho_run_to_abs_pos(MOTOR_NODE);
         //set_tacho_command(MOTOR_NODE,TACHO_RUN_TO_ABS_POS);
