@@ -198,7 +198,7 @@ void distance_update(void)
         distance_value = sensor_get_value(DISTANCE_CM_MODE, distance_sensor, 0);
 }
 
-int obtacle(void)
+int obstacle(void)
 {
         color_update();
         distance_update();
