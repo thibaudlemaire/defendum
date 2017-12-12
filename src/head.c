@@ -85,9 +85,12 @@ void *head_main(void *arg)
 {
         while(alive)
         {
+                print_console("Head is alive");
                 color_update();
                 distance_update();
+                print_console("Looking left");
                 look_left();
+                print_console("Looking right");
                 look_right();
                 head_up();
                 head_down();
@@ -103,7 +106,6 @@ void rotate_head(void)
 
 void look_left(void)
 {
-        print_console("Looking left");
         tacho_set_speed_sp(MOTOR_ROTATE,210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_left);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
@@ -117,7 +119,6 @@ void look_left(void)
 
 void look_right(void)
 {
-        print_console("Looking right");
         tacho_set_speed_sp(MOTOR_ROTATE,-210);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_max_right);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
