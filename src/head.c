@@ -41,6 +41,10 @@ int init_head( void )
         color_set_mode_rgb_raw( color_sensor );
         print_console("Color sensor found and configured as Raw RGB");
         color_update();
+        tacho_reset( MOTOR_ROTATE );
+        tacho_set_stop_action_brake( MOTOR_ROTATE );
+        tacho_reset( MOTOR_NODE );
+        tacho_set_stop_action_brake( MOTOR_NODE );
 
         tacho_set_speed_sp(MOTOR_ROTATE,1050);
         tacho_run_forever( MOTOR_ROTATE );
