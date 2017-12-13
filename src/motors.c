@@ -7,8 +7,11 @@
 #include "brick.h"
 #include "main.h"
 #include "display.h"
+#include "position.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
+enum linearSpeed speed_linear;
+int speed_circular = SPEED_CIRCULAR;
 
 /**
  * Function used to init motors module
@@ -16,18 +19,17 @@ int max_speed;     /* Motor maximal speed (will be detected) */
  */
 int init_motors( void )
 {
-    if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) {  // any type of motor
-        max_speed = tacho_get_max_speed( MOTOR_LEFT, 0 );
-        tacho_reset( MOTOR_BOTH );
-        tacho_set_stop_action_brake( MOTOR_BOTH );
-        print_console("Motors found and configured");
-    } else {
-        print_error( "Please, plug LEFT motor in B port,");
-        print_error( "RIGHT motor in C port and try again.");
-        // Inoperative without motors
-        return ( 0 );
-    }
-    return ( 1 );
+        if ( tacho_is_plugged( MOTOR_BOTH, TACHO_TYPE__NONE_ )) { // any type of motor
+                tacho_reset( MOTOR_BOTH );
+                tacho_set_stop_action_brake( MOTOR_BOTH );
+                print_console("Motors found and configured");
+        } else {
+                print_error( "Please, plug LEFT motor in B port,");
+                print_error( "RIGHT motor in C port and try again.");
+                // Inoperative without motors
+                return ( 0 );
+        }
+        return ( 1 );
 }
 
 /**
@@ -36,44 +38,88 @@ int init_motors( void )
  * @return a generic pointer used by pthread
  */
 void *motors_main(void *arg)
-    {
-        int speed_linear, speed_circular;
+{
         int state = STOP;
-        speed_linear = max_speed * SPEED_LINEAR / 100;
-        speed_circular = max_speed * SPEED_CIRCULAR / 100;
         while (alive)
         {
-            /* Waiting new command */
-            if ( state == command ) {
-                sleep_ms( MOTORS_PERIOD );
-                continue;
-            }
-            switch ( command ) {
+                /* Waiting new command */
+                if ( state == command ) {
+                        sleep_ms( MOTORS_PERIOD );
+                        continue;
+                }
+                switch ( command ) {
                 case STOP:
-                    tacho_stop( MOTOR_BOTH );
-                    /* Waiting the vehicle is stopped */
-                    while(tacho_is_running( MOTOR_BOTH ));
-                    break;
+                        tacho_stop( MOTOR_BOTH );
+                        /* Waiting the vehicle is stopped */
+                        while(tacho_is_running( MOTOR_BOTH )) ;
+                        update_postion(state);
+                        break;
                 case FORTH:
-                    tacho_set_speed_sp( MOTOR_BOTH, speed_linear );
-                    tacho_run_forever( MOTOR_BOTH );
-                    break;
+                        tacho_stop( MOTOR_BOTH );
+                        /* Waiting the vehicle is stopped */
+                        while(tacho_is_running( MOTOR_BOTH )) ;
+                        update_postion(state);
+                        tacho_set_speed_sp( MOTOR_BOTH, speed_linear );
+                        tacho_run_forever( MOTOR_BOTH );
+                        break;
                 case BACK:
-                    tacho_set_speed_sp( MOTOR_BOTH, -speed_linear );
-                    tacho_run_forever( MOTOR_BOTH );
-                    break;
+                        tacho_stop( MOTOR_BOTH );
+                        /* Waiting the vehicle is stopped */
+                        while(tacho_is_running( MOTOR_BOTH )) ;
+                        update_postion(state);
+                        tacho_set_speed_sp( MOTOR_BOTH, -speed_linear );
+                        tacho_run_forever( MOTOR_BOTH );
+                        break;
                 case LEFT:
-                    tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
-                    tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
-                    tacho_run_forever( MOTOR_BOTH );
-                    break;
+                        tacho_stop( MOTOR_BOTH );
+                        /* Waiting the vehicle is stopped */
+                        while(tacho_is_running( MOTOR_BOTH )) ;
+                        update_postion(state);
+                        tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
+                        tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
+                        tacho_run_forever( MOTOR_BOTH );
+                        break;
                 case RIGHT:
-                    tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
-                    tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
-                    tacho_run_forever( MOTOR_BOTH );
-                    break;
-            }
-            state = command;
+                        tacho_stop( MOTOR_BOTH );
+                        /* Waiting the vehicle is stopped */
+                        while(tacho_is_running( MOTOR_BOTH )) ;
+                        update_postion(state);
+                        tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
+                        tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
+                        tacho_run_forever( MOTOR_BOTH );
+                        break;
+                }
+                state = command;
         }
+        tacho_stop( MOTOR_BOTH );
         pthread_exit(NULL);
-    }
+}
+
+void motors_rotate_left(int angle)
+{
+      command = LEFT;
+      int sleep_time = angle * 3500 / 360;
+      sleep_ms(sleep_time);
+      command = STOP;
+}
+void motors_rotate_right(int angle)
+{
+      command = RIGHT;
+      int sleep_time = angle * 3500 / 360;
+      sleep_ms(sleep_time);
+      command = STOP;
+}
+void motors_forward(enum linearSpeed speed)
+{
+      command = FORTH;
+      speed_linear = speed;
+}
+void motors_backward(enum linearSpeed speed)
+{
+      command = BACK;
+      speed_linear = speed;
+}
+void motors_stop(void)
+{
+      command = STOP;
+}

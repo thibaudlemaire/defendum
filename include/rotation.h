@@ -8,8 +8,8 @@
 #define ROTATION_PERIOD 50  // Rotation measure period in ms
 
 enum {
-    ROTATION_ANGLE,
-    ROTATION_SPEED,
+        ROTATION_ANGLE,
+        ROTATION_SPEED,
 };
 
 int init_rotation( void );

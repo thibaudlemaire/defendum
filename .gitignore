@@ -53,8 +53,11 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# IDE Settings 
+# IDE Settings
 .idea/
 
-# VIM 
+# VIM
 *~
+
+#Brick
+include/brick.h

@@ -7,10 +7,14 @@
 #include "main.h"
 #include "display.h"
 #include "bluetooth.h"
-#include <unistd.h>
+
 
 #define max(x,y) ((x) >= (y)) ? (x) : (y)
 #define min(x,y) ((x) <= (y)) ? (x) : (y)
+
+int i;
+int j;
+
 
 
 
@@ -23,7 +27,6 @@ void init_map_random(map map)
 
     for ( i = 0; i < map.width; ++i) {
         for ( j = 0; j < map.height ; ++j) {
-
             map.tab[i][j]= 'U';
         }
     }
@@ -31,6 +34,7 @@ void init_map_random(map map)
 
 void init_map_small_arena(map map)
 {
+
     int i;
     int j;
 
@@ -39,7 +43,6 @@ void init_map_small_arena(map map)
 
     for ( i = 1; i < map.width-1; ++i) {
         for ( j = 1; j < map.height-1 ; ++j) {
-
             map.tab[i][j]= 'U';
         }
     }
@@ -73,9 +76,9 @@ point_cluster get_points_of_a_type(map map, char objectType)
     int i;
     int j;
     position_t p;
-
     point_cluster list_of_point;
     list_of_point.len = 0;
+
     for ( i = 0; i < map.width ; ++i)
     {
         for ( j = 0; j < map.height ; ++j)
@@ -94,6 +97,8 @@ point_cluster get_points_of_a_type(map map, char objectType)
     }
     return list_of_point;
 }
+
+
 
 void send_map(map map)
 {
