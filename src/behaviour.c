@@ -10,6 +10,7 @@
 #include "brick.h"
 #include "display.h"
 #include "touch.h"
+#include "head.h"
 
 enum globalState robot_state = EXPLORING_ARENA;           // Robot state
 enum crossingArenaState crossing_state = SEARCHING_WALL;
@@ -54,10 +55,8 @@ void search_wall(void)
           sleep_ms(TOUCH_PERIOD);
           motors_forward(TWO);
 
-          if (distance_value < 50)
+          if (obstacle_flag = FRONT_OBS)
           {
-            sleep_ms(50);
-
             wall_detected = 1;
             motors_rotate_left(90);
           }
@@ -72,10 +71,10 @@ void follow_wall(void)
 
           sleep_ms(TOUCH_PERIOD);
 
-          /* if (obstacle)
+          if (obstacle_flag != NO_OBS)
           {
                 dodge_obstacle();
-          }*/
+          }
 
           if (touch_is_touched())
           {
@@ -104,15 +103,29 @@ void explore_arena(void)
 {
       //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
 
-      /* if (obstacle)
+      if (obstacle_flag != NO_OBS)
       {
             dodge_obstacle();
-      }*/
+      }
 }
 
 void dodge_obstacle(void)
 {
       //TODO : éviter les obstacles
+
+      switch (obstacle_flag)
+      {
+        case LEFT_OBS:
+              motors_rotate_right(15);
+              break;
+        case FRONT_OBS:
+              motors_rotate_left(30);
+              break;
+        case RIGHT_OBS:
+              motors_rotate_left(15);
+              break;
+      }
+      return;
 }
 
 /* ajouter des points à la carte
