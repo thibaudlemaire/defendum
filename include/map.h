@@ -37,7 +37,7 @@ void set_Object(map map,position_t point, char objectType);
 void init_map_random(map map);
 point_cluster get_points_of_a_type(map map, char objectType);
 void send_map(map map);
-
+position_t convert_to_map_scale(position_t real_point);
 
 
 #endif //OS_ROBOT_MAP_H

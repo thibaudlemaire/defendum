@@ -59,15 +59,17 @@ void init_map_small_arena(map map)
     }
 }
 
-void set_Object(map map,position_t point, char objectType)
+void set_Object(map map,position_t real_point, char objectType) //Look a send_map to know which char to put
 {
 
+    point = convert_to_map_scale(real_point);
     map.tab[point.x][point.y] = objectType;
 
 }
 
-char get_Object(map map,position_t point)
+char get_Object(map map,position_t real_point)
 {
+    point = convert_to_map_scale(real_point);
     return (char) map.tab[point.x][point.y];
 }
 
@@ -130,6 +132,15 @@ void send_map(map map)
         }
 
     }
+}
+
+position_t convert_to_map_scale(position_t real_point)
+{
+    position_t map_point;
+    map_point.x = real_point.x/5; //It's a euclidian division because x and y are ints
+    map_point.y = real_point.y/5;
+
+    return map_point;
 }
 
 
