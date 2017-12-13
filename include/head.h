@@ -26,7 +26,7 @@ enum crosstate {
         EXPLORING_ARENA,
 };
 
-extern enum obstacle obstacle_flag;
+extern enum enumobstacle obstacle_flag;
 
 int init_head( void );
 void *head_main(void *arg);
@@ -42,5 +42,5 @@ void examine(void);
 int obstacle(void);
 void searching_wall_head(void);
 void following_wall_head(void);
-exploring_arena_head(void);
+void exploring_arena_head(void);
 #endif //OS_ROBOT_HEAD_H
