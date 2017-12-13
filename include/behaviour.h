@@ -22,6 +22,8 @@ enum crossingArenaState {
         EXPLORING_ARENA
 };
 
+extern enum crossingArenaState crossing_state;
+
 void *behaviour_main(void *arg);
 void cross_arena(void);
 void search_wall(void);

@@ -13,11 +13,12 @@
 #include "head.h"
 
 enum globalState robot_state = EXPLORING_ARENA;           // Robot state
+/*enum crossingArenaState crossing_state = SEARCHING_WALL;*/
 enum crossingArenaState crossing_state = SEARCHING_WALL;
 
 void *behaviour_main(void *arg)
 {
-      print_console("Behaviour initialized");
+      //print_console("Behaviour initialized");
 
       cross_arena();
 
@@ -50,12 +51,12 @@ void search_wall(void)
       /* first face a wall */
       motors_rotate_right(90);
 
-      while(alive && wall_detected==0)
+      while(/*alive &&*/ wall_detected==0)
       {
           sleep_ms(TOUCH_PERIOD);
           motors_forward(TWO);
 
-          if (obstacle_flag = FRONT_OBS)
+          if (obstacle_flag == FRONT_OBS)
           {
             wall_detected = 1;
             motors_rotate_left(90);
@@ -78,14 +79,14 @@ void follow_wall(void)
 
           if (touch_is_touched())
           {
-              set_Object(map,position_t point, 'W')
-              motors_rotate_left(5);
+              /*set_Object(map,position_t point, 'W');*/
+              motors_rotate_left(15);
               motors_forward(TWO);
               sleep_ms(1000);
           }
           else
           {
-              motors_rotate_right(3);
+              motors_rotate_right(13);
               motors_forward(TWO);
               sleep_ms(1000);
 
@@ -123,6 +124,8 @@ void dodge_obstacle(void)
               break;
         case RIGHT_OBS:
               motors_rotate_left(15);
+              break;
+        case NO_OBS:
               break;
       }
       return;

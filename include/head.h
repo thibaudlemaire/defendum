@@ -20,11 +20,11 @@ enum enumobstacle {
         RIGHT_OBS,
 };
 
-enum crosstate {
+/*enum crosstate {
         SEARCHING_WALL,
         FOLLOWING_WALL,
         EXPLORING_ARENA,
-};
+};*/
 
 extern enum enumobstacle obstacle_flag;
 

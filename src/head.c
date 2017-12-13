@@ -4,6 +4,7 @@
 #include "display.h"
 #include "head.h"
 #include "motors.h"
+#include "behaviour.h"
 
 POOL_T distance_sensor;
 POOL_T color_sensor;
@@ -17,7 +18,7 @@ int up = 0;
 enum enumobstacle obstacle_flag = NO_OBS;
 int obstacle_counter = 0;
 int obstacle_free_counter = 0;
-enum crosstate crossing_state = SEARCHING_WALL;
+/*enum crosstate crossing_state = SEARCHING_WALL;*/
 int following_wall_state = 0;
 int exploring_arena_state = 0;
 
