@@ -27,5 +27,6 @@ void cross_arena(void);
 void search_wall(void);
 void follow_wall(void);
 void explore_arena(void);
+void dodge_obstacle(void);
 
 #endif //OS_ROBOT_BEHAVIOUR_H

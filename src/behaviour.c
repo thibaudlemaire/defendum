@@ -3,6 +3,7 @@
 //
 
 #include <pthread.h>
+
 #include "behaviour.h"
 #include "motors.h"
 #include "main.h"
@@ -36,7 +37,8 @@ void cross_arena(void)
 
 }
 
-
+/*fonction qui déplace le robot de son point de départ et le positionne
+  parallèle et proche d'un mur,le mur à sa droite*/
 void search_wall(void)
 {
 
@@ -67,10 +69,17 @@ void follow_wall(void)
 {
       while(alive)
       {
+
           sleep_ms(TOUCH_PERIOD);
+
+          /* if (obstacle)
+          {
+                dodge_obstacle();
+          }*/
 
           if (touch_is_touched())
           {
+              set_Object(map,position_t point, 'W')
               motors_rotate_left(5);
               motors_forward(TWO);
               sleep_ms(1000);
@@ -89,9 +98,24 @@ void follow_wall(void)
 
 /*
 * Fonction qui explore le centre de l'arene, une fois que le contour est connu
-* 
+*
 */
 void explore_arena(void)
 {
       //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
+
+      /* if (obstacle)
+      {
+            dodge_obstacle();
+      }*/
 }
+
+void dodge_obstacle(void)
+{
+      //TODO : éviter les obstacles
+}
+
+/* ajouter des points à la carte
+addoffset ?
+set_Object(map map,position_t point, char objectType)
+objectType = E(mpty), W(all), M(ovable), N(on movable) */
