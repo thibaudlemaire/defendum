@@ -39,6 +39,10 @@ void cross_arena(void)
 
 void search_wall(void)
 {
+
+      // Sleep to let head initialise
+      sleep_ms(1000);
+
       int wall_detected = 0;
       /* first face a wall */
       motors_rotate_right(90);
@@ -83,6 +87,10 @@ void follow_wall(void)
       return;
 }
 
+/*
+* Fonction qui explore le centre de l'arene, une fois que le contour est connu
+* 
+*/
 void explore_arena(void)
 {
       //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
