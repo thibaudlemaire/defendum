@@ -6,18 +6,27 @@
 #define OS_ROBOT_MAP_H
 
 
-const int MAP_WITDH = 3;
-const int MAP_HEIGHT = 40;
+
+#include "main.h"
+#include "display.h"
+#include "bluetooth.h"
+
+
+
+#define MAP_MAX_WIDTH 24
+#define MAP_MAX_HEIGHT 40
+
 
 typedef struct {
-    char tab[MAX_WIDTH][MAX_HEIGHT];
+    char tab[MAP_MAX_WIDTH][MAP_MAX_HEIGHT];
     int width;
     int height;
 
 } map;
 
 typedef struct {
-    position_t set[MAX_WIDTH*MAX_HEIGHT];
+    position_t set[MAP_MAX_WIDTH*MAP_MAX_HEIGHT];
+
     int len ;
 }point_cluster;
 
