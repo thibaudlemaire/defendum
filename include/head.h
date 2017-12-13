@@ -6,12 +6,27 @@
 #define DISTANCE_PERIOD 50  // Distance measure period in ms
 #define MOTOR_NODE      OUTD
 #define MOTOR_ROTATE    OUTA
+#define WALL_DISTANCE   200 //in mm
 enum {
         RED_COLOR,
         GREEN_COLOR,
         BLUE_COLOR,
 };
 
+enum enumobstacle {
+        NO_OBS,
+        LEFT_OBS,
+        FRONT_OBS,
+        RIGHT_OBS,
+};
+
+enum crosstate {
+        SEARCHING_WALL,
+        FOLLOWING_WALL,
+        EXPLORING_ARENA,
+};
+
+extern enum obstacle obstacle_flag;
 
 int init_head( void );
 void *head_main(void *arg);
@@ -25,5 +40,7 @@ void head_up(void);
 void head_down(void);
 void examine(void);
 int obstacle(void);
-
+void searching_wall_head(void);
+void following_wall_head(void);
+exploring_arena_head(void);
 #endif //OS_ROBOT_HEAD_H
