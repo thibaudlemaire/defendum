@@ -14,8 +14,12 @@ int node_max_down=100000;
 int rotate_front;
 int rotation_speed = 200;
 int up = 0;
-
-
+enum enumobstacle obstacle_flag = NO_OBS;
+int obstacle_counter = 0;
+int obstacle_free_counter = 0;
+enum crosstate crossing_state = SEARCHING_WALL;
+int following_wall_state = 0;
+int exploring_arena_state = 0;
 
 
 /**
@@ -77,11 +81,27 @@ void *head_main(void *arg)
 {
         while(alive)
         {
-                if(up){
-                        sleep_ms(1000);
+                if (robot_state==INITIALIZING || robot_state==WAITING_FOR_START) {
+                        sleep_ms(50);
                         continue;
                 }
-                examine();
+                if (robot_state==BUILDING_MAP || robot_state==SENDING_MAP || robot_state==FINISH || robot_state==KICKED)
+                        break;
+                switch (crossing_state) {
+                case SEARCHING_WALL:
+                        searching_wall_head();
+                        sleep_ms(MOTORS_PERIOD);
+                        break;
+                case FOLLOWING_WALL:
+                        following_wall_head();
+                        sleep_ms(MOTORS_PERIOD);
+                        break;
+                case EXPLORING_ARENA:
+                        exploring_arena_head();
+                        sleep_ms(MOTORS_PERIOD);
+                        break;
+                }
+                sleep_ms(50);
         }
         pthread_exit(NULL);
 }
@@ -109,6 +129,131 @@ void examine(void)
         return;
 }
 
+void searching_wall_head(void)
+{
+        //Only looking forward and update color and distance
+        look_front();
+        color_update();
+        distance_update();
+        if (distance_value<200) {
+                obstacle_counter++;
+                obstacle_free_counter=0;
+        } else {
+                obstacle_free_counter++;
+        }
+        if (obstacle_counter>=3)
+                obstacle_flag = FRONT_OBS;
+        if (obstacle_free_counter>=3) {
+                obstacle_flag = NO_OBS;
+                obstacle_free_counter=0;
+                obstacle_counter=0;
+        }
+}
+
+void following_wall_head(void)
+{
+        if(following_wall_state==0) {
+                look_front();
+                color_update();
+                distance_update();
+                if (distance_value<200) {
+                        obstacle_counter++;
+                        obstacle_free_counter=0;
+                } else {
+                        obstacle_free_counter++;
+                }
+                if (obstacle_counter>=3)
+                        obstacle_flag = FRONT_OBS;
+                if (obstacle_free_counter>=3) {
+                        obstacle_flag = NO_OBS;
+                        obstacle_free_counter=0;
+                        obstacle_counter=0;
+                }
+                if (obstacle_counter==0)
+                        following_wall_state=1;
+        } else {
+                look_left();
+                color_update();
+                distance_update();
+                if (distance_value<200) {
+                        obstacle_counter++;
+                        obstacle_free_counter=0;
+                } else {
+                        obstacle_free_counter++;
+                }
+                if (obstacle_counter>=3)
+                        obstacle_flag = LEFT_OBS;
+                if (obstacle_free_counter>=3) {
+                        obstacle_flag = NO_OBS;
+                        obstacle_free_counter=0;
+                        obstacle_counter=0;
+                }
+                if (obstacle_counter==0)
+                        following_wall_state=1;
+        }
+}
+
+void exploring_arena_head(void)
+{
+        if(exploring_arena_state==0) {
+                look_left();
+                color_update();
+                distance_update();
+                if (distance_value<200) {
+                        obstacle_counter++;
+                        obstacle_free_counter=0;
+                } else {
+                        obstacle_free_counter++;
+                }
+                if (obstacle_counter>=3)
+                        obstacle_flag = LEFT_OBS;
+                if (obstacle_free_counter>=3) {
+                        obstacle_flag = NO_OBS;
+                        obstacle_free_counter=0;
+                        obstacle_counter=0;
+                }
+                if (obstacle_counter==0)
+                        exploring_arena_state=1;
+        } else if (exploring_arena_state==1 || exploring_arena_state==3){
+                look_front();
+                color_update();
+                distance_update();
+                if (distance_value<200) {
+                        obstacle_counter++;
+                        obstacle_free_counter=0;
+                } else {
+                        obstacle_free_counter++;
+                }
+                if (obstacle_counter>=3)
+                        obstacle_flag = FRONT_OBS;
+                if (obstacle_free_counter>=3) {
+                        obstacle_flag = NO_OBS;
+                        obstacle_free_counter=0;
+                        obstacle_counter=0;
+                }
+                if (obstacle_counter==0)
+                        exploring_arena_state=exploring_arena_state%4;
+        } else {
+                look_right();
+                color_update();
+                distance_update();
+                if (distance_value<200) {
+                        obstacle_counter++;
+                        obstacle_free_counter=0;
+                } else {
+                        obstacle_free_counter++;
+                }
+                if (obstacle_counter>=3)
+                        obstacle_flag = RIGHT_OBS;
+                if (obstacle_free_counter>=3) {
+                        obstacle_flag = NO_OBS;
+                        obstacle_free_counter=0;
+                        obstacle_counter=0;
+                }
+                if (obstacle_counter==0)
+                        exploring_arena_state=3;
+        }
+}
 
 void rotate_head(void)
 {
@@ -129,7 +274,7 @@ void look_left(void)
                 sleep_ms(MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
-	while(tacho_is_running( MOTOR_ROTATE )) ;
+        while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void look_front(void)
@@ -139,7 +284,7 @@ void look_front(void)
         tacho_set_speed_sp(MOTOR_ROTATE,rotation_speed);
         tacho_set_position_sp(MOTOR_ROTATE,rotate_front);
         tacho_run_to_abs_pos(MOTOR_ROTATE);
-        while(tacho_is_running(MOTOR_ROTATE));
+        while(tacho_is_running(MOTOR_ROTATE)) ;
 }
 
 void look_right(void)
@@ -155,7 +300,7 @@ void look_right(void)
                 sleep_ms(MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_ROTATE);
-	while(tacho_is_running( MOTOR_ROTATE )) ;
+        while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void head_up(void)
@@ -170,7 +315,7 @@ void head_up(void)
                 sleep_ms(MOTORS_PERIOD);
         }
         //tacho_stop(MOTOR_NODE);
-	//while(tacho_is_running( MOTOR_NODE )) ;
+        //while(tacho_is_running( MOTOR_NODE )) ;
 }
 
 void head_down(void)
@@ -185,7 +330,7 @@ void head_down(void)
                 sleep_ms(MOTORS_PERIOD);
         }
         tacho_stop(MOTOR_NODE);
-	while(tacho_is_running( MOTOR_NODE )) ;
+        while(tacho_is_running( MOTOR_NODE )) ;
 }
 
 void color_update(void)
