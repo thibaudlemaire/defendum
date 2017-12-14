@@ -231,13 +231,11 @@ void exploring_arena_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-<<<<<<< HEAD
-=======
+
                         exploring_arena_state=(exploring_arena_state+1)%4;
->>>>>>> master
+
                 }
-                if (obstacle_counter==0)
-                        exploring_arena_state=(exploring_arena_state+1)%4;
+
         } else {
                 look_right();
                 color_update();
