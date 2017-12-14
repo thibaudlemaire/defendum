@@ -274,8 +274,8 @@ void look_left(void)
                 temp = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
-        tacho_stop(MOTOR_ROTATE);
-        while(tacho_is_running( MOTOR_ROTATE )) ;
+        //tacho_stop(MOTOR_ROTATE);
+        //while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void look_front(void)
@@ -300,8 +300,8 @@ void look_right(void)
                 temp = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
-        tacho_stop(MOTOR_ROTATE);
-        while(tacho_is_running( MOTOR_ROTATE )) ;
+        //tacho_stop(MOTOR_ROTATE);
+        //while(tacho_is_running( MOTOR_ROTATE )) ;
 }
 
 void head_up(void)
