@@ -117,9 +117,12 @@ void explore_arena(void)
             {
                   motors_stop();
                   random_dodge_obstacle();
+                  print_console("obstacle_flag = NO_OBS");
             }
             else
             {
+                  //
+                  //set_Object(map ,position_t point, 'E')
                   motors_forward(ONE);
             }
 

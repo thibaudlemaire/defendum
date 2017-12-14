@@ -44,7 +44,7 @@ int init_bluetooth( void )
 
         // if not connected
         if( status != 0 ) {
-                print_error("Failed to connect to server...");
+                //print_error("Failed to connect to server...");
                 bluetooth_state = DISCONNECTED;
                 return ( 1 ); // TODO change to 0 when server is available
         }
