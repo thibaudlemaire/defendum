@@ -11,9 +11,7 @@
 #include "display.h"
 #include "touch.h"
 #include "head.h"
-
-/*enum globalState robot_state = EXPLORING_ARENA;           // Robot state */
-/*enum crossingArenaState crossing_state = SEARCHING_WALL;*/
+#include "map.h"
 
 enum crosstate crossing_state = EXPLORING_ARENA;
 
@@ -29,104 +27,123 @@ void *behaviour_main(void *arg)
 
 void cross_arena(void)
 {
-      switch (crossing_state)
+      while(alive)
       {
-            case SEARCHING_WALL:
-                search_wall();
-                crossing_state++;
-                break;
-            case FOLLOWING_WALL:
-                follow_wall();
-                crossing_state++;
-                break;
-            case EXPLORING_ARENA:
-                explore_arena();
-                break;
-
+            sleep_ms(MOTORS_PERIOD);
+            switch (crossing_state)
+            {
+                  case SEARCHING_WALL:
+                      search_wall();
+                      break;
+                  case FOLLOWING_WALL:
+                      follow_wall();
+                      break;
+                  case EXPLORING_ARENA:
+                      explore_arena();
+                      break;
+                  case MOVABLE_OBJ_DETECTED:
+                      //catch_movable_obj();
+                      break;
+            }
       }
+
 }
 
-/*fonction qui déplace le robot de son point de départ et le positionne
-  parallèle et proche d'un mur,le mur à sa droite*/
+/* fonction qui déplace le robot depuis son point de départ et le positionne
+*  proche d'un mur, parallèle au mur, le mur à sa droite
+*/
 void search_wall(void)
 {
 
-      // Sleep to let head initialise
-      sleep_ms(1000);
-
-      int wall_detected = 0;
-      /* first face a wall */
-      motors_rotate_right(90);
-
-      while(/*alive &&*/ wall_detected==0)
+      if(0) //TODO si l'orientation n'est pas bonne, on oriente le robot comme il faut
       {
-          sleep_ms(TOUCH_PERIOD);
-          motors_forward(TWO);
-
-          if (obstacle_flag == FRONT_OBS)
-          {
-            wall_detected = 1;
-            motors_rotate_left(90);
-          }
+            motors_rotate_right(90);
       }
+
+
+      if (obstacle_flag == FRONT_OBS)
+      {
+            motors_rotate_left(90);
+            crossing_state++;
+      }
+      else
+      {
+            motors_forward(TWO);
+      }
+
       return;
 }
 
+//non opérationnel
 void follow_wall(void)
 {
-      while(alive)
+
+      if (obstacle_flag != NO_OBS)
       {
-
-          sleep_ms(TOUCH_PERIOD);
-
-          if (obstacle_flag != NO_OBS)
-          {
-                dodge_obstacle();
-          }
-
-          if (touch_is_touched())
-          {
-              /*set_Object(map,position_t point, 'W');*/
-              motors_rotate_left(15);
-              motors_forward(TWO);
-              sleep_ms(1000);
-          }
-          else
-          {
-              motors_rotate_right(13);
-              motors_forward(TWO);
-              sleep_ms(1000);
-
-          }
-
+            dodge_obstacle();
       }
+
+      if (touch_is_touched())
+      {
+          /*set_Object(map, current_position, 'W');*/
+          motors_rotate_left(15);
+          motors_forward(TWO);
+          sleep_ms(1000);
+      }
+      else
+      {
+          motors_rotate_right(13);
+          motors_forward(TWO);
+          sleep_ms(1000);
+      }
+
+
+      //quitte quand y < 0, car on a fini de faire le tour, éventuellement à revoir
+      /*if (current_position.y > 0) //erreur ici avec current_position
+      {
+          crossing_state++;
+      }*/
       return;
 }
 
 /*
-* Fonction qui explore le centre de l'arene, une fois que le contour est connu
-*
+* Fonction qui explore le centre de l'arene, appelée après celle qui détermine le contour
 */
 void explore_arena(void)
 {
-      //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
-      while(alive)
+      if (obstacle_flag != NO_OBS)
       {
-            sleep_ms(MOTORS_PERIOD);
-            if (obstacle_flag != NO_OBS)
+            random_dodge_obstacle();
+            switch (obstacle_flag)
             {
-                  motors_stop();
-                  random_dodge_obstacle();
-                  print_console("obstacle_flag = NO_OBS");
-            }
-            else
-            {
-                  //
-                  //set_Object(map ,position_t point, 'E')
-                  motors_forward(ONE);
+                case LEFT_OBS:
+                    print_console("left_obs");
+                    break;
+                case FRONT_OBS:
+                    print_console("front_obs");
+                    break;
+                case RIGHT_OBS:
+                    print_console("right_obs");
+                    break;
+                default:
+                    break;
             }
 
       }
+      else
+      {
+            //set_Object(map, current_position, 'E');
+            motors_forward(ONE);
+      }
+
+      /*
+      if (movable_objet_detected)
+      {
+            crossing_state = MOVABLE_OBJ_DETECTED;
+      }
+      */
+
+      return;
 }
 
 void dodge_obstacle(void)
@@ -150,7 +167,6 @@ void dodge_obstacle(void)
 
 void random_dodge_obstacle(void)
 {
-      //TODO : éviter les obstacles
       int angle = rand ()%80 + 30;
 
       switch (obstacle_flag)
@@ -170,7 +186,17 @@ void random_dodge_obstacle(void)
       return;
 }
 
-/* ajouter des points à la carte
-addoffset ?
-set_Object(map map,position_t point, char objectType)
-objectType = E(mpty), W(all), M(ovable), N(on movable) */
+void catch_movable_obj(void)
+{
+      //TODO
+
+      motors_stop();
+
+      //Une fois l'objet attrapé, retourner à l'état précédent
+      /*if (obj_caught)
+      {
+        crossing_state = EXPLORING_ARENA;
+      }*/
+
+      return;
+}

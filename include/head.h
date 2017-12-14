@@ -24,6 +24,7 @@ enum crosstate {
         SEARCHING_WALL,
         FOLLOWING_WALL,
         EXPLORING_ARENA,
+        MOVABLE_OBJ_DETECTED,
 };
 
 extern enum enumobstacle obstacle_flag;

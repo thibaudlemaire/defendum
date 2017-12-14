@@ -99,6 +99,9 @@ void *head_main(void *arg)
                         exploring_arena_head();
                         sleep_ms(MOTORS_PERIOD);
                         break;
+                case MOVABLE_OBJ_DETECTED:
+                        //TODO
+                        break;
                 }
                 sleep_ms(50);
         }
