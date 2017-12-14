@@ -135,11 +135,12 @@ void searching_wall_head(void)
         look_front();
         color_update();
         distance_update();
-        if (distance_value<200) {
+        if (distance_value<WALL_DISTANCE) {
                 obstacle_counter++;
                 obstacle_free_counter=0;
         } else {
                 obstacle_free_counter++;
+                obstacle_counter=0;
         }
         if (obstacle_counter>=3)
                 obstacle_flag = FRONT_OBS;
@@ -156,11 +157,12 @@ void following_wall_head(void)
                 look_front();
                 color_update();
                 distance_update();
-                if (distance_value<200) {
+                if (distance_value<WALL_DISTANCE) {
                         obstacle_counter++;
                         obstacle_free_counter=0;
                 } else {
                         obstacle_free_counter++;
+                        obstacle_counter=0;
                 }
                 if (obstacle_counter>=3)
                         obstacle_flag = FRONT_OBS;
@@ -168,18 +170,18 @@ void following_wall_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                }
-                if (obstacle_counter==0)
                         following_wall_state=1;
+                }
         } else {
                 look_left();
                 color_update();
                 distance_update();
-                if (distance_value<200) {
+                if (distance_value<WALL_DISTANCE) {
                         obstacle_counter++;
                         obstacle_free_counter=0;
                 } else {
                         obstacle_free_counter++;
+                        obstacle_counter=0;
                 }
                 if (obstacle_counter>=3)
                         obstacle_flag = LEFT_OBS;
@@ -187,9 +189,8 @@ void following_wall_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                }
-                if (obstacle_counter==0)
                         following_wall_state=1;
+                }
         }
 }
 
@@ -199,11 +200,12 @@ void exploring_arena_head(void)
                 look_left();
                 color_update();
                 distance_update();
-                if (distance_value<200) {
+                if (distance_value<WALL_DISTANCE) {
                         obstacle_counter++;
                         obstacle_free_counter=0;
                 } else {
                         obstacle_free_counter++;
+                        obstacle_counter=0;
                 }
                 if (obstacle_counter>=3)
                         obstacle_flag = LEFT_OBS;
@@ -211,18 +213,18 @@ void exploring_arena_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                }
-                if (obstacle_counter==0)
                         exploring_arena_state=1;
+                }
         } else if (exploring_arena_state==1 || exploring_arena_state==3){
                 look_front();
                 color_update();
                 distance_update();
-                if (distance_value<200) {
+                if (distance_value<WALL_DISTANCE) {
                         obstacle_counter++;
                         obstacle_free_counter=0;
                 } else {
                         obstacle_free_counter++;
+                        obstacle_counter=0;
                 }
                 if (obstacle_counter>=3)
                         obstacle_flag = FRONT_OBS;
@@ -230,18 +232,18 @@ void exploring_arena_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                }
-                if (obstacle_counter==0)
                         exploring_arena_state=exploring_arena_state%4;
+                }
         } else {
                 look_right();
                 color_update();
                 distance_update();
-                if (distance_value<200) {
+                if (distance_value<WALL_DISTANCE) {
                         obstacle_counter++;
                         obstacle_free_counter=0;
                 } else {
                         obstacle_free_counter++;
+                        obstacle_counter=0;
                 }
                 if (obstacle_counter>=3)
                         obstacle_flag = RIGHT_OBS;
@@ -249,9 +251,8 @@ void exploring_arena_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                }
-                if (obstacle_counter==0)
                         exploring_arena_state=3;
+                }
         }
 }
 
