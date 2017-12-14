@@ -12,12 +12,12 @@ int rotate_max_right=100000;
 int node_max_up=100000;
 int node_max_down=100000;
 int rotate_front;
-int rotation_speed = 200;
+int rotation_speed = 150;
 int up = 0;
 enum enumobstacle obstacle_flag = NO_OBS;
 int obstacle_counter = 0;
 int obstacle_free_counter = 0;
-enum crosstate crossing_state = SEARCHING_WALL;
+enum crosstate crossing_state = EXPLORING_ARENA;
 int following_wall_state = 0;
 int exploring_arena_state = 0;
 
@@ -232,7 +232,7 @@ void exploring_arena_head(void)
                         obstacle_flag = NO_OBS;
                         obstacle_free_counter=0;
                         obstacle_counter=0;
-                        exploring_arena_state=exploring_arena_state%4;
+                        exploring_arena_state=(exploring_arena_state+1)%4;
                 }
         } else {
                 look_right();
