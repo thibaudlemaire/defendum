@@ -12,7 +12,7 @@ int rotate_max_right=100000;
 int node_max_up=100000;
 int node_max_down=100000;
 int rotate_front;
-int rotation_speed = 200;
+int rotation_speed = 500;
 int up = 0;
 enum enumobstacle obstacle_flag = NO_OBS;
 int obstacle_counter = 0;
@@ -231,7 +231,7 @@ void exploring_arena_head(void)
                         obstacle_counter=0;
                 }
                 if (obstacle_counter==0)
-                        exploring_arena_state=exploring_arena_state%4;
+                        exploring_arena_state=(exploring_arena_state+1)%4;
         } else {
                 look_right();
                 color_update();
@@ -291,7 +291,7 @@ void look_right(void)
         int temp,temp2;
         if (up)
                 return;
-        tacho_set_speed_sp(MOTOR_ROTATE,-100);
+        tacho_set_speed_sp(MOTOR_ROTATE,-rotation_speed);
         tacho_run_forever( MOTOR_ROTATE );
         while(temp2 != (int) tacho_get_position(MOTOR_ROTATE,0)) {
                 temp2 = temp;

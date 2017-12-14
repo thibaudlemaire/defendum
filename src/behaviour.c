@@ -115,11 +115,12 @@ void explore_arena(void)
             sleep_ms(MOTORS_PERIOD);
             if (obstacle_flag != NO_OBS)
             {
+                  motors_stop();
                   random_dodge_obstacle();
             }
             else
             {
-                  motors_forward(THREE);
+                  motors_forward(ONE);
             }
 
       }
