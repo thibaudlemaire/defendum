@@ -12,7 +12,7 @@ int rotate_max_right=100000;
 int node_max_up=100000;
 int node_max_down=100000;
 int rotate_front;
-int rotation_speed = 500;
+int rotation_speed = 150;
 int up = 0;
 enum enumobstacle obstacle_flag = NO_OBS;
 int obstacle_counter = 0;
