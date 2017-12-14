@@ -6,7 +6,7 @@
 #define DISTANCE_PERIOD 50  // Distance measure period in ms
 #define MOTOR_NODE      OUTD
 #define MOTOR_ROTATE    OUTA
-#define WALL_DISTANCE   200 //in mm
+#define WALL_DISTANCE   300 //in mm
 enum {
         RED_COLOR,
         GREEN_COLOR,
