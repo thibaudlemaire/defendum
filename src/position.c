@@ -38,7 +38,7 @@ void *position_main(void *arg)
         int send_counter = 0;
         while (alive)
         {
-                if(send_counter == 20) // Equivalent to send our position every two seconds
+                if(send_counter == 10) // Equivalent to send our position every two seconds
                 {
                         send_counter =0;
                 }
@@ -89,16 +89,10 @@ int update_postion( int state )
  */
 void initialize_position( void )
 {
-        current_position.x=0;
-        current_position.y=0;
+        current_position.x = X_OFFSET;
+        current_position.y = Y_OFFSET;
         compass_offset = rotation_angle;
         current_tacho = tacho_get_position(MOTOR_RIGHT,0);
 }
 
-position_t add_offset(position_t point)
-{
-        position_t real_point;
-        real_point.x = point.x + X_OFFSET;
-        real_point.y = point.y + Y_OFFSET;
-        return real_point;
-}
+

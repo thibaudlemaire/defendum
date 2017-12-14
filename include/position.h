@@ -14,7 +14,7 @@ int init_position( void );
 void *position_main(void *arg);
 int update_postion( int state );
 void initialize_position( void );
-position_t add_offset(position_t point);
+
 
 extern position_t current_position;
 
