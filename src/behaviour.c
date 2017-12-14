@@ -3,7 +3,7 @@
 //
 
 #include <pthread.h>
-
+#include <stdlib.h>
 #include "behaviour.h"
 #include "motors.h"
 #include "main.h"
@@ -12,9 +12,10 @@
 #include "touch.h"
 #include "head.h"
 
-enum globalState robot_state = EXPLORING_ARENA;           // Robot state
+/*enum globalState robot_state = EXPLORING_ARENA;           // Robot state */
 /*enum crossingArenaState crossing_state = SEARCHING_WALL;*/
-enum crossingArenaState crossing_state = SEARCHING_WALL;
+
+crossing_state = EXPLORING_ARENA;
 
 void *behaviour_main(void *arg)
 {
@@ -28,15 +29,21 @@ void *behaviour_main(void *arg)
 
 void cross_arena(void)
 {
-      search_wall();
-      crossing_state++;
+      switch (crossing_state)
+      {
+            case SEARCHING_WALL:
+                search_wall();
+                crossing_state++;
+                break;
+            case FOLLOWING_WALL:
+                follow_wall();
+                crossing_state++;
+                break;
+            case EXPLORING_ARENA:
+                explore_arena();
+                break;
 
-      follow_wall();
-      crossing_state++;
-
-      explore_arena();
-
-
+      }
 }
 
 /*fonction qui déplace le robot de son point de départ et le positionne
@@ -103,17 +110,23 @@ void follow_wall(void)
 void explore_arena(void)
 {
       //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
-
-      if (obstacle_flag != NO_OBS)
+      while(alive)
       {
-            dodge_obstacle();
+            sleep_ms(MOTORS_PERIOD);
+            if (obstacle_flag != NO_OBS)
+            {
+                  random_dodge_obstacle();
+            }
+            else
+            {
+                  motors_forward(THREE);
+            }
+
       }
 }
 
 void dodge_obstacle(void)
 {
-      //TODO : éviter les obstacles
-
       switch (obstacle_flag)
       {
         case LEFT_OBS:
@@ -124,6 +137,28 @@ void dodge_obstacle(void)
               break;
         case RIGHT_OBS:
               motors_rotate_left(15);
+              break;
+        case NO_OBS:
+              break;
+      }
+      return;
+}
+
+void random_dodge_obstacle(void)
+{
+      //TODO : éviter les obstacles
+      int angle = rand ()%80 + 30;
+
+      switch (obstacle_flag)
+      {
+        case LEFT_OBS:
+              motors_rotate_right(angle);
+              break;
+        case FRONT_OBS:
+              motors_rotate_left(angle);
+              break;
+        case RIGHT_OBS:
+              motors_rotate_left(angle);
               break;
         case NO_OBS:
               break;
