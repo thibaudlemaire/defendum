@@ -15,7 +15,7 @@
 /*enum globalState robot_state = EXPLORING_ARENA;           // Robot state */
 /*enum crossingArenaState crossing_state = SEARCHING_WALL;*/
 
-crossing_state = EXPLORING_ARENA;
+enum crosstate crossing_state = EXPLORING_ARENA;
 
 void *behaviour_main(void *arg)
 {

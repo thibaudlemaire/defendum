@@ -17,7 +17,6 @@ int up = 0;
 enum enumobstacle obstacle_flag = NO_OBS;
 int obstacle_counter = 0;
 int obstacle_free_counter = 0;
-enum crosstate crossing_state;
 int following_wall_state = 0;
 int exploring_arena_state = 0;
 
