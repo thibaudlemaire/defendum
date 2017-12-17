@@ -11,6 +11,7 @@
 #include "main.h"
 #include "bluetooth.h"
 #include "display.h"
+#include "behaviour.h"
 
 int s;                                          // Bluetooth socket
 enum BtState bluetooth_state = DISCONNECTED;    // State of connexion
@@ -97,12 +98,15 @@ void *bluetooth_main(void *arg) {
                         break;
                 case MSG_TYPE_START:
                         print_console("Game start sent by server");
+                        start_received();
                         break;
                 case MSG_TYPE_STOP:
                         print_console("Game stop sent by server");
+                        stop_received();
                         break;
                 case MSG_TYPE_KICK:
                         print_error("Defendum got kicked by server");
+                        kicked();
                         break;
                 }
         }

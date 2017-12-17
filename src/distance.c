@@ -27,22 +27,9 @@ int init_distance( void )
 }
 
 /**
- * Main function of distance thread
- * @param arg
- * @return a generic pointer used by pthread
+ * Function called to update distance value
  */
-void *distance_main(void *arg)
+void distance_update(void)
 {
-        int old_measure, measure; // Measure [0 ; 2 550] cm
-        while (alive)
-        {
-                /* Waiting for measured distance change */
-                if (( measure = sensor_get_value(DISTANCE_CM_MODE, distance_sensor, 0)) == old_measure ) {
-                        sleep_ms( DISTANCE_PERIOD );
-                        continue;
-                }
-                old_measure = measure;
-                distance_value = measure;
-        }
-        pthread_exit(NULL);
+        distance_value = sensor_get_value(DISTANCE_CM_MODE, distance_sensor, 0);
 }

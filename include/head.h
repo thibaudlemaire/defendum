@@ -1,17 +1,8 @@
 #ifndef OS_ROBOT_HEAD_H
 #define OS_ROBOT_HEAD_H
 
-#define COLOR_PERIOD    50  // Color measure period in ms
-#define DISTANCE_CM_MODE 0 // Don't change this
-#define DISTANCE_PERIOD 50  // Distance measure period in ms
-#define MOTOR_NODE      OUTD
-#define MOTOR_ROTATE    OUTA
 #define WALL_DISTANCE   300 //in mm
-enum {
-        RED_COLOR,
-        GREEN_COLOR,
-        BLUE_COLOR,
-};
+#define HEAD_PERIOD     50
 
 enum enumobstacle {
         NO_OBS,
@@ -31,8 +22,6 @@ extern enum crosstate crossing_state;
 
 int init_head( void );
 void *head_main(void *arg);
-void color_update(void);
-void distance_update(void);
 void rotate_head(void);
 void look_left(void);
 void look_front(void);
@@ -44,4 +33,5 @@ int obstacle(void);
 void searching_wall_head(void);
 void following_wall_head(void);
 void exploring_arena_head(void);
+
 #endif //OS_ROBOT_HEAD_H
