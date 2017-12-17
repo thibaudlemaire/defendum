@@ -23,6 +23,11 @@ typedef struct {
 } position_t;
 
 typedef struct {
+        int x;
+        int y;
+} coordinates_t;
+
+typedef struct {
         unsigned char red;
         unsigned char green;
         unsigned char blue;
@@ -31,7 +36,7 @@ typedef struct {
 // Globals
 extern enum commandState command;               // Command for `motor` module
 extern int alive;                               // Program is alive
-extern enum globalState robot_state;            // Robot state
+
 extern int color_red,
            color_green,
            color_blue,

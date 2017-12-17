@@ -55,7 +55,11 @@ int init_head( void )
         tacho_reset( MOTOR_ROTATE );
         tacho_set_stop_action_brake( MOTOR_ROTATE );
         tacho_reset( MOTOR_NODE );
-        tacho_set_stop_action_brake( MOTOR_NODE );
+        tacho_set_stop_action_hold( MOTOR_NODE );
+        tacho_set_speed_sp(MOTOR_NODE,500);
+        node_max_down = tacho_get_position(MOTOR_NODE, 0) - 20;
+        tacho_set_position_sp(MOTOR_NODE, node_max_down);
+        tacho_run_to_abs_pos(MOTOR_NODE);
 
         tacho_set_speed_sp(MOTOR_ROTATE,500);
         tacho_run_forever( MOTOR_ROTATE );
@@ -69,9 +73,6 @@ int init_head( void )
                 rotate_max_right = (int) tacho_get_position(MOTOR_ROTATE,0);
                 sleep_ms(MOTORS_PERIOD);
         }
-
-        tacho_stop(MOTOR_NODE);
-        tacho_stop(MOTOR_ROTATE);
         rotate_front = ( rotate_max_left + rotate_max_right ) / 2;
 
         return 1;
@@ -81,12 +82,6 @@ void *head_main(void *arg)
 {
         while(alive)
         {
-                if (robot_state==INITIALIZING || robot_state==WAITING_FOR_START) {
-                        sleep_ms(50);
-                        continue;
-                }
-                if (robot_state==BUILDING_MAP || robot_state==SENDING_MAP || robot_state==FINISH || robot_state==KICKED)
-                        break;
                 switch (crossing_state) {
                 case SEARCHING_WALL:
                         searching_wall_head();
@@ -103,6 +98,8 @@ void *head_main(void *arg)
                 }
                 sleep_ms(50);
         }
+        tacho_reset( MOTOR_ROTATE );
+        tacho_reset( MOTOR_NODE );
         pthread_exit(NULL);
 }
 

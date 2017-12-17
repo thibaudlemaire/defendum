@@ -10,7 +10,7 @@
 #include "position.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
-enum linearSpeed speed_linear;
+enum linearSpeed speed_linear = ONE;
 int speed_circular = SPEED_CIRCULAR;
 
 /**

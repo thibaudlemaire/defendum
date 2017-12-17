@@ -9,9 +9,9 @@
 #include "brick.h"
 #include "display.h"
 #include "touch.h"
+#include "head.h"
 
 enum globalState robot_state = EXPLORING_ARENA;           // Robot state
-enum crossingArenaState crossing_state = SEARCHING_WALL;
 
 void *behaviour_main(void *arg)
 {

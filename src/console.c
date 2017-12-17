@@ -9,6 +9,7 @@
 #include "brick.h"
 #include "main.h"
 #include "display.h"
+#include "bluetooth.h"
 
 /**
  * Function used to init the console module
@@ -36,7 +37,7 @@ void *console_main(void *arg)
                 /* Quit */
                 case 'q':
                         command = STOP;
-                        sleep_ms(100);
+                        bluetooth_close();
                         alive = 0;
                         break;
                 /* Stop */

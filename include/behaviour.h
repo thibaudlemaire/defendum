@@ -16,11 +16,7 @@ enum globalState {
         KICKED,
 };
 
-enum crossingArenaState {
-        SEARCHING_WALL,
-        FOLLOWING_WALL,
-        EXPLORING_ARENA
-};
+extern enum globalState robot_state;            // Robot state
 
 void *behaviour_main(void *arg);
 void cross_arena(void);

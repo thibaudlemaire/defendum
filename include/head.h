@@ -27,6 +27,7 @@ enum crosstate {
 };
 
 extern enum enumobstacle obstacle_flag;
+extern enum crosstate crossing_state;
 
 int init_head( void );
 void *head_main(void *arg);

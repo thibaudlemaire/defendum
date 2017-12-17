@@ -8,7 +8,7 @@
 // Server communications
 #define TEAM_ID                 3   // Team ID for bluetooth communication with server
 #define SERVER_TEAM_ID          0xFF
-#define SERV_ADDR               "dc:53:60:ad:61:90"     // Whatever the address of the server is
+#define SERV_ADDR               "9C:B6:D0:E2:82:BC"     // Whatever the address of the server is
 #define MESSAGE_MAX_LENGHT      58
 #define READ_TIMEOUT_SEC        2
 #define RECONNEXION_PERIOD_SEC  2
@@ -43,9 +43,10 @@ enum {
 // Prototypes
 int init_bluetooth( void );
 void *bluetooth_main( void *arg );
-void send_position( position_t position );
-void drop_obstacle( position_t position );
-void pick_up_obstacle( position_t position );
-void send_map_point( position_t position, char R,char G, char B);
+void send_coordinates( coordinates_t coordinates );
+void drop_obstacle( coordinates_t coordinates );
+void pick_up_obstacle( coordinates_t coordinates );
+void send_map_point( coordinates_t coordinates, char R,char G, char B);
+void bluetooth_close();
 
 #endif //OS_ROBOT_BLUETOOTH_H

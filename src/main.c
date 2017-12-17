@@ -9,12 +9,13 @@
 #include "console.h"
 #include "head.h"
 #include "rotation.h"
-#include "compass.h"
 #include "display.h"
 #include "bluetooth.h"
 #include "position.h"
 #include "behaviour.h"
 #include "touch.h"
+
+#include <ncurses.h>
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
@@ -43,12 +44,10 @@ int init( void )
                        init_motors() &
                        init_head() &
                        init_rotation() &
-                       /*init_compass() &*/
                        init_bluetooth() &
                        init_console() &
                        init_position() &
                        init_touch()
-
                        );
 }
 
@@ -64,10 +63,9 @@ int main( void )
         pthread_t motors_thread;
         pthread_t head_thread;
         pthread_t rotation_thread;
-        pthread_t compass_thread;
         pthread_t bluetooth_thread;
         pthread_t position_thread;
-        pthread_t behaviour_thread;
+        //pthread_t behaviour_thread;
 
         // Init brick library, to interface lego sensors and motors
         if ( !brick_init()) return ( 1 );
@@ -81,25 +79,22 @@ int main( void )
         // Launch threads
         pthread_create(&motors_thread, NULL, motors_main, NULL);
         pthread_create(&head_thread, NULL, head_main, NULL);
-        pthread_create(&console_thread, NULL, console_main, NULL);
         pthread_create(&rotation_thread, NULL, rotation_main, NULL);
-        pthread_create(&compass_thread, NULL, compass_main, NULL);
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
-        pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
-
+        pthread_create(&console_thread, NULL, console_main, NULL);
+        //pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
 
         // Wait for every thread to end
+        pthread_join(display_thread, NULL);
+        //pthread_join(behaviour_thread, NULL);
         pthread_join(console_thread, NULL);
         pthread_join(motors_thread, NULL);
         pthread_join(head_thread, NULL);
         pthread_join(rotation_thread, NULL);
-        pthread_join(compass_thread, NULL);
         pthread_join(bluetooth_thread, NULL);
-        pthread_join(display_thread, NULL);
         pthread_join(position_thread, NULL);
-        pthread_join(behaviour_thread, NULL);
 
         pthread_mutex_destroy(&stdout_mutex);
 

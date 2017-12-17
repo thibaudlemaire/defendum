@@ -26,13 +26,13 @@ int init_bluetooth( void )
 {
         struct sockaddr_rc addr = { 0 };
         int status;
-        struct timeval timeout;
-        timeout.tv_sec = READ_TIMEOUT_SEC;
-        timeout.tv_usec = 0;
+        //struct timeval timeout;
+        //timeout.tv_sec = READ_TIMEOUT_SEC;
+        //timeout.tv_usec = 0;
 
         // allocate a socket
         s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
-        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout,sizeof(struct timeval));    // Set a timeout
+        //setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout,sizeof(struct timeval));    // Set a timeout
 
         // set the connection parameters (who to connect to)
         addr.rc_family = AF_BLUETOOTH;
@@ -112,91 +112,97 @@ void *bluetooth_main(void *arg) {
 }
 
 /**
- * Function used to send the current position of the robot
+ * Function used to send the current coordinates of the robot
  * Should be called every 2 sec
- * @param position
+ * @param coordinates
  */
-void send_position( position_t position ) {
+void send_coordinates( coordinates_t coordinates ) {
         char send_message[9];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
         msg_id++;
-        send_message[MSG_ID_LSB] = *(((char *) &(msg_id))+1);
-        send_message[MSG_ID_MSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_LSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_MSB] = *(((char *) &(msg_id))+1);
         send_message[MSG_SRC] = TEAM_ID;
         send_message[MSG_DST] = SERVER_TEAM_ID;
         send_message[MSG_TYPE] = MSG_TYPE_POSITION;
-        send_message[5] = *(((char *) &(position.x))+1); // x LSB
-        send_message[6] = *((char *) &(position.x));    // MSB
-        send_message[7] = *(((char *) &(position.y))+1); // y LSB
-        send_message[8] = *((char *) &(position.y));    // MSB
+        send_message[5] = *((char *) &(coordinates.x));            // x LSB
+        send_message[6] = *(((char *) &(coordinates.x))+1);        // MSB
+        send_message[7] = *((char *) &(coordinates.y));            // y LSB
+        send_message[8] = *(((char *) &(coordinates.y))+1);        // MSB
 
         write(s, send_message, 9);
 }
 
 /**
  * Function used to send a drop message to the server
- * @param position
+ * @param coordinates
  */
-void drop_obstacle( position_t position ) {
+void drop_obstacle( coordinates_t coordinates ) {
         char send_message[10];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
         msg_id++;
-        send_message[MSG_ID_LSB] = *(((char *) &(msg_id))+1);
-        send_message[MSG_ID_MSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_LSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_MSB] = *(((char *) &(msg_id))+1);
         send_message[MSG_SRC] = TEAM_ID;
         send_message[MSG_DST] = SERVER_TEAM_ID;
         send_message[MSG_TYPE] = MSG_TYPE_OBSTACLE;
         send_message[5] = 0;                            // Drop
-        send_message[6] = *(((char *) &(position.x))+1); // x LSB
-        send_message[7] = *((char *) &(position.x));    // MSB
-        send_message[8] = *(((char *) &(position.y))+1); // y LSB
-        send_message[9] = *((char *) &(position.y));    // MSB
+        send_message[6] = *((char *) &(coordinates.x));            // x LSB
+        send_message[7] = *(((char *) &(coordinates.x))+1);        // MSB
+        send_message[8] = *((char *) &(coordinates.y));            // y LSB
+        send_message[9] = *(((char *) &(coordinates.y))+1);        // MSB
 
         write(s, send_message, 9);
 }
 
 /**
  * Function used to send a pickup message to the server
- * @param position
+ * @param coordinates
  */
-void pick_up_obstacle( position_t position ) {
+void pick_up_obstacle( coordinates_t coordinates ) {
         char send_message[10];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
         msg_id++;
-        send_message[MSG_ID_LSB] = *(((char *) &(msg_id))+1);
-        send_message[MSG_ID_MSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_LSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_MSB] = *(((char *) &(msg_id))+1);
         send_message[MSG_SRC] = TEAM_ID;
         send_message[MSG_DST] = SERVER_TEAM_ID;
         send_message[MSG_TYPE] = MSG_TYPE_OBSTACLE;
         send_message[5] = 1;                            // Pickup
-        send_message[6] = *(((char *) &(position.x))+1); // x LSB
-        send_message[7] = *((char *) &(position.x));    // MSB
-        send_message[8] = *(((char *) &(position.y))+1); // y LSB
-        send_message[9] = *((char *) &(position.y));    // MSB
+        send_message[6] = *((char *) &(coordinates.x));            // x LSB
+        send_message[7] = *(((char *) &(coordinates.x))+1);        // MSB
+        send_message[8] = *((char *) &(coordinates.y));            // y LSB
+        send_message[9] = *(((char *) &(coordinates.y))+1);        // MSB
 
         write(s, send_message, 9);
 }
 
-void send_map_point( position_t position, char R,char G, char B)
+void send_map_point( coordinates_t coordinates, char R,char G, char B)
 {
         char send_message[12];
         msg_id++;
-        send_message[MSG_ID_LSB] = *(((char *) &(msg_id))+1);
-        send_message[MSG_ID_MSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_LSB] = *((char *) &(msg_id));
+        send_message[MSG_ID_MSB] = *(((char *) &(msg_id))+1);
         send_message[MSG_SRC] = TEAM_ID;
         send_message[MSG_DST] = SERVER_TEAM_ID;
         send_message[MSG_TYPE] = MSG_TYPE_MAPDATA;
-        send_message[5] = *(((char *) &(position.x))+1); // x LSB
-        send_message[6] = *((char *) &(position.x));    // MSB
-        send_message[7] = *(((char *) &(position.y))+1); // y LSB
-        send_message[8] = *((char *) &(position.y));    // MSB
+        send_message[5] = *((char *) &(coordinates.x));            // x LSB
+        send_message[6] = *(((char *) &(coordinates.x))+1);        // MSB
+        send_message[7] = *((char *) &(coordinates.y));            // y LSB
+        send_message[8] = *(((char *) &(coordinates.y))+1);        // MSB
         send_message[9] = R;
         send_message[10] = G;
         send_message[11] = B;
 
         write(s, send_message, 9);
 
+}
+
+void bluetooth_close()
+{
+    bluetooth_state = DISCONNECTED;
+    shutdown(s, SHUT_RDWR);
 }

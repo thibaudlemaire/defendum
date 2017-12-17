@@ -10,6 +10,8 @@
 #include "display.h"
 #include "position.h"
 #include "motors.h"
+#include "bluetooth.h"
+#include "map.h"
 
 
 // Current position, global, it is initialized only when globalState -> WAITING_FOR_START called by bluetooth?
@@ -38,6 +40,7 @@ void *position_main(void *arg)
         while (alive)
         {
                 update_postion(command);
+                send_coordinates(position_to_coordinates(current_position));
                 sleep_ms(POSITION_PERIOD);
         }
         pthread_exit(NULL);
@@ -63,8 +66,8 @@ int update_postion( int state )
         case BACK:
                 temp_tacho = (int) tacho_get_position(MOTOR_RIGHT,10) - current_tacho;
                 temp_direction = (double) (rotation_angle - compass_offset)*M_PI/180;
-                current_position.x = (int) (current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(cos(temp_direction)));
-                current_position.y = (int) (current_position.y + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(sin(temp_direction)));
+                current_position.y = (int) (current_position.y + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(cos(temp_direction)));
+                current_position.x = (int) (current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(sin(temp_direction)));
                 current_tacho = tacho_get_position(MOTOR_RIGHT,0);
                 break;
         }

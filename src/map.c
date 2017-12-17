@@ -5,20 +5,13 @@
 
 #include "map.h"
 #include "main.h"
-#include "display.h"
 #include "bluetooth.h"
 
 
 #define max(x,y) ((x) >= (y)) ? (x) : (y)
 #define min(x,y) ((x) <= (y)) ? (x) : (y)
 
-int i;
-int j;
-
-
-
-
-
+const coordinates_t start_coordinates = {START_COORD_X, START_COORD_Y};
 
 void init_map_random(map map)
 {
@@ -59,23 +52,23 @@ void init_map_small_arena(map map)
     }
 }
 
-void set_Object(map map,position_t point, char objectType)
+void set_Object(map map, position_t position, char objectType)
 {
-
-    map.tab[point.x][point.y] = objectType;
-
+    coordinates_t coordinates = position_to_coordinates(position);
+    map.tab[coordinates.x][coordinates.y] = objectType;
 }
 
-char get_Object(map map,position_t point)
+char get_Object(map map, position_t position)
 {
-    return (char) map.tab[point.x][point.y];
+    coordinates_t coordinates = position_to_coordinates(position);
+    return (char) map.tab[coordinates.x][coordinates.y];
 }
 
 point_cluster get_points_of_a_type(map map, char objectType)
 {
     int i;
     int j;
-    position_t p;
+    coordinates_t coordinates;
     point_cluster list_of_point;
     list_of_point.len = 0;
 
@@ -86,9 +79,9 @@ point_cluster get_points_of_a_type(map map, char objectType)
             if (map.tab[i][j] == objectType)
             {
 
-                p.x = i;
-                p.y = j;
-                list_of_point.set[list_of_point.len] = p;
+                coordinates.x = i;
+                coordinates.y = j;
+                list_of_point.set[list_of_point.len] = coordinates;
                 list_of_point.len ++;
             }
 
@@ -102,34 +95,46 @@ point_cluster get_points_of_a_type(map map, char objectType)
 
 void send_map(map map)
 {
-    position_t p;
+    coordinates_t coordinates;
     int i;
     int j;
-
 
     for ( i = 0; i < map.width ; ++i)
     {
         for ( j = 0; j < map.height ; ++j)
         {
-            p.x = i;
-            p.y = j;
+            coordinates.x = i;
+            coordinates.y = j;
 
             switch (map.tab[i][j])
             {
                 case 'U':                           //Unknown
-                    send_map_point(p,(char) 255,(char) 255,(char) 255);
+                    send_map_point(coordinates,(char) 255,(char) 255,(char) 255);
                 case 'E':                           //Empty
-                    send_map_point(p,(char) 240,(char) 255,(char) 240);
+                    send_map_point(coordinates,(char) 240,(char) 255,(char) 240);
                 case 'W':                           //Wall
-                    send_map_point(p,(char) 0,(char) 0,(char) 0);
+                    send_map_point(coordinates,(char) 0,(char) 0,(char) 0);
                 case 'M':                           //Movable
-                    send_map_point(p,(char) 70,(char) 130,(char) 180);
+                    send_map_point(coordinates,(char) 70,(char) 130,(char) 180);
                 case 'N':                           //Non movable
-                    send_map_point(p,(char) 250,(char) 128,(char) 114);
+                    send_map_point(coordinates,(char) 250,(char) 128,(char) 114);
             }
         }
-
     }
+}
+
+position_t coordinates_to_position(coordinates_t coordinates) {
+    position_t position;
+    position.x = (coordinates.x - start_coordinates.x) * 50;
+    position.y = (coordinates.y - start_coordinates.y) * 50;
+    return position;
+}
+
+coordinates_t position_to_coordinates(position_t position) {
+    coordinates_t coordinates;
+    coordinates.x = (position.x / 50) + start_coordinates.x;
+    coordinates.y = (position.y / 50) + start_coordinates.y;
+    return coordinates;
 }
 
 
