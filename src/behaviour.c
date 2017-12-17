@@ -2,6 +2,7 @@
 // Created by Thibaud Lemaire on 23/11/2017.
 //
 
+#include <pthread.h>
 #include "behaviour.h"
 #include "motors.h"
 #include "main.h"
@@ -9,9 +10,38 @@
 #include "display.h"
 #include "touch.h"
 
-void behaviour_main(void)
+enum globalState robot_state = EXPLORING_ARENA;           // Robot state
+enum crossingArenaState crossing_state = SEARCHING_WALL;
+
+void *behaviour_main(void *arg)
 {
-      //print_console("Behaviour initialized");
+      print_console("Behaviour initialized");
+
+      cross_arena();
+
+      pthread_exit(NULL);
+
+}
+
+void cross_arena(void)
+{
+      search_wall();
+      crossing_state++;
+
+      follow_wall();
+      crossing_state++;
+
+      explore_arena();
+
+
+}
+
+
+void search_wall(void)
+{
+
+      // Sleep to let head initialise
+      sleep_ms(1000);
 
       int wall_detected = 0;
       /* first face a wall */
@@ -24,11 +54,17 @@ void behaviour_main(void)
 
           if (distance_value < 50)
           {
+            sleep_ms(50);
+
             wall_detected = 1;
             motors_rotate_left(90);
           }
       }
+      return;
+}
 
+void follow_wall(void)
+{
       while(alive)
       {
           sleep_ms(TOUCH_PERIOD);
@@ -48,5 +84,14 @@ void behaviour_main(void)
           }
 
       }
+      return;
+}
 
+/*
+* Fonction qui explore le centre de l'arene, une fois que le contour est connu
+* 
+*/
+void explore_arena(void)
+{
+      //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
 }

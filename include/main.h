@@ -16,16 +16,6 @@ enum commandState {
         RIGHT,
 };
 
-enum globalState {
-        INITIALIZING,
-        WAITING_FOR_START,
-        CROSSING_ARENA,
-        BUILDING_MAP,
-        SENDING_MAP,
-        FINISH,
-        KICKED,
-};
-
 // Types
 typedef struct {
         int x;

@@ -18,7 +18,7 @@
 
 // Globals
 enum commandState command = STOP;       // Command for `motor' module
-enum globalState robot_state = CROSSING_ARENA;           // Robot state
+
 int alive;                              // Program is alive
 int color_red = 0,
     color_green = 0,
@@ -67,6 +67,7 @@ int main( void )
         pthread_t compass_thread;
         pthread_t bluetooth_thread;
         pthread_t position_thread;
+        pthread_t behaviour_thread;
 
         // Init brick library, to interface lego sensors and motors
         if ( !brick_init()) return ( 1 );
@@ -86,8 +87,8 @@ int main( void )
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
+        pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
 
-        //behaviour_main();
 
         // Wait for every thread to end
         pthread_join(console_thread, NULL);
@@ -98,6 +99,7 @@ int main( void )
         pthread_join(bluetooth_thread, NULL);
         pthread_join(display_thread, NULL);
         pthread_join(position_thread, NULL);
+        pthread_join(behaviour_thread, NULL);
 
         pthread_mutex_destroy(&stdout_mutex);
 
