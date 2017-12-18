@@ -22,7 +22,7 @@ int init_touch( void )
                 return ( 1 );
         }
         print_error( "Touch sensor not found, exit" );
-        return ( 0 );
+        return ( 1 );
 }
 
 int touch_is_touched(void)

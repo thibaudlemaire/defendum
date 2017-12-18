@@ -43,7 +43,7 @@ void reset_node()
 void node_up()
 {
     tacho_set_stop_action_coast( MOTOR_NODE );
-    sleep_ms(300);
+    sleep_ms(1000);
     tacho_set_stop_action_hold( MOTOR_NODE );
     tacho_set_position_sp(MOTOR_NODE, node_max_up);
     tacho_set_speed_sp(MOTOR_NODE, NODE_SPEED);

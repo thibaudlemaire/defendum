@@ -6,7 +6,7 @@
 #define OS_ROBOT_NODE_H
 
 #define MOTOR_NODE      OUTD
-#define NODE_FLOOR_OFFSET   20
+#define NODE_FLOOR_OFFSET   5
 #define NODE_SPEED      1000
 #define NODE_RANGE      100
 #define NODE_PERIOD     50

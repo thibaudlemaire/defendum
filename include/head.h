@@ -4,9 +4,9 @@
 #define WALL_DISTANCE   300 //in mm
 #define HEAD_PERIOD     50
 
-#define CLEAR_THRESHOLD 1000
-#define NEAR_THRESHOLD 300
-#define STOP_THRESHOLD 150
+#define CLEAR_THRESHOLD 500
+#define NEAR_THRESHOLD 200
+#define STOP_THRESHOLD 70
 
 enum enumobstacle {
         NO_OBS,

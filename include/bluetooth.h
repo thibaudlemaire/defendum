@@ -8,7 +8,7 @@
 // Server communications
 #define TEAM_ID                 3   // Team ID for bluetooth communication with server
 #define SERVER_TEAM_ID          0xFF
-#define SERV_ADDR               "9C:B6:D0:E2:82:BC"     // Whatever the address of the server is
+#define SERV_ADDR               "00:1A:7D:DA:71:06"     // Watever the address of the server is
 #define MESSAGE_MAX_LENGHT      58
 #define READ_TIMEOUT_SEC        2
 #define RECONNEXION_PERIOD_SEC  2

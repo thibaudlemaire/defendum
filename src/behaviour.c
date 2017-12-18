@@ -13,6 +13,7 @@
 #include "map.h"
 #include "bluetooth.h"
 #include "position.h"
+#include "color.h"
 
 enum globalState robot_state = INITIALIZING;            // Robot state
 enum specificState specif_state = NORMAL;               // Secondary state
@@ -161,7 +162,8 @@ void obstacle_on_left()
     head_stop();
     look_left();
     sleep_ms(WAIT_FOR_COLOR);
-    if (color_red > RED_THRESHOLD)
+    color_update();
+    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
     {
         motors_rotate_left(GO_STRAIGHT_ANGLE);
         look_front();
@@ -179,7 +181,8 @@ void obstacle_on_front()
     head_stop();
     look_front();
     sleep_ms(WAIT_FOR_COLOR);
-    if (color_red > RED_THRESHOLD)
+    color_update();
+    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
     {
         motors_stop();
         specif_state = MOVABLE_OBSTACLE_DETECTED;
@@ -196,7 +199,8 @@ void obstacle_on_right()
     head_stop();
     look_right();
     sleep_ms(WAIT_FOR_COLOR);
-    if (color_red > RED_THRESHOLD)
+    color_update();
+    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
     {
         motors_rotate_right(GO_STRAIGHT_ANGLE);
         look_front();
@@ -261,7 +265,7 @@ void resume()
  * This function start crossing arena
  */
 void cross_arena() {
-    head_move();                    // Move the head to find obstacles
+    //head_move();                    // Move the head to find obstacles
     motors_forward(SPEED_THREE);           // Go forward
 }
 
