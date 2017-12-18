@@ -2,7 +2,7 @@
 // Created by Thibaud Lemaire on 17/11/2017.
 //
 
-#include <pthread.h>
+#include <math.h>
 #include "motors.h"
 #include "brick.h"
 #include "main.h"
@@ -10,8 +10,9 @@
 #include "position.h"
 
 int max_speed;     /* Motor maximal speed (will be detected) */
-enum linearSpeed speed_linear = ONE;
+enum linearSpeed speed_linear = SPEED_ONE;
 int speed_circular = SPEED_CIRCULAR;
+int state;
 
 /**
  * Function used to init motors module
@@ -33,93 +34,107 @@ int init_motors( void )
 }
 
 /**
- * Main function of motor thread
- * @param arg
- * @return a generic pointer used by pthread
+ * Function called to turn left
+ * @param angle
  */
-void *motors_main(void *arg)
-{
-        int state = STOP;
-        while (alive)
-        {
-                /* Waiting new command */
-                if ( state == command ) {
-                        sleep_ms( MOTORS_PERIOD );
-                        continue;
-                }
-                switch ( command ) {
-                case STOP:
-                        tacho_stop( MOTOR_BOTH );
-                        /* Waiting the vehicle is stopped */
-                        while(tacho_is_running( MOTOR_BOTH )) ;
-                        update_postion(state);
-                        break;
-                case FORTH:
-                        tacho_stop( MOTOR_BOTH );
-                        /* Waiting the vehicle is stopped */
-                        while(tacho_is_running( MOTOR_BOTH )) ;
-                        update_postion(state);
-                        tacho_set_speed_sp( MOTOR_BOTH, speed_linear );
-                        tacho_run_forever( MOTOR_BOTH );
-                        break;
-                case BACK:
-                        tacho_stop( MOTOR_BOTH );
-                        /* Waiting the vehicle is stopped */
-                        while(tacho_is_running( MOTOR_BOTH )) ;
-                        update_postion(state);
-                        tacho_set_speed_sp( MOTOR_BOTH, -speed_linear );
-                        tacho_run_forever( MOTOR_BOTH );
-                        break;
-                case LEFT:
-                        tacho_stop( MOTOR_BOTH );
-                        /* Waiting the vehicle is stopped */
-                        while(tacho_is_running( MOTOR_BOTH )) ;
-                        update_postion(state);
-                        tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
-                        tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
-                        tacho_run_forever( MOTOR_BOTH );
-                        break;
-                case RIGHT:
-                        tacho_stop( MOTOR_BOTH );
-                        /* Waiting the vehicle is stopped */
-                        while(tacho_is_running( MOTOR_BOTH )) ;
-                        update_postion(state);
-                        tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
-                        tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
-                        tacho_run_forever( MOTOR_BOTH );
-                        break;
-                }
-                state = command;
-        }
-        tacho_stop( MOTOR_BOTH );
-        pthread_exit(NULL);
-}
-
 void motors_rotate_left(int angle)
 {
-      command = LEFT;
-      int sleep_time = angle * 3500 / 360;
-      sleep_ms(sleep_time);
-      command = STOP;
+    // TODO Use real angle to turn
+    tacho_stop( MOTOR_BOTH );
+    /* Waiting the vehicle is stopped */
+    while(tacho_is_running( MOTOR_BOTH )) ;
+    update_position(state);
+    tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
+    tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
+    tacho_run_forever( MOTOR_BOTH );
+    state = LEFT;
+
+    int sleep_time = angle * 3500 / 360;
+    sleep_ms(sleep_time);
+    motors_stop();
 }
+
+/**
+ * Function called to turn right
+ * @param angle
+ */
 void motors_rotate_right(int angle)
 {
-      command = RIGHT;
-      int sleep_time = angle * 3500 / 360;
-      sleep_ms(sleep_time);
-      command = STOP;
+    // TODO Use real angle to turn
+    tacho_stop( MOTOR_BOTH );
+    /* Waiting the vehicle is stopped */
+    while(tacho_is_running( MOTOR_BOTH )) ;
+    update_position(state);
+    tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
+    tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
+    tacho_run_forever( MOTOR_BOTH );
+    state = RIGHT;
+
+    int sleep_time = angle * 3500 / 360;
+    sleep_ms(sleep_time);
+    motors_stop();
 }
+
+/**
+ * Function called to go forward
+ * @param speed
+ */
 void motors_forward(enum linearSpeed speed)
 {
-      command = FORTH;
-      speed_linear = speed;
+    tacho_stop( MOTOR_BOTH );
+    /* Waiting the vehicle is stopped */
+    while(tacho_is_running( MOTOR_BOTH )) ;
+    update_position(state);
+    tacho_set_speed_sp( MOTOR_BOTH, speed );
+    tacho_run_forever( MOTOR_BOTH );
+    state = FORTH;
 }
+
+/**
+ * Function called to go backward
+ * @param speed
+ */
 void motors_backward(enum linearSpeed speed)
 {
-      command = BACK;
-      speed_linear = speed;
+    tacho_stop( MOTOR_BOTH );
+    /* Waiting the vehicle is stopped */
+    while(tacho_is_running( MOTOR_BOTH )) ;
+    update_position(state);
+    tacho_set_speed_sp( MOTOR_BOTH, -speed );
+    tacho_run_forever( MOTOR_BOTH );
+    state = BACK;
 }
+
+/**
+ * Function called to stop the robot
+ */
 void motors_stop(void)
 {
-      command = STOP;
+    tacho_stop( MOTOR_BOTH );
+    /* Waiting the vehicle is stopped */
+    while(tacho_is_running( MOTOR_BOTH )) ;
+    update_position(state);
+    state = STOP;
+}
+
+/**
+ * Function called to go forward to a specific position
+ * @param distance
+ */
+void motors_cross(int distance)
+{
+    update_position(state);
+    state = FORTH;
+    int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) + ( (180 * distance) / (M_PI * WHEEL_RADIUS) );
+    int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) + ( (180 * distance) / (M_PI * WHEEL_RADIUS) );
+    tacho_set_speed_sp( MOTOR_BOTH, SPEED_ONE );
+    tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
+    tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
+    tacho_run_to_abs_pos( MOTOR_BOTH );
+    sleep_ms(300);
+    while( !(tacho_get_state(MOTOR_LEFT) && TACHO_HOLDING))
+        sleep_ms(MOTORS_PERIOD);
+    update_position(state);
+    state = STOP;
+
 }

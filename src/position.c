@@ -39,8 +39,8 @@ void *position_main(void *arg)
 {
         while (alive)
         {
-                update_postion(command);
-                send_coordinates(position_to_coordinates(current_position));
+                update_position(command);
+                bt_send_coordinates(position_to_coordinates(current_position));
                 sleep_ms(POSITION_PERIOD);
         }
         pthread_exit(NULL);
@@ -51,7 +51,7 @@ void *position_main(void *arg)
  * @param arg
  * @return 1 if the position have been update, 0 if it failed
  */
-int update_postion( int state )
+int update_position( int state )
 {
         int temp_tacho;
         double temp_direction;

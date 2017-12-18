@@ -10,6 +10,7 @@
 #include "main.h"
 #include "display.h"
 #include "bluetooth.h"
+#include "motors.h"
 
 /**
  * Function used to init the console module
@@ -36,29 +37,29 @@ void *console_main(void *arg)
                 switch (pressed) {
                 /* Quit */
                 case 'q':
-                        command = STOP;
+                        motors_stop();
                         bluetooth_close();
                         alive = 0;
                         break;
                 /* Stop */
                 case ' ':
-                        command = STOP;
+                        motors_stop();
                         break;
                 /* Forward */
                 case KEY_UP:
-                        command = FORTH;
+                        motors_forward(SPEED_TWO);
                         break;
                 /* Backward */
                 case KEY_DOWN:
-                        command = BACK;
+                        motors_backward(SPEED_TWO);
                         break;
                 /* Left */
                 case KEY_LEFT:
-                        command = LEFT;
+                        motors_rotate_left(90);
                         break;
                 /* Right */
                 case KEY_RIGHT:
-                        command = RIGHT;
+                        motors_rotate_right(90);
                         break;
                 }
         }

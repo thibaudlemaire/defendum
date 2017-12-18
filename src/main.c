@@ -60,12 +60,11 @@ int main( void )
         // Declaration of threads
         pthread_t display_thread;
         pthread_t console_thread;
-        pthread_t motors_thread;
         pthread_t head_thread;
         pthread_t rotation_thread;
         pthread_t bluetooth_thread;
         pthread_t position_thread;
-        //pthread_t behaviour_thread;
+        pthread_t behaviour_thread;
 
         // Init brick library, to interface lego sensors and motors
         if ( !brick_init()) return ( 1 );
@@ -77,20 +76,18 @@ int main( void )
         }
 
         // Launch threads
-        pthread_create(&motors_thread, NULL, motors_main, NULL);
         pthread_create(&head_thread, NULL, head_main, NULL);
         pthread_create(&rotation_thread, NULL, rotation_main, NULL);
         pthread_create(&display_thread, NULL, display_main, NULL);
         pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
         pthread_create(&console_thread, NULL, console_main, NULL);
-        //pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
+        pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
 
         // Wait for every thread to end
         pthread_join(display_thread, NULL);
-        //pthread_join(behaviour_thread, NULL);
+        pthread_join(behaviour_thread, NULL);
         pthread_join(console_thread, NULL);
-        pthread_join(motors_thread, NULL);
         pthread_join(head_thread, NULL);
         pthread_join(rotation_thread, NULL);
         pthread_join(bluetooth_thread, NULL);
@@ -98,7 +95,7 @@ int main( void )
 
         pthread_mutex_destroy(&stdout_mutex);
 
-
+        motors_stop();
         // Release display
         uninit_display();
 

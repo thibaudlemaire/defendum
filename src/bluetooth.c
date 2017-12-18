@@ -120,7 +120,7 @@ void *bluetooth_main(void *arg) {
  * Should be called every 2 sec
  * @param coordinates
  */
-void send_coordinates( coordinates_t coordinates ) {
+void bt_send_coordinates( coordinates_t coordinates ) {
         char send_message[9];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
@@ -142,7 +142,7 @@ void send_coordinates( coordinates_t coordinates ) {
  * Function used to send a drop message to the server
  * @param coordinates
  */
-void drop_obstacle( coordinates_t coordinates ) {
+void bt_drop_obstacle( coordinates_t coordinates ) {
         char send_message[10];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
@@ -165,7 +165,7 @@ void drop_obstacle( coordinates_t coordinates ) {
  * Function used to send a pickup message to the server
  * @param coordinates
  */
-void pick_up_obstacle( coordinates_t coordinates ) {
+void bt_pick_up_obstacle( coordinates_t coordinates ) {
         char send_message[10];
 
         // *((uint16_t *) send_message) = msg_id++; // Big endian...
@@ -184,7 +184,7 @@ void pick_up_obstacle( coordinates_t coordinates ) {
         write(s, send_message, 9);
 }
 
-void send_map_point( coordinates_t coordinates, char R,char G, char B)
+void bt_send_map_point( coordinates_t coordinates, char R,char G, char B)
 {
         char send_message[12];
         msg_id++;

@@ -42,8 +42,12 @@ void reset_node()
  */
 void node_up()
 {
+    tacho_set_stop_action_hold( MOTOR_NODE );
     tacho_set_position_sp(MOTOR_NODE, node_max_up);
     tacho_run_to_abs_pos(MOTOR_NODE);
+    sleep_ms(500);
+    while( !(tacho_get_state(MOTOR_NODE) && TACHO_HOLDING))
+        sleep_ms(NODE_PERIOD);
 }
 
 /**
@@ -51,6 +55,10 @@ void node_up()
  */
 void node_down()
 {
+    tacho_set_stop_action_hold( MOTOR_NODE );
     tacho_set_position_sp(MOTOR_NODE, node_max_down);
     tacho_run_to_abs_pos(MOTOR_NODE);
+    sleep_ms(300);
+    while( !(tacho_get_state(MOTOR_NODE) && TACHO_HOLDING))
+        sleep_ms(NODE_PERIOD);
 }

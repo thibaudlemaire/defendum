@@ -43,10 +43,10 @@ enum {
 // Prototypes
 int init_bluetooth( void );
 void *bluetooth_main( void *arg );
-void send_coordinates( coordinates_t coordinates );
-void drop_obstacle( coordinates_t coordinates );
-void pick_up_obstacle( coordinates_t coordinates );
-void send_map_point( coordinates_t coordinates, char R,char G, char B);
+void bt_send_coordinates( coordinates_t coordinates );
+void bt_drop_obstacle( coordinates_t coordinates );
+void bt_pick_up_obstacle( coordinates_t coordinates );
+void bt_send_map_point( coordinates_t coordinates, char R,char G, char B);
 void bluetooth_close();
 
 #endif //OS_ROBOT_BLUETOOTH_H

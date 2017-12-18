@@ -12,8 +12,9 @@
 #define min(x,y) ((x) <= (y)) ? (x) : (y)
 
 const coordinates_t start_coordinates = {START_COORD_X, START_COORD_Y};
+map_t map;
 
-void init_map_random(map map)
+void init_map_random()
 {
     int i;
     int j;
@@ -25,7 +26,7 @@ void init_map_random(map map)
     }
 }
 
-void init_map_small_arena(map map)
+void init_map_small_arena()
 {
 
     int i;
@@ -52,19 +53,19 @@ void init_map_small_arena(map map)
     }
 }
 
-void set_Object(map map, position_t position, char objectType)
+void set_Object(position_t position, char objectType)
 {
     coordinates_t coordinates = position_to_coordinates(position);
     map.tab[coordinates.x][coordinates.y] = objectType;
 }
 
-char get_Object(map map, position_t position)
+char get_Object(position_t position)
 {
     coordinates_t coordinates = position_to_coordinates(position);
     return (char) map.tab[coordinates.x][coordinates.y];
 }
 
-point_cluster get_points_of_a_type(map map, char objectType)
+point_cluster get_points_of_a_type(char objectType)
 {
     int i;
     int j;
@@ -93,7 +94,7 @@ point_cluster get_points_of_a_type(map map, char objectType)
 
 
 
-void send_map(map map)
+void send_map()
 {
     coordinates_t coordinates;
     int i;
@@ -109,15 +110,15 @@ void send_map(map map)
             switch (map.tab[i][j])
             {
                 case 'U':                           //Unknown
-                    send_map_point(coordinates,(char) 255,(char) 255,(char) 255);
+                    bt_send_map_point(coordinates,(char) 255,(char) 255,(char) 255);
                 case 'E':                           //Empty
-                    send_map_point(coordinates,(char) 240,(char) 255,(char) 240);
+                    bt_send_map_point(coordinates,(char) 240,(char) 255,(char) 240);
                 case 'W':                           //Wall
-                    send_map_point(coordinates,(char) 0,(char) 0,(char) 0);
+                    bt_send_map_point(coordinates,(char) 0,(char) 0,(char) 0);
                 case 'M':                           //Movable
-                    send_map_point(coordinates,(char) 70,(char) 130,(char) 180);
+                    bt_send_map_point(coordinates,(char) 70,(char) 130,(char) 180);
                 case 'N':                           //Non movable
-                    send_map_point(coordinates,(char) 250,(char) 128,(char) 114);
+                    bt_send_map_point(coordinates,(char) 250,(char) 128,(char) 114);
             }
         }
     }

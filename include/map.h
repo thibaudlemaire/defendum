@@ -17,7 +17,7 @@ typedef struct {
     char tab[MAP_MAX_WIDTH][MAP_MAX_HEIGHT];
     int width;
     int height;
-} map;
+} map_t;
 
 typedef struct {
     coordinates_t set[MAP_MAX_WIDTH*MAP_MAX_HEIGHT];
@@ -25,12 +25,12 @@ typedef struct {
 }point_cluster;
 
 
-void init_map_small_arena(map map);
-char get_Object(map map,position_t point);
-void set_Object(map map,position_t point, char objectType);
-void init_map_random(map map);
-point_cluster get_points_of_a_type(map map, char objectType);
-void send_map(map map);
+void init_map_small_arena();
+char get_Object(position_t point);
+void set_Object(position_t point, char objectType);
+void init_map_random();
+point_cluster get_points_of_a_type(char objectType);
+void send_map();
 position_t coordinates_to_position(coordinates_t coordinates);
 coordinates_t position_to_coordinates(position_t position);
 
