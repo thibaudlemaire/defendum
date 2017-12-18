@@ -8,7 +8,7 @@
 #define MOTOR_NODE      OUTD
 #define NODE_FLOOR_OFFSET   20
 #define NODE_SPEED      1000
-#define NODE_RANGE      80
+#define NODE_RANGE      100
 #define NODE_PERIOD     50
 
 int init_node( void );

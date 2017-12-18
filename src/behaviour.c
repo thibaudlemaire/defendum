@@ -35,6 +35,8 @@ void *behaviour_main(void *arg)
 
         robot_state = CROSSING_ARENA;
         cross_arena();
+        sleep_ms(2000);
+        specif_state = RELEASING_OBSTACLE;
         if (!manage_events()) break;
 
         robot_state = BUILDING_MAP;
@@ -82,6 +84,13 @@ int manage_events()
                 // TODO Add the obstacle on the map
                 while (alive && distance_value < 200)
                     motors_rotate_left(AVOID_ANGLE);
+                specif_state = NORMAL;
+                resume();
+                break;
+            case RELEASING_OBSTACLE:
+                print_console("Dropping object");
+                drop_object();
+                motors_rotate_left(90);
                 specif_state = NORMAL;
                 resume();
                 break;
@@ -214,6 +223,24 @@ void pickup_obstacle()
 }
 
 /**
+ * This function is used to drop an obstacle
+ */
+void drop_object()
+{
+    specif_state = RELEASING_OBSTACLE;
+    motors_stop();
+    sleep_ms(1000);
+    head_up();
+    sleep_ms(1000);
+    motors_backward(SPEED_THREE);
+    sleep_ms(3000);
+    motors_stop();
+    head_down();
+    bt_pick_up_obstacle(position_to_coordinates(current_position));
+    obstacle_picked_up = 1;
+}
+
+/**
  * This function is called at the end of an interrupt to resume robot state
  */
 void resume()
@@ -234,7 +261,7 @@ void resume()
  * This function start crossing arena
  */
 void cross_arena() {
-    //head_move();                    // Move the head to find obstacles
+    head_move();                    // Move the head to find obstacles
     motors_forward(SPEED_THREE);           // Go forward
 }
 

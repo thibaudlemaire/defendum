@@ -9,7 +9,8 @@
 
 #define BEHAVIOUR_PERIOD 50
 #define RED_THRESHOLD 40
-#define PICKUP_CROSS 150    // Travel, in mm, to pickup a movable obstacle
+#define PICKUP_CROSS 500    // Travel, in mm, to pickup a movable obstacle
+#define DROP_CROSS -800    // Travel, in mm, to drop a movable obstacle
 #define WAIT_FOR_COLOR 500  // Time to wait for color measure in ms
 #define AVOID_ANGLE     60  // in deg
 #define GO_STRAIGHT_ANGLE 20    // Angle to put the robot in front of the movable object if it is on a side
@@ -51,6 +52,7 @@ void obstacle_on_front();
 void obstacle_on_right();
 void cross_arena(void);
 void pickup_obstacle();
+void drop_object();
 void resume();
 
 void search_wall(void);

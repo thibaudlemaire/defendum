@@ -49,7 +49,7 @@ void motors_rotate_left(int angle)
     tacho_run_forever( MOTOR_BOTH );
     state = LEFT;
 
-    int sleep_time = angle * 3500 / 360;
+    int sleep_time = angle * 5000 / 360;
     sleep_ms(sleep_time);
     motors_stop();
 }
@@ -70,7 +70,7 @@ void motors_rotate_right(int angle)
     tacho_run_forever( MOTOR_BOTH );
     state = RIGHT;
 
-    int sleep_time = angle * 3500 / 360;
+    int sleep_time = angle * 5000 / 360;
     sleep_ms(sleep_time);
     motors_stop();
 }
@@ -125,8 +125,8 @@ void motors_cross(int distance)
 {
     update_position(state);
     state = FORTH;
-    int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) + ( (180 * distance) / (M_PI * WHEEL_RADIUS) );
-    int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) + ( (180 * distance) / (M_PI * WHEEL_RADIUS) );
+    int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) + distance;
+    int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) + distance;
     tacho_set_speed_sp( MOTOR_BOTH, SPEED_ONE );
     tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
     tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
