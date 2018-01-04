@@ -217,6 +217,12 @@ void obstacle_on_right()
         specif_state = NON_MOVABLE_OBSTACLE_DETECTED_RIGHT;
 }
 
+void obstacle_touched()
+{
+    print_console("Obstacle touched...");
+    motors_stop();
+}
+
 /**
  * Function used to pickup a movable obstacle
  */

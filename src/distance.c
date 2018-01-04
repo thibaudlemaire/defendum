@@ -8,6 +8,7 @@
 #include "main.h"
 #include "display.h"
 
+
 POOL_T distance_sensor;             /* Distance sensor port (will be detected) */
 
 /**

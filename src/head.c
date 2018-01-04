@@ -9,6 +9,7 @@
 #include "rotate.h"
 #include "node.h"
 #include "behaviour.h"
+#include "touch.h"
 
 int up = 0;
 enum headState head_state = HEAD_HOLD;

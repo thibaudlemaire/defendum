@@ -52,6 +52,7 @@ void obstacle_update(obstacle_t obstacle);
 void obstacle_on_left();
 void obstacle_on_front();
 void obstacle_on_right();
+void obstacle_touched();
 void cross_arena(void);
 void pickup_obstacle();
 void drop_object();

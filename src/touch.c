@@ -7,6 +7,7 @@
 #include "brick.h"
 #include "main.h"
 #include "display.h"
+#include "behaviour.h"
 
 POOL_T touch_sensor;             // touch sensor port
 
@@ -23,6 +24,17 @@ int init_touch( void )
         }
         print_error( "Touch sensor not found, exit" );
         return ( 1 );
+}
+
+void *touch_main(void *arg)
+{
+        while (alive)
+        {
+                if(sensor_get_value(TOUCH_CHANNEL, touch_sensor, 0))
+                        obstacle_touched();
+                sleep_ms(TOUCH_PERIOD);
+        }
+        pthread_exit(NULL);
 }
 
 int touch_is_touched(void)

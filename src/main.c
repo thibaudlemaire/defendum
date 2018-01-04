@@ -14,7 +14,6 @@
 #include "position.h"
 #include "behaviour.h"
 #include "touch.h"
-
 #include <ncurses.h>
 
 // Globals
@@ -46,9 +45,9 @@ int init( void )
                        init_rotation() &
                        init_bluetooth() &
                        init_console() &
-                       init_position() &
-                       init_touch()
-                       );
+                       init_touch() &
+                       init_position()
+        );
 }
 
 /**
@@ -65,6 +64,7 @@ int main( void )
         //pthread_t bluetooth_thread;
         pthread_t position_thread;
         pthread_t behaviour_thread;
+        pthread_t touch_thread;
 
         // Init brick library, to interface lego sensors and motors
         if ( !brick_init()) return ( 1 );
@@ -82,6 +82,7 @@ int main( void )
         //pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
         pthread_create(&console_thread, NULL, console_main, NULL);
+        pthread_create(&touch_thread, NULL, touch_main, NULL);
         pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
 
         // Wait for every thread to end
@@ -91,6 +92,7 @@ int main( void )
         pthread_join(head_thread, NULL);
         pthread_join(rotation_thread, NULL);
         //pthread_join(bluetooth_thread, NULL);
+        pthread_join(touch_thread, NULL);
         pthread_join(position_thread, NULL);
 
         pthread_mutex_destroy(&stdout_mutex);

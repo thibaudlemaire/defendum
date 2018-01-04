@@ -8,6 +8,7 @@
 #define TOUCH_PERIOD 50
 
 int init_touch( void );
+void *touch_main(void *arg);
 int touch_is_touched(void);
 
 #endif //OS_ROBOT_COMPASS_H
