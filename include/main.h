@@ -37,9 +37,8 @@ typedef struct {
 extern enum commandState command;               // Command for `motor` module
 extern int alive;                               // Program is alive
 
-extern int color_red,
-           color_green,
-           color_blue,
+extern int color_detected,
+           touched,
            compass_heading,
            distance_value,
            rotation_angle,

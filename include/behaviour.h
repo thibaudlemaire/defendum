@@ -8,9 +8,6 @@
 #include "head.h"
 
 #define BEHAVIOUR_PERIOD 50
-#define RED_THRESHOLD 15
-#define BLUE_THRESHOLD 5
-#define GREEN_THRESHOLD 5
 #define PICKUP_CROSS 350    // Travel, in mm, to pickup a movable obstacle
 #define DROP_CROSS -400    // Travel, in mm, to drop a movable obstacle
 #define WAIT_FOR_COLOR 500  // Time to wait for color measure in ms

@@ -18,7 +18,7 @@ int init_color_sensor( void )
 {
         color_sensor = sensor_search( LEGO_EV3_COLOR );
         if ( color_sensor ) {
-                color_set_mode_rgb_raw( color_sensor );
+                color_set_mode_col_color( color_sensor );
                 print_console("Color sensor found and configured as Raw RGB");
                 return ( 1 );
         }
@@ -31,8 +31,6 @@ int init_color_sensor( void )
  */
 void color_update(void)
 {
-        color_red = sensor_get_value(RED_COLOR, color_sensor, 0);
-        color_green = sensor_get_value(GREEN_COLOR, color_sensor, 0);
-        color_blue = sensor_get_value(BLUE_COLOR, color_sensor, 0);
+        color_detected = sensor_get_value(0, color_sensor, 0);
 }
 

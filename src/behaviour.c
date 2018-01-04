@@ -168,7 +168,7 @@ void obstacle_on_left()
     look_left();
     sleep_ms(WAIT_FOR_COLOR);
     color_update();
-    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
+    if (color_detected == RED_COLOR)
     {
         motors_rotate_left(GO_STRAIGHT_ANGLE);
         look_front();
@@ -188,7 +188,7 @@ void obstacle_on_front()
     look_front();
     sleep_ms(WAIT_FOR_COLOR);
     color_update();
-    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
+    if (color_detected == RED_COLOR)
     {
         motors_stop();
         specif_state = MOVABLE_OBSTACLE_DETECTED;
@@ -207,7 +207,7 @@ void obstacle_on_right()
     look_right();
     sleep_ms(WAIT_FOR_COLOR);
     color_update();
-    if (color_red > RED_THRESHOLD && color_blue < BLUE_THRESHOLD && color_green < GREEN_THRESHOLD)
+    if (color_detected == RED_COLOR)
     {
         motors_rotate_right(GO_STRAIGHT_ANGLE);
         look_front();

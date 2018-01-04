@@ -20,9 +20,8 @@
 enum commandState command = STOP;       // Command for `motor' module
 
 int alive;                              // Program is alive
-int color_red = 0,
-    color_green = 0,
-    color_blue = 0,
+int color_detected = 0,
+    touched = 0,
     compass_heading = 0,
     distance_value = 0,
     rotation_angle = 0,

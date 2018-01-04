@@ -11,6 +11,7 @@
 
 POOL_T touch_sensor;             // touch sensor port
 
+
 /**
  * Function used to init the touch sensor module
  * @return 1 if ok, 0 otherwise
@@ -28,11 +29,17 @@ int init_touch( void )
 
 void *touch_main(void *arg)
 {
+    int current_touched = 0;
         while (alive)
         {
-                if(sensor_get_value(TOUCH_CHANNEL, touch_sensor, 0))
+            current_touched = sensor_get_value(TOUCH_CHANNEL, touch_sensor, 0);
+            if( current_touched != touched)
+            {
+                    touched = current_touched;
+                    if (touched)
                         obstacle_touched();
-                sleep_ms(TOUCH_PERIOD);
+            }
+            sleep_ms(TOUCH_PERIOD);
         }
         pthread_exit(NULL);
 }

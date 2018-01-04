@@ -33,10 +33,9 @@ int init_display( void )
         box(top_window, ACS_VLINE, ACS_HLINE);      // Draw boxes
         box(bottom_window, ACS_VLINE, ACS_HLINE);
 
-        mvwprintw(top_window, 1, 2, "Color red : ");
-        mvwprintw(top_window, 2, 2, "Color green : ");
-        mvwprintw(top_window, 3, 2, "Color blue : ");
-        mvwprintw(top_window, 4, 2, "Coordinates : ");
+        mvwprintw(top_window, 1, 2, "Color : ");
+        mvwprintw(top_window, 2, 2, "Touched : ");
+        mvwprintw(top_window, 3, 2, "Coordinates : ");
 
         mvwprintw(top_window, 1, COLS / 2, "Angle : ");
         mvwprintw(top_window, 2, COLS / 2, "Rot speed : ");
@@ -116,10 +115,9 @@ void *display_main(void *arg)
         {
                 coordinates_t current_coordinates = position_to_coordinates(current_position);
                 pthread_mutex_lock(&stdout_mutex); // Lock shared resources
-                mvwprintw(top_window, 1, 16, "%u    ", color_red);
-                mvwprintw(top_window, 2, 16, "%u    ", color_green);
-                mvwprintw(top_window, 3, 16, "%u    ", color_blue);
-                mvwprintw(top_window, 4, 16, "%d,%d     ", current_coordinates.x, current_coordinates.y);
+                mvwprintw(top_window, 1, 16, "%u    ", color_detected);
+                mvwprintw(top_window, 2, 16, "%u    ", touched);
+                mvwprintw(top_window, 3, 16, "%d,%d     ", current_coordinates.x, current_coordinates.y);
 
                 mvwprintw(top_window, 1, COLS / 2 + 13, "%d deg     ", rotation_angle );
                 mvwprintw(top_window, 2, COLS / 2 + 13, "%d deg/s    ", rotation_rspeed);
