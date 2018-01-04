@@ -38,8 +38,15 @@ void *behaviour_main(void *arg)
         //cross_arena();
 
         pickup_obstacle();
-        sleep_ms(2000);
+        sleep_ms(1000);
+        motors_forward(SPEED_THREE);
+        sleep_ms(1000);
+        motors_rotate_left(180);
+        motors_backward(SPEED_ONE);
+        sleep_ms(4000);
+        motors_rotate_right(180);
         drop_object();
+        sleep_ms(1000);
 
         //specif_state = RELEASING_OBSTACLE;
         //if (!manage_events()) break;
@@ -50,6 +57,7 @@ void *behaviour_main(void *arg)
         robot_state = SENDING_MAP;
         //send_map();
     }
+        head_reset();
         pthread_exit(NULL);
 }
 
@@ -231,7 +239,7 @@ void pickup_obstacle()
     print_console("Picking up object...");
     specif_state = PICKING_UP_OBSTACLE;
     head_up();
-    motors_cross(PICKUP_CROSS);
+    motors_cross(PICKUP_CROSS, SPEED_TWO);
     head_down();
     bt_pick_up_obstacle(position_to_coordinates(current_position));
     obstacle_picked_up = 1;
@@ -245,7 +253,7 @@ void drop_object()
     print_console("Droping object...");
     specif_state = RELEASING_OBSTACLE;
     head_up();
-    motors_cross(DROP_CROSS);
+    motors_cross(DROP_CROSS, SPEED_TWO);
     head_down();
     bt_pick_up_obstacle(position_to_coordinates(current_position));
     obstacle_picked_up = 1;

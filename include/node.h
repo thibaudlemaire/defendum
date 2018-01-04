@@ -14,5 +14,6 @@ int init_node( void );
 void reset_node();
 void node_up();
 void node_down();
+void node_reset();
 
 #endif //OS_ROBOT_NODE_H

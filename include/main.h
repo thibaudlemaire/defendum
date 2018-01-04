@@ -7,15 +7,6 @@
 
 #include <pthread.h>
 
-// Enum
-enum commandState {
-        STOP,
-        FORTH,
-        BACK,
-        LEFT,
-        RIGHT,
-};
-
 // Types
 typedef struct {
         int x;
@@ -34,7 +25,6 @@ typedef struct {
 } color_t;
 
 // Globals
-extern enum commandState command;               // Command for `motor` module
 extern int alive;                               // Program is alive
 
 extern int color_detected,

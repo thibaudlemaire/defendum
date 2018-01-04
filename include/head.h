@@ -54,10 +54,7 @@ void head_up(void);
 void head_down(void);
 void head_move();
 void head_stop();
-
-void searching_wall_head(void);
-void following_wall_head(void);
-void exploring_arena_head(void);
+void head_reset();
 
 
 #endif //OS_ROBOT_HEAD_H

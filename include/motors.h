@@ -12,6 +12,17 @@ enum linearSpeed {
       SPEED_THREE = 200,
 };
 
+// Enum
+enum commandState {
+    STOP,
+    FORTH,
+    BACK,
+    LEFT,
+    RIGHT,
+};
+
+extern enum commandState motors_state;
+
 // Speed
 #define SPEED_CIRCULAR 50
 
@@ -29,6 +40,6 @@ void motors_rotate_right(int angle);
 void motors_forward(enum linearSpeed);
 void motors_backward(enum linearSpeed);
 void motors_stop(void);
-void motors_cross(int distance);
+void motors_cross(int distance, enum linearSpeed);
 
 #endif //OS_ROBOT_MOTORS_H

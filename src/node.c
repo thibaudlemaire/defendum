@@ -62,3 +62,9 @@ void node_down()
     while (tacho_is_running(MOTOR_NODE) && alive)
         sleep_ms(100);
 }
+
+void node_reset()
+{
+    node_down();
+    tacho_set_stop_action_coast( MOTOR_NODE );
+}

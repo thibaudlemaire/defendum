@@ -12,7 +12,7 @@
 int max_speed;     /* Motor maximal speed (will be detected) */
 enum linearSpeed speed_linear = SPEED_ONE;
 int speed_circular = SPEED_CIRCULAR;
-int state;
+enum commandState motors_state;
 
 /**
  * Function used to init motors module
@@ -39,19 +39,21 @@ int init_motors( void )
  */
 void motors_rotate_left(int angle)
 {
-    // TODO Use real angle to turn
     tacho_stop( MOTOR_BOTH );
-    /* Waiting the vehicle is stopped */
-    while(tacho_is_running( MOTOR_BOTH )) ;
-    update_position(state);
-    tacho_set_speed_sp( MOTOR_LEFT, speed_circular );
-    tacho_set_speed_sp( MOTOR_RIGHT, -speed_circular );
-    tacho_run_forever( MOTOR_BOTH );
-    state = LEFT;
-
-    int sleep_time = angle * 5000 / 360;
-    sleep_ms(sleep_time);
-    motors_stop();
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = LEFT;
+    int distance = angle * 2.35; // 90° on robot = 180° on wheel
+    int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) + distance;
+    int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) - distance;
+    tacho_set_speed_sp( MOTOR_BOTH, SPEED_TWO );
+    tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
+    tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
+    tacho_run_to_abs_pos( MOTOR_BOTH );
+    while (tacho_is_running(MOTOR_BOTH) && alive)
+        sleep_ms(100);
+    motors_state = STOP;
 }
 
 /**
@@ -60,19 +62,21 @@ void motors_rotate_left(int angle)
  */
 void motors_rotate_right(int angle)
 {
-    // TODO Use real angle to turn
     tacho_stop( MOTOR_BOTH );
-    /* Waiting the vehicle is stopped */
-    while(tacho_is_running( MOTOR_BOTH )) ;
-    update_position(state);
-    tacho_set_speed_sp( MOTOR_LEFT, -speed_circular );
-    tacho_set_speed_sp( MOTOR_RIGHT, speed_circular );
-    tacho_run_forever( MOTOR_BOTH );
-    state = RIGHT;
-
-    int sleep_time = angle * 5000 / 360;
-    sleep_ms(sleep_time);
-    motors_stop();
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = RIGHT;
+    int distance = angle * 2.35; // 90° on robot = 180° on wheel
+    int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) - distance;
+    int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) + distance;
+    tacho_set_speed_sp( MOTOR_BOTH, SPEED_TWO );
+    tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
+    tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
+    tacho_run_to_abs_pos( MOTOR_BOTH );
+    while (tacho_is_running(MOTOR_BOTH) && alive)
+        sleep_ms(100);
+    motors_state = STOP;
 }
 
 /**
@@ -82,12 +86,12 @@ void motors_rotate_right(int angle)
 void motors_forward(enum linearSpeed speed)
 {
     tacho_stop( MOTOR_BOTH );
-    /* Waiting the vehicle is stopped */
-    while(tacho_is_running( MOTOR_BOTH )) ;
-    update_position(state);
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = FORTH;
     tacho_set_speed_sp( MOTOR_BOTH, speed );
     tacho_run_forever( MOTOR_BOTH );
-    state = FORTH;
 }
 
 /**
@@ -97,12 +101,12 @@ void motors_forward(enum linearSpeed speed)
 void motors_backward(enum linearSpeed speed)
 {
     tacho_stop( MOTOR_BOTH );
-    /* Waiting the vehicle is stopped */
-    while(tacho_is_running( MOTOR_BOTH )) ;
-    update_position(state);
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = BACK;
     tacho_set_speed_sp( MOTOR_BOTH, -speed );
     tacho_run_forever( MOTOR_BOTH );
-    state = BACK;
 }
 
 /**
@@ -111,29 +115,31 @@ void motors_backward(enum linearSpeed speed)
 void motors_stop(void)
 {
     tacho_stop( MOTOR_BOTH );
-    /* Waiting the vehicle is stopped */
-    while(tacho_is_running( MOTOR_BOTH )) ;
-    update_position(state);
-    state = STOP;
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = STOP;
 }
 
 /**
  * Function called to go forward to a specific position
  * @param distance
  */
-void motors_cross(int distance)
+void motors_cross(int distance, enum linearSpeed speed)
 {
-    update_position(state);
-    state = FORTH;
+    tacho_stop( MOTOR_BOTH );
+    while(tacho_is_running( MOTOR_BOTH ))
+        sleep_ms(100);
+    update_position(motors_state);
+    motors_state = FORTH;
     int position_motor_left = tacho_get_position(MOTOR_LEFT, 0) + distance;
     int position_motor_right = tacho_get_position(MOTOR_RIGHT, 0) + distance;
-    tacho_set_speed_sp( MOTOR_BOTH, SPEED_ONE );
+    tacho_set_speed_sp( MOTOR_BOTH, speed );
     tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
     tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
     tacho_run_to_abs_pos( MOTOR_BOTH );
-    while (tacho_is_running(MOTOR_LEFT) && alive)
+    while (tacho_is_running(MOTOR_BOTH) && alive)
         sleep_ms(100);
-    update_position(state);
-    state = STOP;
-
+    update_position(motors_state);
+    motors_state = STOP;
 }

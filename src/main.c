@@ -17,7 +17,6 @@
 #include <ncurses.h>
 
 // Globals
-enum commandState command = STOP;       // Command for `motor' module
 
 int alive;                              // Program is alive
 int color_detected = 0,

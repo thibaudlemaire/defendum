@@ -39,7 +39,7 @@ void *position_main(void *arg)
 {
         while (alive)
         {
-                update_position(command);
+                update_position(motors_state);
                 bt_send_coordinates(position_to_coordinates(current_position));
                 sleep_ms(POSITION_PERIOD);
         }
@@ -51,25 +51,26 @@ void *position_main(void *arg)
  * @param arg
  * @return 1 if the position have been update, 0 if it failed
  */
-int update_position( int state )
+int update_position( enum commandState state )
 {
         int temp_tacho;
         double temp_direction;
-        switch (state) {
-        case STOP:
-        case LEFT:
-        case RIGHT:
-                // We are leaving a not moving state so we save the date to calcul further positions
-                current_tacho = tacho_get_position(MOTOR_RIGHT,0);
-                break;
-        case FORTH:
-        case BACK:
-                temp_tacho = (int) tacho_get_position(MOTOR_RIGHT,10) - current_tacho;
-                temp_direction = (double) (rotation_angle - compass_offset)*M_PI/180;
-                current_position.y = (int) (current_position.y + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(cos(temp_direction)));
-                current_position.x = (int) (current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(sin(temp_direction)));
-                current_tacho = tacho_get_position(MOTOR_RIGHT,0);
-                break;
+        switch (state)
+        {
+                case STOP:
+                case LEFT:
+                case RIGHT:
+                        // We are leaving a not moving state so we save the date to calcul further positions
+                        current_tacho = tacho_get_position(MOTOR_RIGHT,0);
+                        break;
+                case FORTH:
+                case BACK:
+                        temp_tacho = (int) tacho_get_position(MOTOR_RIGHT,10) - current_tacho;
+                        temp_direction = (double) (rotation_angle - compass_offset)*M_PI/180;
+                        current_position.y = (int) (current_position.y + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(cos(temp_direction)));
+                        current_position.x = (int) (current_position.x + (temp_tacho*M_PI*WHEEL_RADIUS/180)*(sin(temp_direction)));
+                        current_tacho = tacho_get_position(MOTOR_RIGHT,0);
+                        break;
         }
         return 1;
 }
