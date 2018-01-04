@@ -1,3 +1,12 @@
+# Todo
+* Corriger les constantes de position 
+* Passer le capteur de couleur du mode RGB au mode couleur simple
+* Modifier node pour tenir compte de la nouvelle architecture du robot (pont levis) et
+ajouter une fonction pour libérer un objet.
+* Finir et tester map
+* Rendre la rotation précise (en faisant tourner les moteurs d'une valeur précise)
+* Terminer behaviour et y inclure deux modes : un pour la petite et un pour la grande arène. On fera deux exécutables distinct pour simplifier.
+
 # Requirements :
 * lev3dev-c
 * pthread
