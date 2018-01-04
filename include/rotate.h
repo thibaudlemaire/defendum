@@ -5,7 +5,7 @@
 #ifndef OS_ROBOT_ROTATE_H
 #define OS_ROBOT_ROTATE_H
 
-#define MOTOR_ROTATE      OUTA
+#define MOTOR_ROTATE      OUTD
 #define ROTATE_SPEED      300
 #define ROTATE_PERIOD     50
 #define POSITION_INIT     1000

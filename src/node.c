@@ -21,9 +21,9 @@ int init_node( void )
         return 0;
     }
     tacho_reset( MOTOR_NODE );
-    tacho_set_stop_action_hold( MOTOR_NODE );
+    tacho_set_stop_action_brake( MOTOR_NODE );
     tacho_set_speed_sp(MOTOR_NODE, NODE_SPEED);
-    node_max_down = tacho_get_position(MOTOR_NODE, 0) - NODE_FLOOR_OFFSET;
+    node_max_down = tacho_get_position(MOTOR_NODE, 0);
     node_max_up = node_max_down - NODE_RANGE;
     node_down();
     return  1;
@@ -42,15 +42,12 @@ void reset_node()
  */
 void node_up()
 {
-    tacho_set_stop_action_coast( MOTOR_NODE );
-    sleep_ms(1000);
-    tacho_set_stop_action_hold( MOTOR_NODE );
+    tacho_set_stop_action_brake( MOTOR_NODE );
     tacho_set_position_sp(MOTOR_NODE, node_max_up);
     tacho_set_speed_sp(MOTOR_NODE, NODE_SPEED);
     tacho_run_to_abs_pos(MOTOR_NODE);
-    sleep_ms(300);
-    while( !(tacho_get_state(MOTOR_NODE) && TACHO_HOLDING))
-        sleep_ms(NODE_PERIOD);
+    while (tacho_is_running(MOTOR_NODE) && alive)
+        sleep_ms(100);
 }
 
 /**
@@ -58,11 +55,10 @@ void node_up()
  */
 void node_down()
 {
-    tacho_set_stop_action_hold( MOTOR_NODE );
+    tacho_set_stop_action_brake( MOTOR_NODE );
     tacho_set_position_sp(MOTOR_NODE, node_max_down);
     tacho_set_speed_sp(MOTOR_NODE, NODE_SPEED);
     tacho_run_to_abs_pos(MOTOR_NODE);
-    sleep_ms(300);
-    while( !(tacho_get_state(MOTOR_NODE) && TACHO_HOLDING))
-        sleep_ms(NODE_PERIOD);
+    while (tacho_is_running(MOTOR_NODE) && alive)
+        sleep_ms(100);
 }

@@ -29,22 +29,26 @@ void *behaviour_main(void *arg)
     while(alive)
     {
         robot_state = INITIALIZING;
-        init_map_small_arena();
+        //init_map_small_arena();
 
         robot_state = WAITING_FOR_START;
         //if (!wait_for(START_RECEIVED)) break;
 
         robot_state = CROSSING_ARENA;
-        cross_arena();
+        //cross_arena();
+
+        pickup_obstacle();
         sleep_ms(2000);
-        specif_state = RELEASING_OBSTACLE;
-        if (!manage_events()) break;
+        drop_object();
+
+        //specif_state = RELEASING_OBSTACLE;
+        //if (!manage_events()) break;
 
         robot_state = BUILDING_MAP;
         // TODO Call build_map()
 
         robot_state = SENDING_MAP;
-        send_map();
+        //send_map();
     }
         pthread_exit(NULL);
 }
@@ -134,22 +138,22 @@ void obstacle_update(obstacle_t obstacle) {
     switch(obstacle)
     {
         case NO_OBS:
-            resume();
+            //resume();
             break;
         case NEAR_OBS:
-            motors_forward(SPEED_TWO);
+            //motors_forward(SPEED_TWO);
             break;
         case REALLY_NEAR_OBS:
-            motors_forward(SPEED_ONE);
+            //motors_forward(SPEED_ONE);
             break;
         case LEFT_OBS:
-            obstacle_on_left();
+            //obstacle_on_left();
             break;
         case FRONT_OBS:
-            obstacle_on_front();
+            //obstacle_on_front();
             break;
         case RIGHT_OBS:
-            obstacle_on_right();
+            //obstacle_on_right();
             break;
     }
 }
@@ -159,6 +163,7 @@ void obstacle_update(obstacle_t obstacle) {
  */
 void obstacle_on_left()
 {
+    print_console("Obstacle on left");
     head_stop();
     look_left();
     sleep_ms(WAIT_FOR_COLOR);
@@ -178,6 +183,7 @@ void obstacle_on_left()
  */
 void obstacle_on_front()
 {
+    print_console("Obstacle on front");
     head_stop();
     look_front();
     sleep_ms(WAIT_FOR_COLOR);
@@ -196,6 +202,7 @@ void obstacle_on_front()
  */
 void obstacle_on_right()
 {
+    print_console("Obstacle on right");
     head_stop();
     look_right();
     sleep_ms(WAIT_FOR_COLOR);
@@ -215,12 +222,10 @@ void obstacle_on_right()
  */
 void pickup_obstacle()
 {
+    print_console("Picking up object...");
     specif_state = PICKING_UP_OBSTACLE;
-    sleep_ms(1000);
     head_up();
-    sleep_ms(1000);
     motors_cross(PICKUP_CROSS);
-    sleep_ms(1000);
     head_down();
     bt_pick_up_obstacle(position_to_coordinates(current_position));
     obstacle_picked_up = 1;
@@ -231,14 +236,10 @@ void pickup_obstacle()
  */
 void drop_object()
 {
+    print_console("Droping object...");
     specif_state = RELEASING_OBSTACLE;
-    motors_stop();
-    sleep_ms(1000);
     head_up();
-    sleep_ms(1000);
-    motors_backward(SPEED_THREE);
-    sleep_ms(3000);
-    motors_stop();
+    motors_cross(DROP_CROSS);
     head_down();
     bt_pick_up_obstacle(position_to_coordinates(current_position));
     obstacle_picked_up = 1;
@@ -266,69 +267,8 @@ void resume()
  */
 void cross_arena() {
     //head_move();                    // Move the head to find obstacles
-    motors_forward(SPEED_THREE);           // Go forward
+    //motors_forward(SPEED_THREE);           // Go forward
 }
 
 
-// ########################################################################################################################
-// ########################################################################################################################
-// ########################################################################################################################
 
-void search_wall(void)
-{
-
-      // Sleep to let head initialise
-      sleep_ms(1000);
-
-      int wall_detected = 0;
-      /* first face a wall */
-      motors_rotate_right(90);
-
-      while(alive && wall_detected==0)
-      {
-          sleep_ms(TOUCH_PERIOD);
-          motors_forward(SPEED_TWO);
-
-          if (distance_value < 50)
-          {
-            sleep_ms(50);
-
-            wall_detected = 1;
-            motors_rotate_left(90);
-          }
-      }
-      return;
-}
-
-void follow_wall(void)
-{
-      while(alive)
-      {
-          sleep_ms(TOUCH_PERIOD);
-
-          if (touch_is_touched())
-          {
-              motors_rotate_left(5);
-              motors_forward(SPEED_TWO);
-              sleep_ms(1000);
-          }
-          else
-          {
-              motors_rotate_right(3);
-              motors_forward(SPEED_TWO);
-              sleep_ms(1000);
-
-          }
-
-      }
-      return;
-}
-
-/*
-* Fonction qui explore le centre de l'arene, une fois que le contour est connu
-* 
-*/
-void explore_arena(void)
-{
-      //TODO : marche aléatoire dans l'arène en prenant en compte l'environnement
-}

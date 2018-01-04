@@ -62,7 +62,7 @@ int main( void )
         pthread_t console_thread;
         pthread_t head_thread;
         pthread_t rotation_thread;
-        pthread_t bluetooth_thread;
+        //pthread_t bluetooth_thread;
         pthread_t position_thread;
         pthread_t behaviour_thread;
 
@@ -79,7 +79,7 @@ int main( void )
         pthread_create(&head_thread, NULL, head_main, NULL);
         pthread_create(&rotation_thread, NULL, rotation_main, NULL);
         pthread_create(&display_thread, NULL, display_main, NULL);
-        pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
+        //pthread_create(&bluetooth_thread, NULL, bluetooth_main, NULL);
         pthread_create(&position_thread, NULL, position_main, NULL);
         pthread_create(&console_thread, NULL, console_main, NULL);
         pthread_create(&behaviour_thread, NULL, behaviour_main, NULL);
@@ -90,7 +90,7 @@ int main( void )
         pthread_join(console_thread, NULL);
         pthread_join(head_thread, NULL);
         pthread_join(rotation_thread, NULL);
-        pthread_join(bluetooth_thread, NULL);
+        //pthread_join(bluetooth_thread, NULL);
         pthread_join(position_thread, NULL);
 
         pthread_mutex_destroy(&stdout_mutex);

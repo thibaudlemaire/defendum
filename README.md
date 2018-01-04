@@ -1,7 +1,7 @@
 # Todo
 * Corriger les constantes de position 
 * Passer le capteur de couleur du mode RGB au mode couleur simple
-* Modifier node pour tenir compte de la nouvelle architecture du robot (pont levis) et
+* [OK] Modifier node pour tenir compte de la nouvelle architecture du robot (pont levis) et
 ajouter une fonction pour libérer un objet.
 * Finir et tester map
 * Rendre la rotation précise (en faisant tourner les moteurs d'une valeur précise)

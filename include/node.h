@@ -5,10 +5,9 @@
 #ifndef OS_ROBOT_NODE_H
 #define OS_ROBOT_NODE_H
 
-#define MOTOR_NODE      OUTD
-#define NODE_FLOOR_OFFSET   5
+#define MOTOR_NODE      OUTA
 #define NODE_SPEED      1000
-#define NODE_RANGE      100
+#define NODE_RANGE      1100
 #define NODE_PERIOD     50
 
 int init_node( void );

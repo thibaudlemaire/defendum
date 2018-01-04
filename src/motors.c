@@ -131,9 +131,8 @@ void motors_cross(int distance)
     tacho_set_position_sp( MOTOR_LEFT, position_motor_left);
     tacho_set_position_sp( MOTOR_RIGHT, position_motor_right);
     tacho_run_to_abs_pos( MOTOR_BOTH );
-    sleep_ms(300);
-    while( !(tacho_get_state(MOTOR_LEFT) && TACHO_HOLDING))
-        sleep_ms(MOTORS_PERIOD);
+    while (tacho_is_running(MOTOR_LEFT) && alive)
+        sleep_ms(100);
     update_position(state);
     state = STOP;
 
