@@ -16,8 +16,9 @@
 #include "color.h"
 
 enum globalState robot_state = INITIALIZING;            // Robot state
-enum specificState specif_state = NORMAL;               // Secondary state
+enum obstacleState obstacle_state = NORMAL;               // Secondary state
 int obstacle_picked_up = 0;
+int stop_received = 0;
 
 /**
  * Main function of the behaviour thread
@@ -32,30 +33,17 @@ void *behaviour_main(void *arg)
         //init_map_small_arena();
 
         robot_state = WAITING_FOR_START;
-        //if (!wait_for(START_RECEIVED)) break;
+        //if (!wait_for(CROSSING_ARENA)) break;
 
-        robot_state = CROSSING_ARENA;
-        //cross_arena();
+        cross_arena();
 
-        pickup_obstacle();
-        sleep_ms(1000);
-        motors_forward(SPEED_THREE);
-        sleep_ms(1000);
-        motors_rotate_left(180);
-        motors_backward(SPEED_ONE);
-        sleep_ms(4000);
-        motors_rotate_right(180);
-        drop_object();
-        sleep_ms(1000);
-
-        //specif_state = RELEASING_OBSTACLE;
-        //if (!manage_events()) break;
+        if (!manage_events()) break;
 
         robot_state = BUILDING_MAP;
         // TODO Call build_map()
 
         robot_state = SENDING_MAP;
-        //send_map();
+        // send_map(); // TODO Uncomment to test it
     }
         head_reset();
         pthread_exit(NULL);
@@ -80,31 +68,19 @@ int wait_for(enum globalState condition) {
  */
 int manage_events()
 {
-    while(alive && robot_state != STOP_RECEIVED)
+    while(alive && !stop_received)
     {
-        switch (specif_state)
+        switch (obstacle_state)
         {
-            case MOVABLE_OBSTACLE_DETECTED:
-                print_console("Movable obstacle detected, picking up");
-                pickup_obstacle();
-                specif_state = NORMAL;
+            case OBSTACLE_TOUCHED:
+                // TODO : Motors are still stopped, avoid obstacle and resume
                 resume();
                 break;
-            case NON_MOVABLE_OBSTACLE_DETECTED_LEFT:
-            case NON_MOVABLE_OBSTACLE_DETECTED_FRONT:
-            case NON_MOVABLE_OBSTACLE_DETECTED_RIGHT:
-                print_console("Non movable obstacle detected, avoiding");
-                // TODO Add the obstacle on the map
-                while (alive && distance_value < 200)
-                    motors_rotate_left(AVOID_ANGLE);
-                specif_state = NORMAL;
-                resume();
-                break;
-            case RELEASING_OBSTACLE:
-                print_console("Dropping object");
-                drop_object();
-                motors_rotate_left(90);
-                specif_state = NORMAL;
+            case OBSTACLE_ON_LEFT:
+            case OBSTACLE_ON_FRONT:
+            case OBSTACLE_ON_RIGHT:
+                print_console("Obstacle detected");
+                // TODO Determine if it is movable or not
                 resume();
                 break;
             default:
@@ -120,14 +96,15 @@ int manage_events()
  * Function called by bluetooth module when server start the game
  */
 void start_received() {
-    robot_state = START_RECEIVED;
+    if(robot_state == WAITING_FOR_START)
+        robot_state = CROSSING_ARENA;
 }
 
 /**
  * Function called by bluetooth module when server stop the game
  */
 void stop_received() {
-    robot_state = STOP_RECEIVED;
+    stop_received = 1;
 }
 
 /**
@@ -143,27 +120,28 @@ void kicked() {
  * Function called by head when a change occurs in front of the robot
  */
 void obstacle_update(obstacle_t obstacle) {
-    switch(obstacle)
-    {
-        case NO_OBS:
-            //resume();
+    if(robot_state == CROSSING_ARENA)
+        switch(obstacle)
+        {
+            case NO_OBS:
+                resume();
+                break;
+            case NEAR_OBS:
+                motors_forward(SPEED_TWO);
+                break;
+            case REALLY_NEAR_OBS:
+                motors_forward(SPEED_ONE);
+                break;
+            case LEFT_OBS:
+                obstacle_state = OBSTACLE_ON_LEFT;
+                break;
+            case FRONT_OBS:
+                obstacle_state = OBSTACLE_ON_FRONT;
+                break;
+            case RIGHT_OBS:
+                obstacle_state = OBSTACLE_ON_RIGHT;
             break;
-        case NEAR_OBS:
-            //motors_forward(SPEED_TWO);
-            break;
-        case REALLY_NEAR_OBS:
-            //motors_forward(SPEED_ONE);
-            break;
-        case LEFT_OBS:
-            //obstacle_on_left();
-            break;
-        case FRONT_OBS:
-            //obstacle_on_front();
-            break;
-        case RIGHT_OBS:
-            //obstacle_on_right();
-            break;
-    }
+        }
 }
 
 /**
@@ -172,18 +150,7 @@ void obstacle_update(obstacle_t obstacle) {
 void obstacle_on_left()
 {
     print_console("Obstacle on left");
-    head_stop();
-    look_left();
-    sleep_ms(WAIT_FOR_COLOR);
-    color_update();
-    if (color_detected == RED_COLOR)
-    {
-        motors_rotate_left(GO_STRAIGHT_ANGLE);
-        look_front();
-        specif_state = MOVABLE_OBSTACLE_DETECTED;
-    }
-    else
-        specif_state = NON_MOVABLE_OBSTACLE_DETECTED_LEFT;
+   // TODO Manage obstacle on left
 }
 
 /**
@@ -192,17 +159,7 @@ void obstacle_on_left()
 void obstacle_on_front()
 {
     print_console("Obstacle on front");
-    head_stop();
-    look_front();
-    sleep_ms(WAIT_FOR_COLOR);
-    color_update();
-    if (color_detected == RED_COLOR)
-    {
-        motors_stop();
-        specif_state = MOVABLE_OBSTACLE_DETECTED;
-    }
-    else
-        specif_state = NON_MOVABLE_OBSTACLE_DETECTED_FRONT;
+    // TODO manage obstacle on front
 }
 
 /**
@@ -211,33 +168,22 @@ void obstacle_on_front()
 void obstacle_on_right()
 {
     print_console("Obstacle on right");
-    head_stop();
-    look_right();
-    sleep_ms(WAIT_FOR_COLOR);
-    color_update();
-    if (color_detected == RED_COLOR)
-    {
-        motors_rotate_right(GO_STRAIGHT_ANGLE);
-        look_front();
-        specif_state = MOVABLE_OBSTACLE_DETECTED;
-    }
-    else
-        specif_state = NON_MOVABLE_OBSTACLE_DETECTED_RIGHT;
+    // TODO manage obstacle on right
 }
 
 void obstacle_touched()
 {
     print_console("Obstacle touched...");
     motors_stop();
+    obstacle_state = OBSTACLE_TOUCHED;
 }
 
 /**
  * Function used to pickup a movable obstacle
  */
-void pickup_obstacle()
+void pickup_object()
 {
     print_console("Picking up object...");
-    specif_state = PICKING_UP_OBSTACLE;
     head_up();
     motors_cross(PICKUP_CROSS, SPEED_TWO);
     head_down();
@@ -251,7 +197,6 @@ void pickup_obstacle()
 void drop_object()
 {
     print_console("Droping object...");
-    specif_state = RELEASING_OBSTACLE;
     head_up();
     motors_cross(DROP_CROSS, SPEED_TWO);
     head_down();
@@ -274,14 +219,15 @@ void resume()
             break;
         // Other cases will come... searching wall, following wall
     }
+    specif_state = NORMAL;
 }
 
 /**
  * This function start crossing arena
  */
 void cross_arena() {
-    //head_move();                    // Move the head to find obstacles
-    //motors_forward(SPEED_THREE);           // Go forward
+    head_move();                    // Move the head to find obstacles
+    motors_forward(SPEED_THREE);           // Go forward
 }
 
 

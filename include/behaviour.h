@@ -18,26 +18,25 @@
 enum globalState {
         INITIALIZING,
         WAITING_FOR_START,
-        START_RECEIVED,
         CROSSING_ARENA,
-        STOP_RECEIVED,
+        PICKING_UP_MOVABLE,
+        RELEASING_MOVABLE,
+        RELEASING_NON_MOVABLE,
         BUILDING_MAP,
         SENDING_MAP,
         KICKED,
 };
 
-enum specificState {
+enum obstacleState {
         NORMAL,
-        NON_MOVABLE_OBSTACLE_DETECTED_LEFT,
-        NON_MOVABLE_OBSTACLE_DETECTED_FRONT,
-        NON_MOVABLE_OBSTACLE_DETECTED_RIGHT,
-        MOVABLE_OBSTACLE_DETECTED,
-        PICKING_UP_OBSTACLE,
-        RELEASING_OBSTACLE,
+    OBSTACLE_ON_LEFT,
+    OBSTACLE_ON_FRONT,
+    OBSTACLE_ON_RIGHT,
+    OBSTACLE_TOUCHED
 };
 
 extern enum globalState robot_state;            // Robot state
-extern enum specificState specif_state;         // Secondary state
+extern enum obstacleState obstacle_state;         // Secondary state
 
 void *behaviour_main(void *arg);
 int wait_for(enum globalState condition);
@@ -51,7 +50,7 @@ void obstacle_on_front();
 void obstacle_on_right();
 void obstacle_touched();
 void cross_arena(void);
-void pickup_obstacle();
+void pickup_oject();
 void drop_object();
 void resume();
 
